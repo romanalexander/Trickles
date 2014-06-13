@@ -1,0 +1,43 @@
+PREPROCESS=preprocess_cache.pl
+
+# Debugging
+#CFLAGS=-D__KERNEL__ -I/home/ashieh/current/include -Wall -Wstrict-prototypes -Wno-trigraphs -O0 -fno-strict-aliasing -fno-common -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium3 -DMODULE -fno-inline -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc 
+
+# Optimized 
+CFLAGS=-D__KERNEL__ -I/home/ashieh/current/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium3 -DMODULE -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc  
+CC=gcc32
+
+# Profile
+#CFLAGS=-D__KERNEL__ -I/home/ashieh/current/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fno-inline -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium4 -DMODULE -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc  
+CC=gcc32
+
+# aeskey.c aestab.c md5_one.c md5_dgst.c 
+SOURCES=trickles.c tmalloc.c trickles-server.c trickles-userapi.c state_cache.c
+
+OBJS=$(SOURCES:.c=.o)
+TRICKLES_MOD_DEPS = $(SOURCES:.c=.o) crypto/crypto.o
+
+TRICKLES_LIBS := /local/ashieh/lib/htonl.o /local/ashieh/lib/htons.o /usr/lib/gcc-lib/i386-redhat-linux/3.2.3/libgcc.a /usr/lib/libm.a  #libintel.a  #/opt/intel_cc_80/lib/libirc.a
+TRICKLES_MOD := trickles-mod.o
+#TRICKLES_MOD := trickles-mod1.o
+all: deps $(TRICKLES_MOD)
+
+deps: $(SOURCES)
+	gcc -M $(CFLAGS) $(SOURCES) > deps
+
+include deps
+
+$(TRICKLES_MOD): $(TRICKLES_MOD_DEPS)
+	$(LD)  --relocatable $(TRICKLES_LIBS) $(TRICKLES_MOD_DEPS) -o $@ 
+	cp trickles-mod.o /home/ashieh/
+
+
+clean: 
+	rm $(OBJS)
+
+state_cache.o: state_cache.c $(PREPROCESS)
+	rm -f state_cache_1.c state_cache_2.c
+	$(CC) -E $(CFLAGS) state_cache.c -o state_cache_1.c
+	./$(PREPROCESS) state_cache_1.c state_cache_2.c
+	chmod a-w state_cache_1.c state_cache_2.c
+	$(CC) $(CFLAGS) -c -o state_cache.o state_cache_2.c

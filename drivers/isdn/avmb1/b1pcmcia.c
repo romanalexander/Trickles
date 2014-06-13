@@ -1,4 +1,4 @@
-/* $Id: b1pcmcia.c,v 1.1.4.1 2001/11/20 14:19:34 kai Exp $
+/* $Id: b1pcmcia.c,v 1.1.1.1 2004/06/19 05:03:36 ashieh Exp $
  * 
  * Module for AVM B1/M1/M2 PCMCIA-card.
  * 
@@ -25,7 +25,7 @@
 #include "capilli.h"
 #include "avmcard.h"
 
-static char *revision = "$Revision: 1.1.4.1 $";
+static char *revision = "$Revision: 1.1.1.1 $";
 
 /* ------------------------------------------------------------- */
 

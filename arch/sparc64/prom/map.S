@@ -1,4 +1,4 @@
-/* $Id: map.S,v 1.2 1999/11/19 05:53:02 davem Exp $
+/* $Id: map.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * map.S: Tricky coding required to fixup the kernel OBP maps
  *	  properly.
  *

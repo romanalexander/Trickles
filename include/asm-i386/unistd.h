@@ -258,6 +258,14 @@
 #define __NR_free_hugepages	251
 #define __NR_exit_group		252
 
+#define __NR_cminisock_trickles_send       280
+#define __NR_cminisock_trickles_sendv      281
+#define __NR_cminisock_trickles_sendfilev  282
+#define __NR_cminisock_trickles_setucont   283
+#define __NR_cminisock_sendbulk		284
+#define __NR_cminisock_extract_events		285
+#define __NR_cminisock_install_events		286
+#define __NR_cminisock_request		287
 /* user-visible error numbers are in the range -1 - -124: see <asm-i386/errno.h> */
 
 #define __syscall_return(type, res) \

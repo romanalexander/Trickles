@@ -1,6 +1,6 @@
 # drivers/mtd/maps/Config.in
 
-# $Id: Config.in,v 1.43 2003/01/24 14:26:38 dwmw2 Exp $
+# $Id: Config.in,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
 
 mainmenu_option next_comment
 

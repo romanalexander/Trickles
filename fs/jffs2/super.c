@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: super.c,v 1.48.2.3 2002/10/11 09:04:44 dwmw2 Exp $
+ * $Id: super.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

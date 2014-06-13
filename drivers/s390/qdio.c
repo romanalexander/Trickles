@@ -57,7 +57,7 @@ void volatile qdio_eyecatcher(void)
 
 #include <asm/qdio.h>
 
-#define VERSION_QDIO_C "$Revision: 1.145 $"
+#define VERSION_QDIO_C "$Revision: 1.1.1.1 $"
 
 /****************** MODULE PARAMETER VARIABLES ********************/
 MODULE_AUTHOR("Utz Bacher <utz.bacher@de.ibm.com>");

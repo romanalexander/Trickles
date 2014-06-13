@@ -1,4 +1,4 @@
-/* $Id: trampoline.S,v 1.13 1999/08/04 03:19:15 davem Exp $
+/* $Id: trampoline.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * trampoline.S: SMP cpu boot-up trampoline code.
  *
  * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)

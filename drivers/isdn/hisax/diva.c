@@ -1,4 +1,4 @@
-/* $Id: diva.c,v 1.1.4.2 2002/08/30 11:21:00 keil Exp $
+/* $Id: diva.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * low level stuff for Eicon.Diehl Diva Family ISDN cards
  *
@@ -29,7 +29,7 @@
 
 extern const char *CardType[];
 
-const char *Diva_revision = "$Revision: 1.1.4.2 $";
+const char *Diva_revision = "$Revision: 1.1.1.1 $";
 
 #define byteout(addr,val) outb(val,addr)
 #define bytein(addr) inb(addr)

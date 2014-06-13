@@ -27,10 +27,14 @@
  */
 
 /*
- * $Date: 1995/09/22 02:23:15 $
- * $Revision: 0.5 $
+ * $Date: 2004/06/19 05:03:22 $
+ * $Revision: 1.1.1.1 $
  *
- * $Log: isp1020.c,v $
+ * $Log: qlogicfc.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:22  ashieh
+ * initial version
+ *
+ *
  * Revision 0.5  1995/09/22  02:23:15  root
  * do auto request sense
  *

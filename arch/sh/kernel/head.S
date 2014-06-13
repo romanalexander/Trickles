@@ -1,4 +1,4 @@
-/* $Id: head.S,v 1.1.1.1.2.1 2002/01/25 00:51:42 gniibe Exp $
+/* $Id: head.S,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *  arch/sh/kernel/head.S
  *

@@ -8,7 +8,7 @@
 # Note 2! The CFLAGS definitions are now inherited from the
 # parent makes..
 #
-# $Id: Makefile,v 1.65 2002/03/22 07:10:34 dwmw2 Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
 
 
 obj-y           += chips/chipslink.o maps/mapslink.o \

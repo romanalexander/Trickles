@@ -1,0 +1,1 @@
+#define CONFIG_KGDB_THREAD 1

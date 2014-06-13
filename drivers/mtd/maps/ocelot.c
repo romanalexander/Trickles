@@ -1,5 +1,5 @@
 /*
- * $Id: ocelot.c,v 1.6 2001/10/02 15:05:14 dwmw2 Exp $
+ * $Id: ocelot.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * Flash on Momenco Ocelot
  */

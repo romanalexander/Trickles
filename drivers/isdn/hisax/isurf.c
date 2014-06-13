@@ -1,4 +1,4 @@
-/* $Id: isurf.c,v 1.1.4.1 2001/11/20 14:19:36 kai Exp $
+/* $Id: isurf.c,v 1.1.1.1 2004/06/19 05:03:36 ashieh Exp $
  *
  * low level stuff for Siemens I-Surf/I-Talk cards
  *
@@ -20,7 +20,7 @@
 
 extern const char *CardType[];
 
-static const char *ISurf_revision = "$Revision: 1.1.4.1 $";
+static const char *ISurf_revision = "$Revision: 1.1.1.1 $";
 
 #define byteout(addr,val) outb(val,addr)
 #define bytein(addr) inb(addr)

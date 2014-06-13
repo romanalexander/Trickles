@@ -9,7 +9,7 @@
  * ==============================================================
  *
  * static char rcsid[] =
- * "$Revision: 1.36.1.4 $$Date: 1995/03/29 06:14:14 $";
+ * "$Revision: 1.1.1.1 $$Date: 2004/06/19 05:03:19 $";
  *
  *  linux/kernel/cyclades.c
  *
@@ -27,7 +27,11 @@
  *   int cy_init(void);
  *   int  cy_open(struct tty_struct *tty, struct file *filp);
  *
- * $Log: cyclades.c,v $
+ * $Log: serial167.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:19  ashieh
+ * initial version
+ *
+ *
  * Revision 1.36.1.4  1995/03/29  06:14:14  bentson
  * disambiguate between Cyclom-16Y and Cyclom-32Ye;
  *

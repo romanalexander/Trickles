@@ -2,7 +2,7 @@
  * amd766rom.c
  *
  * Normal mappings of chips in physical memory
- * $Id: amd766rom.c,v 1.1 2002/01/10 22:59:13 eric Exp $
+ * $Id: amd766rom.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #include <linux/module.h>

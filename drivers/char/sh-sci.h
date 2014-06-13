@@ -1,4 +1,4 @@
-/* $Id: sh-sci.h,v 1.1.1.1.2.5 2003/09/03 08:37:41 kkojima Exp $
+/* $Id: sh-sci.h,v 1.1.1.1 2004/06/19 05:03:18 ashieh Exp $
  *
  *  linux/drivers/char/sh-sci.h
  *

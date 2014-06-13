@@ -5,7 +5,7 @@
  *
  *		PF_INET protocol family socket handler.
  *
- * Version:	$Id: af_inet.c,v 1.136 2001/11/06 22:21:08 davem Exp $
+ * Version:	$Id: af_inet.c,v 1.2 2004/07/19 20:39:45 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -117,6 +117,8 @@
 #include <linux/wireless.h>		/* Note : will define WIRELESS_EXT */
 #endif	/* CONFIG_NET_RADIO || CONFIG_NET_PCMCIA_RADIO */
 
+#include <net/trickles.h>
+
 struct linux_mib net_statistics[NR_CPUS*2];
 
 #ifdef INET_REFCNT_DEBUG
@@ -129,6 +131,7 @@ extern int netstat_get_info(char *, char **, off_t, int);
 extern int afinet_get_info(char *, char **, off_t, int);
 extern int tcp_get_info(char *, char **, off_t, int);
 extern int udp_get_info(char *, char **, off_t, int);
+extern int netmem_get_info(char *, char **, off_t, int);
 extern void ip_mc_drop_socket(struct sock *sk);
 
 #ifdef CONFIG_DLCI
@@ -942,6 +945,11 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 	return(0);
 }
 
+int tcp_mmap(struct file *file, struct socket *sock, struct vm_area_struct *vma)
+{
+	return trickles_mmap_hook(file,sock,vma);
+}
+
 struct proto_ops inet_stream_ops = {
 	family:		PF_INET,
 
@@ -959,7 +967,7 @@ struct proto_ops inet_stream_ops = {
 	getsockopt:	inet_getsockopt,
 	sendmsg:	inet_sendmsg,
 	recvmsg:	inet_recvmsg,
-	mmap:		sock_no_mmap,
+	mmap:		tcp_mmap,
 	sendpage:	tcp_sendpage
 };
 
@@ -1196,6 +1204,7 @@ static int __init inet_init(void)
 	proc_net_create ("sockstat", 0, afinet_get_info);
 	proc_net_create ("tcp", 0, tcp_get_info);
 	proc_net_create ("udp", 0, udp_get_info);
+	proc_net_create("netmem", 0, netmem_get_info);
 #endif		/* CONFIG_PROC_FS */
 
 	ipfrag_init();

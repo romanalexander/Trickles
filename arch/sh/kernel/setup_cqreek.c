@@ -1,4 +1,4 @@
-/* $Id: setup_cqreek.c,v 1.9 2001/07/30 12:43:28 gniibe Exp $
+/* $Id: setup_cqreek.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * arch/sh/kernel/setup_cqreek.c
  *

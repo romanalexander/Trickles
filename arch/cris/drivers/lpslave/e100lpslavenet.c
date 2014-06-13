@@ -1,4 +1,4 @@
-/* $Id: e100lpslavenet.c,v 1.5 2002/04/22 11:47:24 johana Exp $
+/* $Id: e100lpslavenet.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  * e100lpslavenet.c: A network driver for the ETRAX 100LX slave controller.
  *
@@ -7,6 +7,10 @@
  * The outline of this driver comes from skeleton.c.
  *
  * $Log: e100lpslavenet.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.5  2002/04/22 11:47:24  johana
  * Fix according to 2.4.19-pre7. time_after/time_before and
  * missing end of comment.

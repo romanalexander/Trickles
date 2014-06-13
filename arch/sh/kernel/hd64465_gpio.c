@@ -1,5 +1,5 @@
 /*
- * $Id: hd64465_gpio.c,v 1.2 2001/05/24 00:13:47 gniibe Exp $
+ * $Id: hd64465_gpio.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  * by Greg Banks <gbanks@pocketpenguins.com>
  * (c) 2000 PocketPenguins Inc
  *

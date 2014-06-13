@@ -1,7 +1,7 @@
 /*
  * linux/drivers/char/synclink.c
  *
- * $Id: synclink.c,v 3.21 2003/09/05 14:04:24 paulkf Exp $
+ * $Id: synclink.c,v 1.1.1.1 2004/06/19 05:03:18 ashieh Exp $
  *
  * Device driver for Microgate SyncLink ISA and PCI
  * high speed multiprotocol serial adapters.
@@ -924,7 +924,7 @@ MODULE_PARM(txdmabufs,"1-" __MODULE_STRING(MAX_TOTAL_DEVICES) "i");
 MODULE_PARM(txholdbufs,"1-" __MODULE_STRING(MAX_TOTAL_DEVICES) "i");
 
 static char *driver_name = "SyncLink serial driver";
-static char *driver_version = "$Revision: 3.21 $";
+static char *driver_version = "$Revision: 1.1.1.1 $";
 
 static int __init synclink_init_one (struct pci_dev *dev,
 				     const struct pci_device_id *ent);

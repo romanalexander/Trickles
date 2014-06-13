@@ -26,7 +26,11 @@
  */
 
 /*
- * $Log: mac_NCR5380.c,v $
+ * $Log: mac_scsi.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:23  ashieh
+ * initial version
+ *
+ *
  */
 
 #include <linux/types.h>

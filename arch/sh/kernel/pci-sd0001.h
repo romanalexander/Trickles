@@ -1,5 +1,5 @@
 /*
- *   $Id: pci-sd0001.h,v 1.1.2.1 2003/06/24 08:40:50 dwmw2 Exp $
+ *   $Id: pci-sd0001.h,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *   linux/arch/sh/kernel/pci_sd0001.h
  *

@@ -1,5 +1,5 @@
 /*
- *    $Id: zorro.c,v 1.1.2.1 1998/06/07 23:21:02 geert Exp $
+ *    $Id: zorro.c,v 1.1.1.1 2004/06/19 05:03:42 ashieh Exp $
  *
  *    Zorro Bus Services
  *

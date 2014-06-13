@@ -1,7 +1,7 @@
 #ifndef	__ASM_SH_KEYBOARD_H
 #define	__ASM_SH_KEYBOARD_H
 /*
- *	$Id: keyboard.h,v 1.2 2001/10/15 04:32:05 mrbrown Exp $
+ *	$Id: keyboard.h,v 1.1.1.1 2004/06/19 05:02:57 ashieh Exp $
  */
 
 #include <linux/kd.h>

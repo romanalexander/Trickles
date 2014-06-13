@@ -1,7 +1,7 @@
 #
 # linux/drivers/chips/Makefile
 #
-# $Id: Makefile,v 1.8 2002/01/10 20:27:40 eric Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
 
 O_TARGET	:= chipslink.o
 

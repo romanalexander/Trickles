@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.49 2001/07/27 09:42:22 davem Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
 # sparc/Makefile
 #
 # Makefile for the architecture dependent flags and dependencies on the

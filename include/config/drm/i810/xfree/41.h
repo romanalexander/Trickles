@@ -1,0 +1,1 @@
+#define CONFIG_DRM_I810_XFREE_41 1

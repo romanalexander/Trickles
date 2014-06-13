@@ -1,4 +1,4 @@
-/* $Id: ethernet.c,v 1.48 2003/12/03 13:44:39 starvik Exp $
+/* $Id: ethernet.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  * e100net.c: A network driver for the ETRAX 100LX network controller.
  *
@@ -7,6 +7,10 @@
  * The outline of this driver comes from skeleton.c.
  *
  * $Log: ethernet.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.48  2003/12/03 13:44:39  starvik
  * Use hardware pad for short packets. This prevents information leakage
  * reported by Nessus.
@@ -1511,7 +1515,7 @@ e100_ethtool_ioctl(struct net_device *dev, struct ifreq *ifr)
 			struct ethtool_drvinfo info;
 			memset((void *) &info, 0, sizeof (info));
 			strncpy(info.driver, "ETRAX 100LX", sizeof(info.driver) - 1);
-			strncpy(info.version, "$Revision: 1.48 $", sizeof(info.version) - 1);
+			strncpy(info.version, "$Revision: 1.1.1.1 $", sizeof(info.version) - 1);
 			strncpy(info.fw_version, "N/A", sizeof(info.fw_version) - 1);
 			strncpy(info.bus_info, "N/A", sizeof(info.bus_info) - 1);
 			info.regdump_len = 0;

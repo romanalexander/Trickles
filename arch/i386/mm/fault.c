@@ -2,6 +2,11 @@
  *  linux/arch/i386/mm/fault.c
  *
  *  Copyright (C) 1995  Linus Torvalds
+ *
+ *  Change History
+ *
+ *	Tigran Aivazian <tigran@sco.com>	Remote debugging support.
+ *
  */
 
 #include <linux/signal.h>
@@ -19,6 +24,9 @@
 #include <linux/init.h>
 #include <linux/tty.h>
 #include <linux/vt_kern.h>		/* For unblank_screen() */
+#ifdef CONFIG_KGDB
+#include <linux/kgdb.h>
+#endif
 
 #include <asm/system.h>
 #include <asm/uaccess.h>
@@ -183,6 +191,13 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long error_code)
 	if (in_interrupt() || !mm)
 		goto no_context;
 
+#ifdef CONFIG_KGDB
+	if (kgdb_memerr_expected) {
+		/* We are in kgdb. Can't handle the fault */
+		goto no_context;
+	}
+#endif
+
 	down_read(&mm->mmap_sem);
 
 	vma = find_vma(mm, address);
@@ -302,12 +317,19 @@ no_context:
 		return;
 	}
 
+#ifdef CONFIG_KGDB
+	if (linux_debug_hook != (gdb_debug_hook *) NULL) {
+		(*linux_debug_hook)(14, SIGSEGV, error_code, regs);
+	}
+#endif
+
 /*
  * Oops. The kernel tried to access some bad page. We'll have to
  * terminate things with extreme prejudice.
  */
 
 	bust_spinlocks(1);
+
 
 	if (address < PAGE_SIZE)
 		printk(KERN_ALERT "Unable to handle kernel NULL pointer dereference");

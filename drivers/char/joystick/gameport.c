@@ -1,5 +1,5 @@
 /*
- * $Id: gameport.c,v 1.5 2000/05/29 10:54:53 vojtech Exp $
+ * $Id: gameport.c,v 1.1.1.1 2004/06/19 05:03:20 ashieh Exp $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *

@@ -51,6 +51,9 @@
 #include <linux/crc32.h>
 #include <linux/firmware.h>
 #include <asm/checksum.h>
+#ifdef CONFIG_KGDB
+#include <linux/kgdb.h>
+#endif
 
 #if defined(CONFIG_PROC_FS)
 #include <linux/proc_fs.h>
@@ -467,7 +470,13 @@ EXPORT_SYMBOL(sleep_on);
 EXPORT_SYMBOL(sleep_on_timeout);
 EXPORT_SYMBOL(interruptible_sleep_on);
 EXPORT_SYMBOL(interruptible_sleep_on_timeout);
-EXPORT_SYMBOL(schedule);
+EXPORT_SYMBOL(do_schedule);
+#ifdef CONFIG_KGDB
+EXPORT_SYMBOL(breakpoint);
+#ifdef CONFIG_KGDB_THREAD
+EXPORT_SYMBOL(kern_schedule);
+#endif
+#endif
 EXPORT_SYMBOL(schedule_timeout);
 #if CONFIG_SMP
 EXPORT_SYMBOL(set_cpus_allowed);

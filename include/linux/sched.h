@@ -146,7 +146,9 @@ extern void update_one_process(struct task_struct *p, unsigned long user,
 
 #define	MAX_SCHEDULE_TIMEOUT	LONG_MAX
 extern signed long FASTCALL(schedule_timeout(signed long timeout));
-asmlinkage void schedule(void);
+asmlinkage void do_schedule(void);
+asmlinkage void kern_schedule(void);
+asmlinkage void kern_do_schedule(struct pt_regs);
 
 extern int schedule_task(struct tq_struct *task);
 extern void flush_scheduled_tasks(void);
@@ -956,6 +958,15 @@ static inline void cond_resched(void)
 {
 	if (need_resched())
 		__cond_resched();
+}
+
+static inline void schedule(void)
+{
+#ifdef CONFIG_KGDB_THREAD
+	kern_schedule();
+#else
+	do_schedule();
+#endif
 }
 
 #endif /* __KERNEL__ */

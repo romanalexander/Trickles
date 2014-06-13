@@ -220,7 +220,7 @@ static ssize_t read_kmem(struct file *file, char *buf,
 	ssize_t read = 0;
 	ssize_t virtr = 0;
 	char * kbuf; /* k-addr because vread() takes vmlist_lock rwlock */
-		
+
 	if (p < (unsigned long) high_memory) {
 		read = count;
 		if (count > (unsigned long) high_memory - p)
@@ -292,6 +292,8 @@ static ssize_t write_kmem(struct file * file, const char * buf,
 			wrote = (unsigned long) high_memory - p;
 
 		wrote = do_write_mem(file, (void*)p, p, buf, wrote, ppos);
+		if(wrote < 0)
+			return(wrote);
 
 		p += wrote;
 		buf += wrote;
@@ -664,6 +666,8 @@ static struct file_operations full_fops = {
 	write:		write_full,
 };
 
+extern struct file_operations anon_file_operations;
+
 static int memory_open(struct inode * inode, struct file * filp)
 {
 	switch (MINOR(inode->i_rdev)) {
@@ -693,6 +697,9 @@ static int memory_open(struct inode * inode, struct file * filp)
 		case 9:
 			filp->f_op = &urandom_fops;
 			break;
+		case 10:
+		        filp->f_op = &anon_file_operations;
+			break;
 		default:
 			return -ENXIO;
 	}
@@ -719,7 +726,8 @@ void __init memory_devfs_register (void)
 	{5, "zero",    S_IRUGO | S_IWUGO,           &zero_fops},
 	{7, "full",    S_IRUGO | S_IWUGO,           &full_fops},
 	{8, "random",  S_IRUGO | S_IWUSR,           &random_fops},
-	{9, "urandom", S_IRUGO | S_IWUSR,           &urandom_fops}
+	{9, "urandom", S_IRUGO | S_IWUSR,           &urandom_fops},
+	{10, "anon", S_IRUGO | S_IWUSR,             &anon_file_operations},
     };
     int i;
 

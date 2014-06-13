@@ -467,6 +467,10 @@ struct packet_type
 	struct packet_type	*next;
 };
 
+static inline void *netdev_priv(struct net_device *dev)
+{
+        return dev->priv;
+}
 
 #include <linux/interrupt.h>
 #include <linux/notifier.h>
@@ -731,6 +735,17 @@ enum {
 #define netif_msg_pktdata(p)	((p)->msg_enable & NETIF_MSG_PKTDATA)
 #define netif_msg_hw(p)		((p)->msg_enable & NETIF_MSG_HW)
 #define netif_msg_wol(p)	((p)->msg_enable & NETIF_MSG_WOL)
+
+static inline u32 netif_msg_init(int debug_value, int default_msg_enable_bits)
+{
+        /* use default */
+        if (debug_value < 0 || debug_value >= (sizeof(u32) * 8))
+                return default_msg_enable_bits;
+        if (debug_value == 0)   /* no output */
+                return 0;
+        /* set low N bits */
+        return (1 << debug_value) - 1;
+}
 
 /* Schedule rx intr now? */
 

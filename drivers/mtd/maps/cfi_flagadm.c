@@ -1,7 +1,7 @@
 /*
  *  Copyright © 2001 Flaga hf. Medical Devices, Kári Davíðsson <kd@flaga.is>
  *
- *  $Id: cfi_flagadm.c,v 1.7 2001/10/02 15:05:13 dwmw2 Exp $
+ *  $Id: cfi_flagadm.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *  
  *  This program is free software; you can redistribute  it and/or modify it
  *  under  the terms of  the GNU General  Public License as published by the

@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: nodemgmt.c,v 1.45.2.1 2002/02/23 14:13:34 dwmw2 Exp $
+ * $Id: nodemgmt.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

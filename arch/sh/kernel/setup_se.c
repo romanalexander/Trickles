@@ -1,4 +1,4 @@
-/* $Id: setup_se.c,v 1.1.1.1.2.2 2002/05/10 17:58:54 jzs Exp $
+/* $Id: setup_se.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * linux/arch/sh/kernel/setup_se.c
  *

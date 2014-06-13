@@ -25,7 +25,7 @@
 /*
  * HCI Events.
  *
- * $Id: hci_event.c,v 1.4 2002/07/27 18:14:38 maxk Exp $
+ * $Id: hci_event.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

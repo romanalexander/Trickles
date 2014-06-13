@@ -3,7 +3,7 @@
  * 
  * (C) 2001 Pete Popov <ppopov@mvista.com>
  * 
- * $Id: pb1xxx-flash.c,v 1.4 2002/09/13 13:51:54 dwmw2 Exp $
+ * $Id: pb1xxx-flash.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #include <linux/config.h>

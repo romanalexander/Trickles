@@ -71,7 +71,7 @@
 #undef USE_STATIC_SCSI_MEMORY
 
 /*
-   static const char RCSid[] = "$Header: /mnt/ide/home/eric/CVSROOT/linux/drivers/scsi/scsi_obsolete.c,v 1.1 1997/05/18 23:27:21 eric Exp $";
+   static const char RCSid[] = "$Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/scsi/scsi_obsolete.c,v 1.1.1.1 2004/06/19 05:03:27 ashieh Exp $";
  */
 
 

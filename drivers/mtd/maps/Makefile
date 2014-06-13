@@ -1,7 +1,7 @@
 #
 # linux/drivers/maps/Makefile
 #
-# $Id: Makefile,v 1.37 2003/01/24 14:26:38 dwmw2 Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
 
 BELOW25		:= $(shell echo $(PATCHLEVEL) | sed s/[1234]/y/)
 

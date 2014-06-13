@@ -22,6 +22,10 @@
 
 /*
  * $Log: AM53C974.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:27  ashieh
+ * initial version
+ *
+ *
  */
 
 #ifndef AM53C974_H

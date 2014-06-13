@@ -544,7 +544,7 @@ asmlinkage void schedule_tail(struct task_struct *prev)
  * tasks can run. It can not be killed, and it cannot sleep. The 'state'
  * information in task[0] is never used.
  */
-asmlinkage void schedule(void)
+asmlinkage void do_schedule(void)
 {
 	struct schedule_data * sched_data;
 	struct task_struct *prev, *next, *p;
@@ -701,6 +701,22 @@ same_process:
 		goto need_resched_back;
 	return;
 }
+
+asmlinkage void user_schedule(void)
+{
+#ifdef CONFIG_KGDB_THREAD
+	current->thread.kgdbregs = NULL;
+#endif
+	do_schedule();
+}
+
+#ifdef CONFIG_KGDB_THREAD
+asmlinkage void kern_do_schedule(struct pt_regs regs)
+{
+	current->thread.kgdbregs = &regs;
+	do_schedule();
+}
+#endif
 
 /*
  * The core wakeup function.  Non-exclusive wakeups (nr_exclusive == 0) just wake everything

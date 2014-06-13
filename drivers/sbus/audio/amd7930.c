@@ -1,4 +1,4 @@
-/* $Id: amd7930.c,v 1.28 2001/10/13 01:47:29 davem Exp $
+/* $Id: amd7930.c,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  * drivers/sbus/audio/amd7930.c
  *
  * Copyright (C) 1996,1997 Thomas K. Dyas (tdyas@eden.rutgers.edu)

@@ -5,7 +5,7 @@
  *
  * Created by Simon Kagstrom <simonk@axis.com>.
  *
- * $Id: jffs_proc.c,v 1.5 2001/06/02 14:34:55 dwmw2 Exp $
+ * $Id: jffs_proc.c,v 1.1.1.1 2004/06/19 05:02:41 ashieh Exp $
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by

@@ -1,4 +1,4 @@
-/* $Id: setup.c,v 1.1.1.1.2.7 2003/06/20 13:13:25 trent Exp $
+/* $Id: setup.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *  linux/arch/sh/kernel/setup.c
  *

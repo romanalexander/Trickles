@@ -45,6 +45,10 @@
 
 /*
  * $Log: AM53C974.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:27  ashieh
+ * initial version
+ *
+ *
  */
 
 #ifdef AM53C974_DEBUG

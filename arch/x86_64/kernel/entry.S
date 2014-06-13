@@ -5,7 +5,7 @@
  *  Copyright (C) 2000, 2001, 2002  Andi Kleen SuSE Labs
  *  Copyright (C) 2000  Pavel Machek <pavel@suse.cz>
  * 
- *  $Id: entry.S,v 1.99 2003/10/24 17:48:32 ak Exp $		
+ *  $Id: entry.S,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $		
  */
 
 /*

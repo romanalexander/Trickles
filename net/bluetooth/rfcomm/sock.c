@@ -24,7 +24,7 @@
 /*
  * RFCOMM sockets.
  *
- * $Id: sock.c,v 1.30 2002/10/18 20:12:12 maxk Exp $
+ * $Id: sock.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

@@ -54,7 +54,7 @@
  *      7) Don't send down any more commands if the host/device is busy.
  */
 
-static const char RCSid[] = "$Header: /mnt/ide/home/eric/CVSROOT/linux/drivers/scsi/scsi_queue.c,v 1.1 1997/10/21 11:16:38 eric Exp $";
+static const char RCSid[] = "$Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/scsi/scsi_queue.c,v 1.1.1.1 2004/06/19 05:03:29 ashieh Exp $";
 
 
 /*

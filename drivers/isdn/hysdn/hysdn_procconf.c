@@ -1,4 +1,4 @@
-/* $Id: hysdn_procconf.c,v 1.1.4.1 2001/11/20 14:19:37 kai Exp $
+/* $Id: hysdn_procconf.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * Linux driver for HYSDN cards, /proc/net filesystem dir and conf functions.
  *
@@ -21,7 +21,7 @@
 
 #include "hysdn_defs.h"
 
-static char *hysdn_procconf_revision = "$Revision: 1.1.4.1 $";
+static char *hysdn_procconf_revision = "$Revision: 1.1.1.1 $";
 
 #define INFO_OUT_LEN 80		/* length of info line including lf */
 

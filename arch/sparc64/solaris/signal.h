@@ -1,4 +1,4 @@
-/* $Id: signal.h,v 1.3 1998/04/12 06:20:33 davem Exp $
+/* $Id: signal.h,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * signal.h: Signal emulation for Solaris
  *
  * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)

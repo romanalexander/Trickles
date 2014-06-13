@@ -1,5 +1,5 @@
 /*
- * $Id: mtdchar.c,v 1.49 2003/01/24 12:02:58 dwmw2 Exp $
+ * $Id: mtdchar.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  * Character-device access to raw MTD devices.
  * Pure 2.4 version - compatibility cruft removed to mtdchar-compat.c

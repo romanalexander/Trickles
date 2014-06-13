@@ -5,7 +5,7 @@
  *
  *		The Internet Protocol (IP) module.
  *
- * Version:	$Id: ip_input.c,v 1.54.2.1 2002/01/12 07:39:23 davem Exp $
+ * Version:	$Id: ip_input.c,v 1.4 2005/03/01 22:33:12 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -143,6 +143,10 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/mroute.h>
 #include <linux/netlink.h>
+
+#define DEENC_CHECK()							\
+	if(skb->nfmark == 0xdeadbeef)					\
+		printk("Deencapsulate @  %s:%d\n", __FILE__, __LINE__);
 
 /*
  *	SNMP management statistics
@@ -308,11 +312,13 @@ static inline int ip_rcv_finish(struct sk_buff *skb)
 	struct net_device *dev = skb->dev;
 	struct iphdr *iph = skb->nh.iph;
 
+	DEENC_CHECK();
 	/*
 	 *	Initialise the virtual path cache for the packet. It describes
 	 *	how the packet travels inside Linux networking.
 	 */ 
 	if (skb->dst == NULL) {
+		DEENC_CHECK();
 		if (ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))
 			goto drop; 
 	}
@@ -330,6 +336,7 @@ static inline int ip_rcv_finish(struct sk_buff *skb)
 
 	if (iph->ihl > 5) {
 		struct ip_options *opt;
+		DEENC_CHECK();
 
 		/* It looks as overkill, because not all
 		   IP options require packet mangling.
@@ -364,6 +371,7 @@ static inline int ip_rcv_finish(struct sk_buff *skb)
 		}
 	}
 
+	DEENC_CHECK();
 	return skb->dst->input(skb);
 
 inhdr_error:

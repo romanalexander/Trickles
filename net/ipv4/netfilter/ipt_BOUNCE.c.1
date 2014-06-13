@@ -1,0 +1,461 @@
+/* "Stupid" SNAT implementation. 
+ *
+ *   Philosophy: Don't mess with conntrack or any of that nonsense,
+ *   just change my darn source address!
+ * source /home/ashieh/gdbscripts/load192.168.0.10ipt_BOUNCE.o
+ */
+#include <linux/module.h>
+#include <linux/skbuff.h>
+#include <linux/ip.h>
+#include <linux/udp.h>
+#include <net/checksum.h>
+
+#include <linux/netfilter_ipv4/ip_tables.h>
+#include <linux/netfilter_ipv4/ipt_BOUNCE.h>
+
+#define MTU (1500)
+const int ENCAP_HEADER_LEN = sizeof(struct udphdr) + sizeof(struct ipudp);
+
+#define HH_LEN (15)
+
+/* Stolen from ipt_mirror.c */
+static inline struct rtable *route(struct sk_buff *skb, int local)
+{
+        struct iphdr *iph = skb->nh.iph;
+	struct dst_entry *odst;
+	struct rt_key key = {};
+	struct rtable *rt;
+
+	if (local) {
+		key.src = iph->saddr;
+		key.dst = iph->daddr;
+		printk("%X %X\n", key.src, key.dst);
+		key.tos = RT_TOS(iph->tos);
+
+		if (ip_route_output_key(&rt, &key) != 0)
+			return NULL;
+	} else {
+		/* non-local src, find valid iif to satisfy
+		 * rp-filter when calling ip_route_input. */
+		key.dst = iph->daddr;
+		if (ip_route_output_key(&rt, &key) != 0)
+			return NULL;
+
+		odst = skb->dst;
+		if (ip_route_input(skb, iph->saddr, iph->daddr,
+		                   RT_TOS(iph->tos), rt->u.dst.dev) != 0) {
+			dst_release(&rt->u.dst);
+			return NULL;
+		}
+		dst_release(&rt->u.dst);
+		rt = (struct rtable *)skb->dst;
+		skb->dst = odst;
+	}
+
+	if (rt->u.dst.error) {
+		dst_release(&rt->u.dst);
+		rt = NULL;
+	}
+
+	return rt;
+}
+
+/* Stolen from ipt_MIRROR, which says, "Stolen from ip_finish_output2" */
+
+static void ip_direct_send(struct sk_buff *skb)
+{
+	struct dst_entry *dst = skb->dst;
+	struct hh_cache *hh = dst->hh;
+
+	printk("dst = %p\n", dst);
+	printk("hh = %p\n", hh);
+	printk("dev = %p\n", skb->dev);
+	if (hh) {
+		int hh_alen;
+
+		read_lock_bh(&hh->hh_lock);
+		hh_alen = HH_DATA_ALIGN(hh->hh_len);
+  		memcpy(skb->data - hh_alen, hh->hh_data, hh_alen);
+		read_unlock_bh(&hh->hh_lock);
+	        skb_push(skb, hh->hh_len);
+		hh->hh_output(skb);
+	} else if (dst->neighbour)
+		dst->neighbour->output(skb);
+	else {
+		printk(KERN_DEBUG "khm in MIRROR\n");
+		kfree_skb(skb);
+	}
+}
+
+#if 1
+// XXX test new nat cheat check code after verifying that calls to nat
+// XXX cheat are correct
+__u16 ip_nat_cheat_check(int compValue, int newValue, unsigned int check) {
+	// http://www.faqs.org/rfcs/rfc1071.html
+	__asm__(
+		"xor $0xffff, %[check]        ;\n"
+		"addl %[compValue], %[check]  ;\n" // can overflow
+		"adcl %[newValue], %[check]   ;\n" // can overflow
+		"adcl $0, %[check]            ;\n" // can overflow
+		"adcl $0, %[check]            ;\n"
+                : [check] "=r"(check)
+		: "0" (check), [compValue] "rm" (compValue), 
+		  [newValue] "rm" (newValue)
+		);
+	return csum_fold(check);
+}
+#else
+#include <linux/netfilter_ipv4/ip_nat.h>
+#endif
+
+#define TRY_PULL_OR_FAIL(SKB,LEN,ERRSTR,ERRVAL)		\
+	({								\
+		if(!pskb_may_pull((SKB), (LEN))) {			\
+			if(net_ratelimit()) {				\
+				printk(ERRSTR);				\
+			}						\
+			return ERRVAL;					\
+		}							\
+	})
+
+
+#define PULL_OR_FAIL(SKB,LEN,ERRSTR,ERRVAL)		\
+	({						\
+		struct sk_buff *_skb = (SKB);				\
+		int _len = (LEN);					\
+		TRY_PULL_OR_FAIL(_skb,_len,ERRSTR,ERRVAL);		\
+		skb_pull(_skb, _len);	 /* final result */		\
+	})
+
+#define PUSH_OR_FAIL(SKB,LEN,ERRSTR,ERRVAL)		\
+	({						\
+		void *_tmp = skb_push((SKB),(LEN));	\
+		if(_tmp == NULL) {			\
+			if(net_ratelimit()) {		\
+				printk(ERRSTR);		\
+			}				\
+			return ERRVAL;			\
+		}					\
+		_tmp;					\
+	})
+
+// based on tcp nat function of the same name
+static int
+encapsulate_packet_and_bounce(struct sk_buff *skb, unsigned int bounceIP, unsigned short bouncePort)
+{
+	// NF_STOLEN the packet, and send out an encapsulated replacement
+	printk("Out 0\n");
+
+	// Verify that the encapsulated packet will be short enough to send out
+	if((skb->len > MTU - ENCAP_HEADER_LEN)) {
+		if(net_ratelimit()) {
+			printk("SKB too long for UDP encapsulation, or original skb too long\n");
+		}
+		return -1;
+	}
+	if(skb->len != skb->tail - skb->data) {
+		if(net_ratelimit()) {
+			printk("SKB might be fragmented\n");
+		}
+		return -1;
+	}
+#if 0
+	memcpy(temp, skb->data, skb->len);
+	skb->data += ENCAP_HEADER_LEN;
+	skb->tail += ENCAP_HEADER_LEN;
+	BUG_TRAP(skb->tail <= skb->end);
+	memcpy(skb->data, temp, skb->len);
+#endif
+
+	struct sk_buff *outerSKB = 
+		skb_copy_expand(skb, HH_LEN + ENCAP_HEADER_LEN, 0, GFP_ATOMIC);
+	printk("Setting dev on newSKB to %p %p\n", outerSKB->dev, skb->dev);
+	if(outerSKB == NULL) {
+		printk("No memory for skb copy\n");
+		return -1;
+	}
+
+	// From here on, manipulate outer SKB as if it was the original SKB
+	skb = outerSKB;
+	skb->nh.iph = (struct iphdr *)skb->data;
+
+	// Remove IP header
+	struct iphdr *iph = skb->nh.iph;
+	int ihl = iph->ihl*4;
+
+#if 0
+	if(!pskb_may_pull(skb, ihl)) {
+		if(net_ratelimit()) {
+			printk("IP header too long in deencapsulate (tried to pull %d)\n", ihl);
+		}
+		return -1;
+	}
+	skb_pull(skb, ihl);
+#endif
+	PULL_OR_FAIL(skb, ihl, "IP header too long in deencapsulate\n", -1);
+
+	// At TCP header now
+	int payload_len = skb->len;
+
+	/* Save original IP header before doing anything else */
+	char iph_buf[128];
+	struct iphdr *diph = (struct iphdr *) iph_buf;
+	memcpy(diph, iph, ihl);
+	__u32 orig_saddr = iph->saddr;
+	__u32 orig_daddr = iph->daddr;
+	__u32 outer_saddr = orig_saddr;
+	__u32 outer_daddr = bounceIP;
+	diph->saddr = outer_saddr;
+	diph->daddr = outer_daddr;
+	printk("Outer0: %X %X\n", diph->saddr, diph->daddr);
+	diph->tot_len = htons(ntohs(diph->tot_len) + ENCAP_HEADER_LEN);
+	diph->protocol = IPPROTO_UDP;
+	diph->check = 0;
+	// Compute checksum
+	diph->check = ip_compute_csum((unsigned char *)diph, ihl);
+
+	// Push on IP-UDP header
+#if 0
+	struct ipudp *iuh = skb_push(skb, sizeof(struct ipudp));
+	if(iuh == NULL) {
+		XXX;
+	}
+#endif
+	struct ipudp *iuh = PUSH_OR_FAIL(skb, sizeof(struct ipudp), 
+		 "Could not push on IP-UDP header\n", -1);
+
+	iuh->saddr = orig_saddr;
+	iuh->daddr = orig_daddr;
+
+	// Push on UDP header
+	struct udphdr *uh = PUSH_OR_FAIL(skb, sizeof(struct udphdr), 
+		 "Not enough space in skb to push on udp header\n", -1);
+	uh->source = bouncePort;
+	uh->dest = bouncePort;
+	uh->len = htons(ENCAP_HEADER_LEN + payload_len);
+	uh->check = 0; // Disable checksum
+
+	// Push on new IP header
+	skb->nh.iph = (struct iphdr*)skb_push(skb, ihl);
+	memcpy((char*) skb->nh.iph, diph, ihl);
+	printk("Outer0: %X %X\n", skb->nh.iph->saddr, skb->nh.iph->daddr);
+
+	// Send the packet manually
+	printk("Out 1\n");
+
+	struct rtable *rt;
+	if ((rt = route(skb, 1)) == NULL) {
+		printk("Could not route\n");
+		kfree_skb(skb);
+		return 0;
+	}
+
+	dst_release(skb->dst);
+	skb->dst = &rt->u.dst;
+	skb->dev = skb->dst->dev;
+	ip_direct_send(skb);
+	printk("Out 2\n");
+	return 0;
+}
+
+static int
+deencapsulate_packet(struct sk_buff *skb)
+{
+	printk("in 0\n");
+	// Copy 
+	// Remove IP and UDP headers
+	struct iphdr *iph = skb->nh.iph;
+	int ihl = iph->ihl*4;
+
+#if 0
+	if(!pskb_may_pull(skb, ihl)) {
+		if(net_ratelimit()) {
+			printk("IP header too long in deencapsulate (tried to pull %d)\n", ihl);
+		}
+		return -1;
+	}
+	skb_pull(skb, ihl);
+#endif
+	PULL_OR_FAIL(skb, ihl, "IP header too long in deencapsulate\n", -1);
+
+	if(iph->protocol != IPPROTO_UDP) {
+		if(net_ratelimit()) {
+			printk("Non-UDP protocol in deencapsulate\n");
+		}
+		return -1;
+	}
+
+#if 0
+	if(!pskb_may_pull(skb, sizeof(struct udphdr))) {
+		if(net_ratelimit()) {
+			printk("Not enough space for udp header in deencapsulate\n");
+		}
+		return -1;
+	}
+	struct udphdr *uh = skb_pull(skb, sizeof(struct udphdr));
+#endif
+	struct udphdr *uh = 
+		(struct udphdr*) PULL_OR_FAIL(skb, sizeof(struct udphdr), 
+		 "Not enough space for udp header in deencapsulate\n", -1);
+
+#if 0
+	// XXX Checksum not validated
+	if(!pskb_may_pull(skb, ntohs(uh->len) - sizeof(struct udphdr))) {
+		if(net_ratelimit()) {
+			printk("Not enough space for UDP packet in deencapsulate\n");
+		}
+		return -1;
+	}
+#endif
+	printk("Trying to pull %d - %d = %d\n", ntohs(uh->len), sizeof(struct udphdr), 
+	       ntohs(uh->len) - sizeof(struct udphdr));
+	TRY_PULL_OR_FAIL(skb, ntohs(uh->len) - sizeof(struct udphdr),
+		"Not enough space for UDP packet in deencapsulate\n", -1);
+
+	// Push on IP header (computing new checksum)
+#if 0
+	if(!pskb_may_pull(skb, sizeof(struct ipudp))) {
+		if(net_ratelimit()) {
+			printk("Not enough space for ipudp encapsulation header\n");
+		}
+		return -1;
+	}
+	struct ipudp *iuh = skb_pull(skb, sizeof(struct ipudp));
+#endif
+	struct ipudp *iuh = (struct ipudp *)
+		PULL_OR_FAIL(skb, sizeof(struct ipudp),
+		"Not enough space for ipudp encapsulation header\n", -1);
+
+	// SKB should now point at TCP header
+	struct tcphdr *th = (struct tcphdr *) skb->data;
+
+	// XXX Validate destination address?
+	// iuh contains the externally-visible IP addresses.
+	//
+	// The new IP header should be the actual IP header with just
+	// a source NAT.
+	//
+	// If we were to change the destination, perhaps using
+	// iuh->daddr, then NAT would break
+
+	// Push on new header
+	char iph_buf[128];
+	struct iphdr *diph = (struct iphdr*)iph_buf;
+	memcpy(diph, iph, ihl);
+	__u32 unwrapped_saddr = iuh->saddr;
+	__u32 unwrapped_daddr = iph->daddr;
+
+	diph->saddr = unwrapped_saddr;
+	diph->daddr = unwrapped_daddr;
+	diph->tot_len = htons(ntohs(diph->tot_len) - ENCAP_HEADER_LEN);
+	diph->protocol = IPPROTO_TCP;
+	diph->check = 0;
+	// Compute checksum
+	diph->check = ip_compute_csum((unsigned char *)diph, ihl);
+
+	memcpy(skb_push(skb, ihl), diph, ihl);
+
+	// TCP pseudoheader does NOT need modifications, since BOUNCE
+	// is designed to be transparent to the transport layer
+
+	printk("in 1\n");
+
+	return 0;
+}
+
+static unsigned int
+target(struct sk_buff **pskb,
+       unsigned int hooknum,
+       const struct net_device *in,
+       const struct net_device *out,
+       const void *targinfo,
+       void *userinfo)
+{
+	const struct ipt_bounce_target_info *bounceinfo = targinfo;
+
+	switch(bounceinfo->direction) {
+	case IN:
+		if(deencapsulate_packet(*pskb) == 0) {
+			return IPT_CONTINUE;
+		} else {
+			return NF_DROP;
+		}
+		break;
+	case OUT:
+		if(encapsulate_packet_and_bounce(*pskb, bounceinfo->bounce_addr, bounceinfo->bounce_port) == 0) {
+			//return IPT_CONTINUE;
+			// We do our own transmit
+		}
+#if 1
+		// HACK: pretend as if the packet was dropped
+		return NF_DROP;
+#else
+		return NF_STOLEN;
+#endif
+		break;
+	default:
+		if(net_ratelimit()) {
+			printk("Unknown bounce direction\n");
+		}
+		return NF_DROP;
+	}
+}
+
+static int
+checkentry(const char *tablename,
+	   const struct ipt_entry *e,
+           void *targinfo,
+           unsigned int targinfosize,
+           unsigned int hook_mask)
+{
+	struct ipt_bounce_target_info *bounceinfo = (struct ipt_bounce_target_info*) targinfo;
+	if (targinfosize != IPT_ALIGN(sizeof(struct ipt_bounce_target_info))) {
+		printk(KERN_WARNING "BOUNCE: targinfosize %u != %Zu\n",
+		       targinfosize,
+		       IPT_ALIGN(sizeof(struct ipt_bounce_target_info)));
+		return 0;
+	}
+
+	switch(bounceinfo->direction) {
+	case OUT:
+		// supposed to hook into OUTPUT mangle
+		if (strcmp(tablename, "mangle") != 0) {
+			printk(KERN_WARNING "BOUNCE: can only be called from \"mangle\" table, not \"%s\"\n", tablename);
+			return 0;
+		}
+		break;
+	case IN:
+		// supposed to hook into PREROUTING mangle
+		if (strcmp(tablename, "mangle") != 0) {
+			printk(KERN_WARNING "BOUNCE: can only be called from \"mangle\" table, not \"%s\"\n", tablename);
+			return 0;
+		}
+		break;
+	default:
+		printk("Unknown direction %d\n", bounceinfo->direction);
+		return 0;
+	}
+
+	return 1;
+}
+
+static struct ipt_target ipt_bounce_reg
+= { { NULL, NULL }, "BOUNCE", target, checkentry, NULL, THIS_MODULE };
+
+static int __init init(void)
+{
+	printk("Loaded bounce module\n");
+	if (ipt_register_target(&ipt_bounce_reg))
+		return -EINVAL;
+
+	return 0;
+}
+
+static void __exit fini(void)
+{
+	ipt_unregister_target(&ipt_bounce_reg);
+}
+
+module_init(init);
+module_exit(fini);
+MODULE_LICENSE("GPL");

@@ -6,7 +6,7 @@
  * Author: Arjan Van De Ven <arjanv@redhat.com> 
  * Loosely based on i82365.c from the pcmcia-cs package
  *
- * $Id: i82092.c,v 1.16 2003/04/15 16:36:42 dwmw2 Exp $
+ * $Id: i82092.c,v 1.1.1.1 2004/06/19 05:03:48 ashieh Exp $
  */
 
 #include <linux/kernel.h>

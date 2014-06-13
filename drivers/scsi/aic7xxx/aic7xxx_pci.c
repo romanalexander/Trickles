@@ -39,7 +39,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGES.
  *
- * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_pci.c#69 $
+ * $Id: aic7xxx_pci.c,v 1.1.1.1 2004/06/19 05:03:32 ashieh Exp $
  *
  * $FreeBSD$
  */

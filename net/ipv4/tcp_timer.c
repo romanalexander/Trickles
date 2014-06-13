@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp_timer.c,v 1.87 2001/09/21 21:27:34 davem Exp $
+ * Version:	$Id: tcp_timer.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -325,6 +325,7 @@ static void tcp_retransmit_timer(struct sock *sk)
 		goto out;
 
 	BUG_TRAP(!skb_queue_empty(&sk->write_queue));
+	//printk("retransmit timer fired\n");
 
 	if (tp->snd_wnd == 0 && !sk->dead &&
 	    !((1<<sk->state)&(TCPF_SYN_SENT|TCPF_SYN_RECV))) {

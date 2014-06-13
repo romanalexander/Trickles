@@ -57,6 +57,8 @@ struct module *module_list = &kernel_module;
 
 #endif	/* defined(CONFIG_MODULES) || defined(CONFIG_KALLSYMS) */
 
+void module_event (void);
+
 /* inter_module functions are always available, even when the kernel is
  * compiled without modules.  Consumers of inter_module_xxx routines
  * will always work, even when both are built into the kernel, this
@@ -560,7 +562,9 @@ sys_init_module(const char *name_user, struct module *mod_user)
 	/* Initialize the module.  */
 	atomic_set(&mod->uc.usecount,1);
 	mod->flags |= MOD_INITIALIZING;
+	module_event();
 	if (mod->init && (error = mod->init()) != 0) {
+		module_event();
 		atomic_set(&mod->uc.usecount,0);
 		mod->flags &= ~MOD_INITIALIZING;
 		if (error > 0)	/* Buggy module */
@@ -678,6 +682,7 @@ restart:
 	error = 0;
 out:
 	unlock_kernel();
+	module_event();
 	return error;
 }
 
@@ -1247,6 +1252,13 @@ struct seq_operations ksyms_op = {
 	stop:	s_stop,
 	show:	s_show
 };
+
+/* GDB can place a breakpoint in this function to probe changes in the list of
+ * modules loaded in a kernel. */
+void module_event (void)
+{
+	/* Do nothing */
+}
 
 #else		/* CONFIG_MODULES */
 

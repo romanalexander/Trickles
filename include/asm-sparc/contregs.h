@@ -1,4 +1,4 @@
-/* $Id: contregs.h,v 1.8 2000/12/28 22:49:11 davem Exp $ */
+/* $Id: contregs.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $ */
 #ifndef _SPARC_CONTREGS_H
 #define _SPARC_CONTREGS_H
 

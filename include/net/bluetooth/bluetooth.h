@@ -23,7 +23,7 @@
 */
 
 /*
- *  $Id: bluetooth.h,v 1.9 2002/05/06 21:11:55 maxk Exp $
+ *  $Id: bluetooth.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  */
 
 #ifndef __BLUETOOTH_H

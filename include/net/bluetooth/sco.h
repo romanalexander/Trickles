@@ -23,7 +23,7 @@
 */
 
 /*
- *  $Id: sco.h,v 1.1.1.1 2002/03/08 21:03:15 maxk Exp $
+ *  $Id: sco.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  */
 
 #ifndef __SCO_H

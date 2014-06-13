@@ -23,6 +23,10 @@
 
 /*
  * $Log: NCR5380.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:24  ashieh
+ * initial version
+ *
+ *
  */
 
 #ifndef NCR5380_H

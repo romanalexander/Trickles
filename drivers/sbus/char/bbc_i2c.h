@@ -1,4 +1,4 @@
-/* $Id: bbc_i2c.h,v 1.2 2001/04/02 09:59:25 davem Exp $ */
+/* $Id: bbc_i2c.h,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $ */
 #ifndef _BBC_I2C_H
 #define _BBC_I2C_H
 

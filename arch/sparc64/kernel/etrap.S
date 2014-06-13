@@ -1,4 +1,4 @@
-/* $Id: etrap.S,v 1.45 2001/09/07 21:04:40 kanoj Exp $
+/* $Id: etrap.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * etrap.S: Preparing for entry into the kernel on Sparc V9.
  *
  * Copyright (C) 1996, 1997 David S. Miller (davem@caip.rutgers.edu)

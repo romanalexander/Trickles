@@ -4,6 +4,7 @@
  *  Copyright (C) 1991, 1992  Linus Torvalds
  *  Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 
  * 		1998, 1999  Theodore Ts'o
+ *  Copyright (C) 2000 VERITAS Software Corporation.
  *
  *  Extensively rewritten by Theodore Ts'o, 8/16/92 -- 9/14/92.  Now
  *  much more extensible to support other serial cards based on the
@@ -33,6 +34,10 @@
  *
  *  4/98: Added changes to support the ARM architecture proposed by
  * 	  Russell King
+ *
+ *  3/99: Added TIOCGDB for remote debugging with gdb if compiled with
+ *        CONFIG_KGDB
+ * 	  Tigran Aivazian
  *
  *  5/99: Updated to include support for the XR16C850 and ST16C654
  *        uarts.  Stuart MacDonald <stuartm@connecttech.com>
@@ -210,7 +215,7 @@ static char *serial_revdate = "2001-07-08";
 #include <asm/uaccess.h>
 #endif
 #include <linux/delay.h>
-#ifdef CONFIG_SERIAL_CONSOLE
+#if defined(CONFIG_SERIAL_CONSOLE) || defined (CONFIG_GDB_CONSOLE)
 #include <linux/console.h>
 #endif
 #ifdef ENABLE_SERIAL_PCI
@@ -1591,6 +1596,13 @@ static void shutdown(struct async_struct * info)
 	restore_flags(flags);
 }
 
+#ifdef CONFIG_KGDB
+void shutdown_for_gdb(struct async_struct * info)
+{
+    shutdown(info) ;
+}
+#endif
+
 #if (LINUX_VERSION_CODE < 131394) /* Linux 2.1.66 */
 static int baud_table[] = {
 	0, 50, 75, 110, 134, 150, 200, 300,
@@ -2701,7 +2713,12 @@ static int rs_ioctl(struct tty_struct *tty, struct file * file,
 			/* "setserial -W" is called in Debian boot */
 			printk ("TIOCSER?WILD ioctl obsolete, ignored.\n");
 			return 0;
-
+#ifdef CONFIG_KGDB
+		case TIOCGDB:
+			gdb_ttyS = MINOR(tty->device) & 0x03F ;
+			gdb_baud = tty_get_baud_rate(tty) ;
+			return gdb_hook();
+#endif
 		default:
 			return -ENOIOCTLCMD;
 		}
@@ -4957,11 +4974,16 @@ static struct pci_driver serial_pci_driver = {
  *
  * Accept a maximum of eight boards
  *
+ * 10/00: added console support for kgdb. Amit Kale <akale@veritas.com>
+ *
  */
 static void __devinit probe_serial_pci(void) 
 {
 #ifdef SERIAL_DEBUG_PCI
 	printk(KERN_DEBUG "Entered probe_serial_pci()\n");
+#endif
+#ifdef CONFIG_KGDB
+#include <linux/kgdb.h>
 #endif
 
 	/* Register call PCI serial devices.  Null out
@@ -6029,6 +6051,129 @@ void __init serial_console_init(void)
 	register_console(&sercons);
 }
 #endif
+
+/*
+ * ------------------------------------------------------------
+ * Serial GDB driver (most in gdbserial.c)
+ * ------------------------------------------------------------
+ */
+
+#ifdef CONFIG_KGDB
+#ifdef CONFIG_GDB_CONSOLE
+static struct console gdbcons = {
+	name: "gdb",
+	write: gdb_console_write,
+	flags: CON_PRINTBUFFER | CON_ENABLED,
+	index: -1,
+};
+#endif
+
+
+/* 
+ *  Takes:
+ *	ttyS - integer specifying which serial port to use for debugging
+ *	baud - baud rate of specified serial port
+ *  Returns:
+ *	port for use by the gdb serial driver
+ */
+struct serial_state *
+gdb_serial_setup(int ttyS, int baud)
+{
+        struct serial_state *ser;
+        unsigned cval;
+        int     bits = 8;
+        int     parity = 'n';
+        int     cflag = CREAD | HUPCL | CLOCAL;
+        int     quot = 0;
+
+        /*
+         *      Now construct a cflag setting.
+         */
+        switch(baud) {
+                case 1200:
+                        cflag |= B1200;
+                        break;
+                case 2400:
+                        cflag |= B2400;
+                        break;
+                case 4800:
+                        cflag |= B4800;
+                        break;
+                case 19200:
+                        cflag |= B19200;
+                        break;
+                case 38400:
+                        cflag |= B38400;
+                        break;
+                case 57600:
+                        cflag |= B57600;
+                        break;
+                case 115200:
+                        cflag |= B115200;
+                        break;
+                case 9600:
+                default:
+                        cflag |= B9600;
+                        break;
+        }
+        switch(bits) {
+                case 7:
+                        cflag |= CS7;
+                        break;
+                default:
+                case 8:
+                        cflag |= CS8;
+                        break;
+        }
+        switch(parity) {
+                case 'o': case 'O':
+                        cflag |= PARODD;
+                        break;
+                case 'e': case 'E':
+                        cflag |= PARENB;
+                        break;
+        }
+
+        /*
+         *      Divisor, bytesize and parity
+         */
+
+        ser = rs_table + ttyS;
+	ser->flags &= ~ASYNC_BOOT_AUTOCONF;
+        quot = ser->baud_base / baud;
+        cval = cflag & (CSIZE | CSTOPB);
+        cval >>= 4;
+        if (cflag & PARENB)
+                cval |= UART_LCR_PARITY;
+        if (!(cflag & PARODD))
+                cval |= UART_LCR_EPAR;
+
+        /*
+         *      Disable UART interrupts, set DTR and RTS high
+         *      and set speed.
+         */
+	cval = 0x3;
+        outb(cval | UART_LCR_DLAB, ser->port + UART_LCR);       /* set DLAB */
+        outb(quot & 0xff, ser->port + UART_DLL);         /* LS of divisor */
+        outb(quot >> 8, ser->port + UART_DLM);           /* MS of divisor */
+        outb(cval, ser->port + UART_LCR);                /* reset DLAB */
+        outb(UART_IER_RDI, ser->port + UART_IER);        /* turn on interrupts*/
+        outb(UART_MCR_OUT2 | UART_MCR_DTR | UART_MCR_RTS, ser->port + UART_MCR);
+
+        /*
+         *      If we read 0xff from the LSR, there is no UART here.
+         */
+        if (inb(ser->port + UART_LSR) == 0xff)
+                return 0;
+        return ser;
+}
+#ifdef CONFIG_GDB_CONSOLE
+void __init gdb_console_init(void)
+{
+	register_console(&gdbcons);
+}
+#endif
+#endif /* CONFIG_KGDB */
 
 /*
   Local variables:

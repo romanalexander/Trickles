@@ -1,4 +1,4 @@
-/* $Id: entry.S,v 1.170 2001/11/13 00:57:05 davem Exp $
+/* $Id: entry.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * arch/sparc/kernel/entry.S:  Sparc trap low-level entry points.
  *
  * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)

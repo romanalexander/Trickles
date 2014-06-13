@@ -114,6 +114,12 @@ ifeq ($(ARCH),arm)
   endif
 endif
 
+ifeq ($(ARCH),um)
+  KEYMAP   =
+  KEYBD    =
+  CONSOLE  =
+endif
+
 ifeq ($(ARCH),sh)
   KEYMAP   =
   KEYBD    =
@@ -169,6 +175,7 @@ ifeq ($(CONFIG_DUMMY_KEYB),y)
   KEYBD = dummy_keyb.o
 endif
 
+obj-$(CONFIG_KGDB) += gdbserial.o
 obj-$(CONFIG_VT) += vt.o vc_screen.o consolemap.o consolemap_deftbl.o $(CONSOLE) selection.o
 obj-$(CONFIG_SERIAL) += $(SERIAL)
 obj-$(CONFIG_SERIAL_HCDP) += hcdp_serial.o

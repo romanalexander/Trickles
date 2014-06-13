@@ -1,4 +1,4 @@
-/* $Id: traps.c,v 1.1.1.1.2.5 2003/10/23 22:08:56 yoshii Exp $
+/* $Id: traps.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *  linux/arch/sh/traps.c
  *

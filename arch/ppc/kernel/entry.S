@@ -295,7 +295,7 @@ ret_from_except:
 	lwz	r3,NEED_RESCHED(r2)
 	cmpi	0,r3,0		/* check need_resched flag */
 	beq+	7f
-	bl	schedule
+	bl	user_schedule
 7:	lwz	r5,SIGPENDING(r2) /* Check for pending unblocked signals */
 	cmpwi	0,r5,0
 	beq+	do_signal_ret
@@ -450,3 +450,53 @@ enter_rtas:
 	mtspr	SRR1,r9
 	RFI			/* return to caller */
 #endif /* CONFIG_ALL_PPC */
+
+#ifdef CONFIG_KGDB
+/*
+ * These are hooks used by KGDB because switch_to does not save registers
+ * in pt_regs.  The registers are saved on the stack on behalf of the caller
+ * of these funtions.
+ */
+
+_GLOBAL(kern_schedule)
+	stwu	r1,-INT_FRAME_SIZE(r1)	/* Allocate exception frame */
+	SAVE_8GPRS( 0, r1)
+	SAVE_8GPRS( 8, r1)
+	SAVE_8GPRS(16, r1)
+	SAVE_8GPRS(24, r1)
+	addi	r3,r1,INT_FRAME_SIZE
+	stw		r3,GPR1(r1)
+	mfcr	r3
+	stw		r3,_CCR(r1)
+	mflr	r3
+	stw		r3,_NIP(r1)
+	mfctr	r3
+	stw		r3,_CTR(r1)
+	mfxer	r3
+	stw		r3,_XER(r1)
+	mfmsr	r3
+	stw		r3,_MSR(r1)
+	lwz		r3,INT_FRAME_SIZE+4(r1)
+	stw		r3,_LINK(r1)
+
+	bl		kern_do_schedule
+
+	lwz		r3,_CCR(r1)
+	mtcr	r3
+	lwz		r3,_XER(r1)
+	mtxer	r3
+	lwz		r3,_NIP(r1)
+	mtlr	r3
+	lwz		r3,_CTR(r1)
+	mtctr	r3
+	lwz		r3,_MSR(r1)
+	mtmsr	r3
+	lwz		r0,GPR0(r1)
+	REST_2GPRS ( 2, r1)
+	REST_4GPRS ( 4, r1)
+	REST_8GPRS ( 8, r1)
+	REST_8GPRS (16, r1)
+	REST_8GPRS (24, r1)
+	addi	r1,r1,INT_FRAME_SIZE
+	blr
+#endif

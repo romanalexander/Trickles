@@ -27,6 +27,10 @@
  * Tested with Linux 1.2.13, ..., 2.2.20, ..., 2.4.18                   *
  *                                                                      *
  * $Log: gdth.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:25  ashieh
+ * initial version
+ *
+ *
  * Revision 1.61  2002/10/03 09:35:22  boji
  * Fixed SCREENSERVICE intialisation in SMP cases.
  * Added checks for gdth_polling before GDTH_HA_LOCK
@@ -248,7 +252,7 @@
  * Initial revision
  *
  ************************************************************************/
-#ident "$Id: gdth.c,v 1.60 2002/02/05 09:35:22 achim Exp $" 
+#ident "$Id: gdth.c,v 1.1.1.1 2004/06/19 05:03:25 ashieh Exp $" 
 
 /* All GDT Disk Array Controllers are fully supported by this driver.
  * This includes the PCI/EISA/ISA SCSI Disk Array Controllers and the

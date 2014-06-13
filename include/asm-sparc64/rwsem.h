@@ -1,4 +1,4 @@
-/* $Id: rwsem.h,v 1.5 2001/11/18 00:12:56 davem Exp $
+/* $Id: rwsem.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $
  * rwsem.h: R/W semaphores implemented using CAS
  *
  * Written by David S. Miller (davem@redhat.com), 2001.

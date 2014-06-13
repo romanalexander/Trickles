@@ -256,6 +256,23 @@ struct tcp_sack_block {
 	__u32	end_seq;
 };
 
+#include <net/cminisock.h>
+#ifdef CONTINUATION_TYPE
+#include <net/trickles_packet.h>
+#else
+#define CONTINUATION_TYPE struct cminisock
+#include <net/trickles_packet.h>
+#undef CONTINUATION_TYPE
+#endif
+
+#include <net/trickles_dlist.h>
+
+struct HMAC_CTX;
+struct aes_encrypt_ctx;
+struct Request;
+
+#include <net/tmalloc.h>
+#include <net/trickles_server.h>
 struct tcp_opt {
 	int	tcp_header_len;	/* Bytes of tcp header to send		*/
 
@@ -445,6 +462,27 @@ struct tcp_opt {
                 __u32    rtt;
                 __u32    rtt_min;          /* minimum observed RTT */
         } westwood;
+
+
+	//// Trickles fields
+	struct trickles_kconfig    cminisock_api_config;
+	// Server fields
+#define SIMULATION_MODE(SK) (((SK)->tp_pinfo.af_tcp.trickles_opt & TCP_TRICKLES_ENABLE) && !((SK)->tp_pinfo.af_tcp.trickles_opt & (SK)->tp_pinfo.af_tcp.trickles_opt & TCP_TRICKLES_RSERVER))
+  	int 			trickles_opt; /* Get/Setsockopt control variable */
+	__u64			bigTokenCounter; /* counter for token seed generation */
+
+	// Client fields
+	int trickles_req_start, trickles_req_len; /* start and length of rstcp request */
+	int 			trickles_state;
+
+ 	char last_mac_src[ETH_ALEN];
+ 	int mac_changed;
+
+	int drop_rate;
+	int instrumentation;
+
+	char simulationSpace[256];
+#include "trickles_sock.inc"
 };
 
  	
@@ -635,6 +673,9 @@ struct sock {
 #ifdef CONFIG_FILTER
 	/* Socket Filtering Instructions */
 	struct sk_filter      	*filter;
+#else
+	void *ignore0;
+#warning "no filter"
 #endif /* CONFIG_FILTER */
 
 	/* This is where all the private (optional) areas that don't

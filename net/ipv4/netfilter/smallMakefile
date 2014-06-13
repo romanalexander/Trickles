@@ -1,0 +1,35 @@
+.PHONY: dep
+
+all: ipt_BOUNCE.o ipt_REJECT.o
+
+ipt_BOUNCE.o: ipt_BOUNCE.c \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/module.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/skbuff.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/ip.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/net/checksum.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/netfilter_ipv4/ip_tables.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/netfilter_ipv4/ipt_BOUNCE.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/netfilter_ipv4/ip_nat.h
+
+ipt_REJECT.o: ipt_REJECT.c \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/module.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/skbuff.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/ip.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/udp.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/icmp.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/net/icmp.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/net/ip.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/net/tcp.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/net/route.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/netfilter_ipv4/ip_tables.h \
+   /local/ashieh/linux-2.4.26-kgdb-trickles/include/linux/netfilter_ipv4/ipt_REJECT.h \
+   $(wildcard /local/ashieh/linux-2.4.26-kgdb-trickles/include/config/netfilter/debug.h)
+
+ipt_BOUNCE.o: ipt_BOUNCE.c
+	gcc32 -D__KERNEL__ -I/local/ashieh/linux-2.4.26-kgdb-trickles/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -g -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE  -nostdinc -iwithprefix include -DKBUILD_BASENAME=ipt_BOUNCE  -c -o ipt_BOUNCE.o ipt_BOUNCE.c
+
+ipt_REJECT.o: ipt_REJECT.c
+	gcc32 -D__KERNEL__ -I/local/ashieh/linux-2.4.26-kgdb-trickles/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -g -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE  -nostdinc -iwithprefix include -DKBUILD_BASENAME=ipt_REJECT  -c -o ipt_REJECT.o ipt_REJECT.c
+
+dep: ipt_BOUNCE.c ipt_REJECT.c
+	gcc -M $^ -o $@

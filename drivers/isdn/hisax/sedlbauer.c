@@ -1,4 +1,4 @@
-/* $Id: sedlbauer.c,v 1.1.4.1 2001/11/20 14:19:36 kai Exp $
+/* $Id: sedlbauer.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * low level stuff for Sedlbauer cards
  * includes support for the Sedlbauer speed star (speed star II),
@@ -52,7 +52,7 @@
 
 extern const char *CardType[];
 
-const char *Sedlbauer_revision = "$Revision: 1.1.4.1 $";
+const char *Sedlbauer_revision = "$Revision: 1.1.1.1 $";
 
 const char *Sedlbauer_Types[] =
 	{"None", "speed card/win", "speed star", "speed fax+",

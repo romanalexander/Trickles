@@ -26,15 +26,19 @@
  *      USA.
  *
  * Revision history:
- * $Log: rio.c,v $
+ * $Log: rio_linux.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:21  ashieh
+ * initial version
+ *
+ *
  * Revision 1.1  1999/07/11 10:13:54  wolff
  * Initial revision
  *
  * */
 
 
-#define RCS_ID "$Id: rio.c,v 1.1 1999/07/11 10:13:54 wolff Exp wolff $"
-#define RCS_REV "$Revision: 1.1 $"
+#define RCS_ID "$Id: rio_linux.c,v 1.1.1.1 2004/06/19 05:03:21 ashieh Exp $"
+#define RCS_REV "$Revision: 1.1.1.1 $"
 
 
 #include <linux/module.h>

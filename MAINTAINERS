@@ -2087,6 +2087,14 @@ L:	linux-usb-users@lists.sourceforge.net
 L:	linux-usb-devel@lists.sourceforge.net
 W:	http://usb.in.tum.de
 S:	Maintained
+
+USER-MODE PORT
+P:	Jeff Dike
+M:	jdike@karaya.com
+L:	user-mode-linux-devel@lists.sourceforge.net
+L:	user-mode-linux-user@lists.sourceforge.net
+W:	http://user-mode-linux.sourceforge.net
+S:	Maintained
 	
 USB "USBNET" DRIVER
 P:	David Brownell

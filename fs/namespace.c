@@ -625,8 +625,9 @@ static int do_add_mount(struct nameidata *nd, char *type, int flags,
 
 	mnt = do_kern_mount(type, flags, name, data);
 	err = PTR_ERR(mnt);
-	if (IS_ERR(mnt))
+	if (IS_ERR(mnt)) {
 		goto out;
+	}
 
 	down_write(&current->namespace->sem);
 	/* Something was mounted here while we slept */
@@ -729,8 +730,9 @@ long do_mount(char * dev_name, char * dir_name, char *type_page,
 
 	/* ... and get the mountpoint */
 	retval = path_lookup(dir_name, LOOKUP_FOLLOW|LOOKUP_POSITIVE, &nd);
-	if (retval)
+	if (retval) {
 		return retval;
+	}
 
 	if (flags & MS_REMOUNT)
 		retval = do_remount(&nd, flags & ~MS_REMOUNT, mnt_flags,

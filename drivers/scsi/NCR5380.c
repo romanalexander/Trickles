@@ -31,6 +31,10 @@
 
 /*
  * $Log: NCR5380.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:24  ashieh
+ * initial version
+ *
+ *
 
  * Revision 1.10 1998/9/2	Alan Cox
  *				(alan@redhat.com)

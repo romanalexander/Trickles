@@ -1,7 +1,7 @@
 /*
  *  drivers/s390/s390io.c
  *   S/390 common I/O routines
- *   $Revision: 1.258 $
+ *   $Revision: 1.1.1.1 $
  *
  *  S390 version
  *    Copyright (C) 1999, 2000 IBM Deutschland Entwicklung GmbH,

@@ -10,7 +10,15 @@
 .S.o:
 	$(CC) $(AFLAGS) -traditional -c $< -o $*.o
 
-all: kernel.o head.o init_task.o
+ifeq ($(CONFIG_KGDB),y)
+GDBSTART=gdbstart
+GDBCLEAN= -rm -f gdbstart /sbin/gdbstart
+else
+GDBSTART=
+GDBCLEAN=
+endif
+
+all: kernel.o head.o init_task.o $(GDBSTART)
 
 O_TARGET := kernel.o
 
@@ -32,6 +40,7 @@ endif
 
 obj-$(CONFIG_MCA)		+= mca.o
 obj-$(CONFIG_MTRR)		+= mtrr.o
+obj-$(CONFIG_KGDB)		+= i386-stub.o
 obj-$(CONFIG_X86_MSR)		+= msr.o
 obj-$(CONFIG_X86_CPUID)		+= cpuid.o
 obj-$(CONFIG_MICROCODE)		+= microcode.o
@@ -43,5 +52,12 @@ obj-$(CONFIG_X86_LOCAL_APIC)	+= mpparse.o apic.o nmi.o
 obj-$(CONFIG_X86_IO_APIC)	+= io_apic.o
 obj-$(CONFIG_X86_VISWS_APIC)	+= visws_apic.o
 obj-$(CONFIG_EDD)             	+= edd.o
+
+gdbstart:	gdbstart.o
+		${HOSTCC} -o gdbstart gdbstart.o
+gdbstart.o:	gdbstart.c
+		${HOSTCC} -c -o gdbstart.o gdbstart.c
+
+kernelclean:	dummy
 
 include $(TOPDIR)/Rules.make

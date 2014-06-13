@@ -49,6 +49,7 @@
 #include <linux/delay.h>
 #include <linux/timer.h>
 #include <linux/slab.h>
+#include <linux/vmalloc.h>
 #include <linux/interrupt.h>
 #include <linux/string.h>
 #include <linux/pagemap.h>
@@ -70,6 +71,7 @@
 #include <linux/mii.h>
 #include <linux/ethtool.h>
 #include <linux/if_vlan.h>
+#include <linux/moduleparam.h>
 
 #define BAR_0		0
 #define BAR_1		1
@@ -77,12 +79,14 @@
 #define PCI_DMA_64BIT	0xffffffffffffffffULL
 #define PCI_DMA_32BIT	0x00000000ffffffffULL
 
+#define INTEL_E1000_ETHERNET_DEVICE(device_id) {\
+	PCI_DEVICE(PCI_VENDOR_ID_INTEL, device_id)}
 
 struct e1000_adapter;
 
 #include "e1000_hw.h"
 
-#if DBG
+#ifdef DBG
 #define E1000_DBG(args...) printk(KERN_DEBUG "e1000: " args)
 #else
 #define E1000_DBG(args...)
@@ -90,13 +94,20 @@ struct e1000_adapter;
 
 #define E1000_ERR(args...) printk(KERN_ERR "e1000: " args)
 
+#define PFX "e1000: "
+#define DPRINTK(nlevel, klevel, fmt, args...) \
+	(void)((NETIF_MSG_##nlevel & adapter->msg_enable) && \
+	printk(KERN_##klevel PFX "%s: %s: " fmt, adapter->netdev->name, \
+		__FUNCTION__ , ## args))
+
 #define E1000_MAX_INTR 10
 
-/* How many descriptors for TX and RX ? */
+/* TX/RX descriptor defines */
 #define E1000_DEFAULT_TXD                  256
 #define E1000_MAX_TXD                      256
 #define E1000_MIN_TXD                       80
 #define E1000_MAX_82544_TXD               4096
+
 #define E1000_DEFAULT_RXD                  256
 #define E1000_MAX_RXD                      256
 #define E1000_MIN_RXD                       80
@@ -113,18 +124,15 @@ struct e1000_adapter;
 #define E1000_SMARTSPEED_MAX       15
 
 /* Packet Buffer allocations */
-#define E1000_TX_FIFO_SIZE_SHIFT 0xA
+#define E1000_PBA_BYTES_SHIFT 0xA
 #define E1000_TX_HEAD_ADDR_SHIFT 7
 #define E1000_PBA_TX_MASK 0xFFFF0000
 
-/* Flow Control High-Watermark: 5688 bytes below Rx FIFO size */
-#define E1000_FC_HIGH_DIFF 0x1638
+/* Flow Control Watermarks */
+#define E1000_FC_HIGH_DIFF 0x1638  /* High: 5688 bytes below Rx FIFO size */
+#define E1000_FC_LOW_DIFF 0x1640   /* Low:  5696 bytes below Rx FIFO size */
 
-/* Flow Control Low-Watermark: 5696 bytes below Rx FIFO size */
-#define E1000_FC_LOW_DIFF 0x1640
-
-/* Flow Control Pause Time: 858 usec */
-#define E1000_FC_PAUSE_TIME 0x0680
+#define E1000_FC_PAUSE_TIME 0x0680 /* 858 usec */
 
 /* How many Tx Descriptors do we need to call netif_wake_queue ? */
 #define E1000_TX_QUEUE_WAKE	16
@@ -132,6 +140,7 @@ struct e1000_adapter;
 #define E1000_RX_BUFFER_WRITE	16	/* Must be power of 2 */
 
 #define AUTO_ALL_MODES       0
+#define E1000_EEPROM_82544_APM 0x0004
 #define E1000_EEPROM_APME    0x0400
 
 #ifndef E1000_MASTER_SLAVE
@@ -147,9 +156,9 @@ struct e1000_adapter;
 struct e1000_buffer {
 	struct sk_buff *skb;
 	uint64_t dma;
-	unsigned long length;
 	unsigned long time_stamp;
-	unsigned int next_to_watch;
+	uint16_t length;
+	uint16_t next_to_watch;
 };
 
 struct e1000_desc_ring {
@@ -190,18 +199,20 @@ struct e1000_adapter {
 	uint32_t part_num;
 	uint32_t wol;
 	uint32_t smartspeed;
+	uint32_t en_mng_pt;
 	uint16_t link_speed;
 	uint16_t link_duplex;
 	spinlock_t stats_lock;
 	atomic_t irq_sem;
 	struct tq_struct tx_timeout_task;
-     	uint8_t fc_autoneg;
+	uint8_t fc_autoneg;
 
 	struct timer_list blink_timer;
 	unsigned long led_status;
 
 	/* TX */
 	struct e1000_desc_ring tx_ring;
+	struct e1000_buffer previous_buffer_info;
 	spinlock_t tx_lock;
 	uint32_t txd_cmd;
 	uint32_t tx_int_delay;
@@ -215,6 +226,7 @@ struct e1000_adapter {
 	uint32_t tx_fifo_size;
 	atomic_t tx_fifo_stall;
 	boolean_t pcix_82544;
+	boolean_t detect_tx_hung;
 
 	/* RX */
 	struct e1000_desc_ring rx_ring;
@@ -246,5 +258,6 @@ struct e1000_adapter {
 
 
 	uint32_t pci_state[16];
+	int msg_enable;
 };
 #endif /* _E1000_H_ */

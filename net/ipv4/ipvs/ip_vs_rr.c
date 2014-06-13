@@ -1,7 +1,7 @@
 /*
  * IPVS:        Round-Robin Scheduling module
  *
- * Version:     $Id: ip_vs_rr.c,v 1.8 2001/10/19 15:05:17 wensong Exp $
+ * Version:     $Id: ip_vs_rr.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:     Wensong Zhang <wensong@linuxvirtualserver.org>
  *              Peter Kese <peter.kese@ijs.si>

@@ -1,4 +1,4 @@
-/* $Id: blockops.S,v 1.8 1998/01/30 10:58:44 jj Exp $
+/* $Id: blockops.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * blockops.S: Common block zero optimized routines.
  *
  * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)

@@ -1,4 +1,4 @@
-/* $Id: leofb.c,v 1.14 2001/10/16 05:44:44 davem Exp $
+/* $Id: leofb.c,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $
  * leofb.c: Leo (ZX) 24/8bit frame buffer driver
  *
  * Copyright (C) 1996-1999 Jakub Jelinek (jj@ultra.linux.cz)

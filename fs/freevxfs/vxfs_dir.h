@@ -30,7 +30,7 @@
 #ifndef _VXFS_DIR_H_
 #define _VXFS_DIR_H_
 
-#ident "$Id: vxfs_dir.h,v 1.7 2001/05/21 15:48:26 hch Exp hch $"
+#ident "$Id: vxfs_dir.h,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $"
 
 /*
  * Veritas filesystem driver - directory structure.

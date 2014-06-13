@@ -1,4 +1,4 @@
-/* $Id: display7seg.c,v 1.5 2001/10/08 22:19:51 davem Exp $
+/* $Id: display7seg.c,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  *
  * display7seg - Driver implementation for the 7-segment display
  * present on Sun Microsystems CP1400 and CP1500

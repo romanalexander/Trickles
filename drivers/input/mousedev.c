@@ -1,5 +1,5 @@
 /*
- * $Id: mousedev.c,v 1.24 2000/11/15 10:57:45 vojtech Exp $
+ * $Id: mousedev.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *

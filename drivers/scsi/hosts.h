@@ -22,7 +22,7 @@
 #define _HOSTS_H
 
 /*
-    $Header: /vger/u4/cvs/linux/drivers/scsi/hosts.h,v 1.6 1997/01/19 23:07:13 davem Exp $
+    $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/scsi/hosts.h,v 1.1.1.1 2004/06/19 05:03:25 ashieh Exp $
 */
 
 #include <linux/config.h>

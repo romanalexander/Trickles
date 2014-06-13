@@ -1,4 +1,4 @@
-/* $Id: dram_init.S,v 1.15 2003/09/22 09:22:22 starvik Exp $
+/* $Id: dram_init.S,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  * 
  * DRAM/SDRAM initialization - alter with care
  * This file is intended to be included from other assembler files
@@ -11,6 +11,10 @@
  * Authors:  Mikael Starvik (starvik@axis.com)	
  * 
  * $Log: dram_init.S,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.15  2003/09/22 09:22:22  starvik
  * Decompresser is linked to 0x407xxxxx and sdram commands are at 0x000xxxxx
  * so we need to mask off 12 bits.

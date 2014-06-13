@@ -25,7 +25,7 @@
 /*
  * BlueZ L2CAP core and sockets.
  *
- * $Id: l2cap.c,v 1.15 2002/09/09 01:14:52 maxk Exp $
+ * $Id: l2cap.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 #define VERSION "2.3"
 

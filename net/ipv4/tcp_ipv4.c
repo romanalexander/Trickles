@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp_ipv4.c,v 1.237.2.1 2002/01/15 08:49:49 davem Exp $
+ * Version:	$Id: tcp_ipv4.c,v 1.4 2005/04/01 05:26:34 ashieh Exp $
  *
  *		IPv4 specific functions
  *
@@ -67,6 +67,8 @@
 #include <linux/inet.h>
 #include <linux/stddef.h>
 #include <linux/ipsec.h>
+
+#include <net/trickles.h>
 
 extern int sysctl_ip_dynaddr;
 extern int sysctl_ip_default_ttl;
@@ -351,7 +353,7 @@ void tcp_listen_wlock(void)
 	}
 }
 
-static __inline__ void __tcp_v4_hash(struct sock *sk, const int listen_possible)
+void __tcp_v4_hash(struct sock *sk, const int listen_possible)
 {
 	struct sock **skp;
 	rwlock_t *lock;
@@ -504,6 +506,14 @@ static inline struct sock *__tcp_v4_lookup_established(u32 saddr, u16 sport,
 	head = &tcp_ehash[hash];
 	read_lock(&head->lock);
 	for(sk = head->chain; sk; sk = sk->next) {
+#if 0
+		if(0xd00a8c0 == saddr || 0xd00a8c0 == daddr) {
+			printk("%p %X %X %d %d / %X %X %d %d\n",
+			       sk, 
+			       sk->daddr, sk->rcv_saddr, sk->dport, sk->bound_dev_if,
+			       saddr, daddr, ports, dif);
+		}
+#endif
 		if(TCP_IPV4_MATCH(sk, acookie, saddr, daddr, ports, dif))
 			goto hit; /* You sunk my battleship! */
 	}
@@ -656,6 +666,9 @@ static int tcp_v4_hash_connect(struct sock *sk)
 	unsigned short snum = sk->num;
 	struct tcp_bind_hashbucket *head;
 	struct tcp_bind_bucket *tb;
+
+	struct tcp_opt *tp = &sk->tp_pinfo.af_tcp;
+	__u32 daddr = sk->daddr;
 
 	if (snum == 0) {
 		int rover;
@@ -1652,6 +1665,7 @@ static int tcp_v4_checksum_init(struct sk_buff *skb)
 	return 0;
 }
 
+extern int mwc_rand();
 
 /* The socket must have it's spinlock held when we get
  * here.
@@ -1664,6 +1678,17 @@ static int tcp_v4_checksum_init(struct sk_buff *skb)
 int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
 {
   	IP_INC_STATS_BH(IpInDelivers);
+
+	if((sk->tp_pinfo.af_tcp.drop_rate > 0) && 
+	   (mwc_rand() % 1000 < sk->tp_pinfo.af_tcp.drop_rate)) {
+		goto discard;
+	}
+
+	if(sk->tp_pinfo.af_tcp.trickles_opt & TCP_TRICKLES_ENABLE) {
+		int ret = trickles_rcv_hook(sk,skb);
+		if(ret) goto discard;
+		return ret;
+	}
 
 	if (sk->state == TCP_ESTABLISHED) { /* Fast path */
 		TCP_CHECK_TIMER(sk);
@@ -1736,6 +1761,20 @@ int tcp_v4_rcv(struct sk_buff *skb)
 	if (!pskb_may_pull(skb, th->doff*4))
 		goto discard_it;
 
+#if 0
+	int debugMatched = 0;
+	if(th->source == htons(4206)) {
+		static int foo;
+#define DEBUG_MATCH_DO(STMT) do {		\
+		if(debugMatched) {		\
+			STMT;			\
+		}				\
+	} while(0);
+		printk("debug matched\n");
+		debugMatched = 1;
+		foo++;
+	}
+#endif
 	/* An explanation is required here, I think.
 	 * Packet length and doff are validated by header prediction,
 	 * provided case of th->doff==0 is elimineted.
@@ -1756,8 +1795,34 @@ int tcp_v4_rcv(struct sk_buff *skb)
 	sk = __tcp_v4_lookup(skb->nh.iph->saddr, th->source,
 			     skb->nh.iph->daddr, ntohs(th->dest), tcp_v4_iif(skb));
 
-	if (!sk)
-		goto no_tcp_socket;
+	if (!sk) {
+		// DEBUG_MATCH_DO(printk("wild lookup\n"));
+		sk = __tcp_v4_lookup(TRICKLES_WILDADDR, th->source,
+				     skb->nh.iph->daddr,
+				     ntohs(th->dest), tcp_v4_iif(skb));
+		if(!sk)
+			goto no_tcp_socket;
+		struct tcp_opt *tp = &sk->tp_pinfo.af_tcp;
+		if((tp->trickles_opt & TCP_TRICKLES_ENABLE) && 
+		   tp->t.numServers > 0) {
+			int i;
+			int matched = 0;
+			for(i=0; i < tp->t.numServers; i++) {
+				if(skb->nh.iph->saddr == tp->t.servers[i].address) {
+					matched = 1;
+					break;
+				}
+			}
+			if(!matched) {
+				printk("could not match, %X\n", skb->nh.iph->saddr);
+				sk = NULL;
+				goto no_tcp_socket;
+			}
+		} else {
+			printk("not trickles!!!\n");
+			goto no_tcp_socket;
+		}
+	}
 
 process:
 	if(!ipsec_sk_policy(sk,skb))
@@ -1773,6 +1838,8 @@ process:
 
 	bh_lock_sock(sk);
 	ret = 0;
+
+	LOG_ACK(sk, TCP_SKB_CB(skb)->ack_seq);
 	if (!sk->lock.users) {
 		if (!tcp_prequeue(sk, skb))
 			ret = tcp_v4_do_rcv(sk, skb);
@@ -2035,6 +2102,8 @@ static int tcp_v4_init_sock(struct sock *sk)
 
 	tp->reordering = sysctl_tcp_reordering;
 
+	init_trickles_sock(sk);
+
 	sk->state = TCP_CLOSE;
 
 	sk->write_space = tcp_write_space;
@@ -2073,6 +2142,7 @@ static int tcp_v4_destroy_sock(struct sock *sk)
 	if (tp->sndmsg_page != NULL)
 		__free_page(tp->sndmsg_page);
 
+	trickles_destroy_hook(sk);
 	atomic_dec(&tcp_sockets_allocated);
 
 	return 0;

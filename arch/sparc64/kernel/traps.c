@@ -1,4 +1,4 @@
-/* $Id: traps.c,v 1.82 2001/11/18 00:12:56 davem Exp $
+/* $Id: traps.c,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * arch/sparc64/kernel/traps.c
  *
  * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)

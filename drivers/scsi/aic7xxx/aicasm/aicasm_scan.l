@@ -38,7 +38,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGES.
  *
- * $Id: //depot/aic7xxx/aic7xxx/aicasm/aicasm_scan.l#18 $
+ * $Id: aicasm_scan.l,v 1.1.1.1 2004/06/19 05:03:32 ashieh Exp $
  *
  * $FreeBSD$
  */

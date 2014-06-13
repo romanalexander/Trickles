@@ -5,7 +5,7 @@
  *              high-performance and highly available server based on a
  *              cluster of servers.
  *
- * Version:     $Id: ip_vs_sync.c,v 1.8 2002/08/17 14:06:02 wensong Exp $
+ * Version:     $Id: ip_vs_sync.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:     Wensong Zhang <wensong@linuxvirtualserver.org>
  *

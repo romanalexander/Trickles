@@ -843,6 +843,9 @@ struct thread_struct {
 	/* Saved 4xx debug registers */
 	unsigned long dbcr0;
 #endif
+#ifdef CONFIG_KGDB
+	struct pt_regs *kgdbregs;
+#endif
 };
 
 #define INIT_SP		(sizeof(init_stack) + (unsigned long) &init_stack)

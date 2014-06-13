@@ -1,4 +1,4 @@
-/* $Id: init.c,v 1.1.1.1.2.2 2003/07/07 11:23:21 trent Exp $
+/* $Id: init.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *  linux/arch/sh/mm/init.c
  *

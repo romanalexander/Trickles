@@ -16,7 +16,7 @@
  *  License. See the file COPYING in the main directory of this archive for
  *  more details.
  *
- *  $Header: /cvsroot/linux/drivers/video/pm3fb.c,v 1.1 2002/02/25 19:11:06 marcelo Exp $
+ *  $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/video/pm3fb.c,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $
  *
  *  CHANGELOG:
  *  Wed Nov 13 11:19:34 MET 2002, v 1.4.11C: option flatpanel: wasn't available in module, fixed.
@@ -3642,7 +3642,7 @@ __initfunc(void pm3fb_init(void))
 {
 	DTRACE;
 
-	DPRINTK(2, "This is pm3fb.c, CVS version: $Header: /cvsroot/linux/drivers/video/pm3fb.c,v 1.1 2002/02/25 19:11:06 marcelo Exp $");
+	DPRINTK(2, "This is pm3fb.c, CVS version: $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/video/pm3fb.c,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $");
 
 	pm3fb_real_setup(g_options);
 

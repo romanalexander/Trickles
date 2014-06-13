@@ -33,6 +33,10 @@
 
 /*
  * $Log: ecoscsi.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:41  ashieh
+ * initial version
+ *
+ *
  * Revision 1.2  1998/03/08 05:49:47  davem
  * Merge to 2.1.89
  *

@@ -4,7 +4,7 @@
  * Bugreports.to..: <Linux390@de.ibm.com>
  * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000
  *
- * $Revision: 1.11 $
+ * $Revision: 1.1.1.1 $
  *
  */
 #ifndef CCWCACHE_H

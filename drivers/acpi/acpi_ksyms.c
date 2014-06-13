@@ -1,5 +1,5 @@
 /*
- *  acpi_ksyms.c - ACPI Kernel Symbols ($Revision: 15 $)
+ *  acpi_ksyms.c - ACPI Kernel Symbols ($Revision: 1.1.1.1 $)
  *
  *  Copyright (C) 2001, 2002 Andy Grover <andrew.grover@intel.com>
  *  Copyright (C) 2001, 2002 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>

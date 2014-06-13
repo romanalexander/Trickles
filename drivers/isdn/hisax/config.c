@@ -1,4 +1,4 @@
-/* $Id: config.c,v 1.1.4.5 2001/12/09 19:19:26 kai Exp $
+/* $Id: config.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * Author       Karsten Keil
  * Copyright    by Karsten Keil      <keil@isdn4linux.de>

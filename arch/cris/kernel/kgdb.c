@@ -18,6 +18,10 @@
 *! Jul 21 1999  Bjorn Wesen     eLinux port
 *!
 *! $Log: kgdb.c,v $
+*! Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+*! initial version
+*!
+*!
 *! Revision 1.8  2003/04/09 08:31:15  pkj
 *! Typo correction (taken from Linux 2.5).
 *!
@@ -61,7 +65,7 @@
 *!
 *!---------------------------------------------------------------------------
 *!
-*! $Id: kgdb.c,v 1.8 2003/04/09 08:31:15 pkj Exp $
+*! $Id: kgdb.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
 *!
 *! (C) Copyright 1999, Axis Communications AB, LUND, SWEDEN
 *!

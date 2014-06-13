@@ -25,7 +25,7 @@
 /*
  * BlueZ HCI Core.
  *
- * $Id: hci_core.c,v 1.14 2002/08/26 16:57:57 maxk Exp $
+ * $Id: hci_core.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

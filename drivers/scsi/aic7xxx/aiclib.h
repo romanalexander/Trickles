@@ -51,7 +51,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGES.
  *
- * $Id$
+ * $Id: aiclib.h,v 1.1.1.1 2004/06/19 05:03:31 ashieh Exp $
  */
 
 #ifndef	_AICLIB_H

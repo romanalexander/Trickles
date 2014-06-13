@@ -23,7 +23,11 @@
  */
 
 /*
- * $Log: cumana_NCR5380.h,v $
+ * $Log: mac_scsi.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:25  ashieh
+ * initial version
+ *
+ *
  */
 
 #ifndef MAC_NCR5380_H

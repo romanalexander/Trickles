@@ -9,7 +9,7 @@
  *  (mailto:sjralston1@netscape.net)
  *  (mailto:mpt_linux_developer@lsil.com)
  *
- *  $Id: scsi3.h,v 1.9 2002/02/27 18:45:02 sralston Exp $
+ *  $Id: scsi3.h,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #ifndef SCSI3_H_INCLUDED

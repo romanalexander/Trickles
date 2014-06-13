@@ -1,4 +1,4 @@
-/* $Id: io_hs7729pci.c,v 1.1.2.1 2003/06/24 08:45:47 dwmw2 Exp $
+/* $Id: io_hs7729pci.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * linux/arch/sh/kernel/io_hs7729pci.c
  *

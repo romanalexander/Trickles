@@ -1,0 +1,48 @@
+
+RCS file: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/net/ipv4/trickles.c,v
+Working file: trickles.c
+head: 1.5
+branch:
+locks: strict
+access list:
+symbolic names:
+	first: 1.1.1.1
+	initial: 1.1.1
+keyword substitution: kv
+total revisions: 6;	selected revisions: 6
+description:
+----------------------------
+revision 1.5
+date: 2004/08/04 21:59:15;  author: ashieh;  state: Exp;  lines: +102 -30
+manually inlining of unmarshallContinuation
+skb recycling
+more statistics gathering
+----------------------------
+revision 1.4
+date: 2004/07/26 05:03:38;  author: ashieh;  state: Exp;  lines: +38 -85
+Removed dead code
+Improved handling of out of memory -- server discards input packet
+  in fewer situations
+More verbose error messages
+----------------------------
+revision 1.3
+date: 2004/07/24 06:32:15;  author: ashieh;  state: Exp;  lines: +115 -52
+added sanity checks for nonce primitives
+fixed nonce validation
+----------------------------
+revision 1.2
+date: 2004/07/19 20:42:58;  author: ashieh;  state: Exp;  lines: +193 -51
+Fixed UC_Continuation update, find_uc_continuation
+Fixed UC_Continuation allocation/deallocation -- UC_Continunations can be shared, so add ref counts
+Fixed incorrect GFP_* flag
+----------------------------
+revision 1.1
+date: 2004/06/19 05:03:02;  author: ashieh;  state: Exp;
+branches:  1.1.1;
+Initial revision
+----------------------------
+revision 1.1.1.1
+date: 2004/06/19 05:03:02;  author: ashieh;  state: Exp;  lines: +0 -0
+initial version
+
+=============================================================================

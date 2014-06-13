@@ -31,6 +31,10 @@
 *!  
 *! Jul 19 2002  Stefan Lundberg    Initial version.
 *! $Log: virtex.c,v $
+*! Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+*! initial version
+*!
+*!
 *! Revision 1.2  2003/02/24 07:50:30  fredriko
 *! Bugfixes and cleanups.
 *!
@@ -43,7 +47,7 @@
 *! (C) Copyright 2002 Axis Communications AB, LUND, SWEDEN
 *!
 *!***************************************************************************/
-/* $Id: virtex.c,v 1.2 2003/02/24 07:50:30 fredriko Exp $ */
+/* $Id: virtex.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $ */
 /****************** INCLUDE FILES SECTION ***********************************/
 
 #include <linux/module.h>

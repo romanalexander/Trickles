@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: symlink.c,v 1.5.2.1 2002/01/15 10:39:06 dwmw2 Exp $
+ * $Id: symlink.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

@@ -56,9 +56,9 @@
 
 /*      Global vars.
  */
-char ft_src[] __initdata = "$Source: /homes/cvs/ftape-stacked/ftape/lowlevel/ftape-init.c,v $";
-char ft_rev[] __initdata = "$Revision: 1.8 $";
-char ft_dat[] __initdata = "$Date: 1997/11/06 00:38:08 $";
+char ft_src[] __initdata = "$Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/lowlevel/ftape-init.c,v $";
+char ft_rev[] __initdata = "$Revision: 1.1.1.1 $";
+char ft_dat[] __initdata = "$Date: 2004/06/19 05:03:20 $";
 
 
 /*  Called by modules package when installing the driver

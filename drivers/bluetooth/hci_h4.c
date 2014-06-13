@@ -25,7 +25,7 @@
 /*
  * BlueZ HCI UART(H4) protocol.
  *
- * $Id: hci_h4.c,v 1.3 2002/09/09 01:17:32 maxk Exp $    
+ * $Id: hci_h4.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $    
  */
 #define VERSION "1.2"
 

@@ -1,7 +1,7 @@
 #ifndef _ASM_IA64_SN_HWGFS_H
 #define _ASM_IA64_SN_HWGFS_H
 
-/* $Id$
+/* $Id: hwgfs.h,v 1.1.1.1 2004/06/19 05:02:58 ashieh Exp $
  *
  * This file is subject to the terms and conditions of the GNU General Public
  * License.  See the file "COPYING" in the main directory of this archive

@@ -16,14 +16,14 @@
   Copyright 1992 - 2000 Kai Makisara
 		 email Kai.Makisara@metla.fi
 
-  $Header: /cvsroot/osst/Driver/osst.c,v 1.67.2.1 2003/06/28 00:21:28 riede Exp $
+  $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/scsi/osst.c,v 1.1.1.1 2004/06/19 05:03:23 ashieh Exp $
 
   Microscopic alterations - Rik Ling, 2000/12/21
   Last modified: Wed Feb  2 22:04:05 2000 by makisara@kai.makisara.local
   Some small formal changes - aeb, 950809
 */
 
-static const char * cvsid = "$Id: osst.c,v 1.67.2.2 2003/12/14 14:28:46 wriede Exp $";
+static const char * cvsid = "$Id: osst.c,v 1.1.1.1 2004/06/19 05:03:23 ashieh Exp $";
 const char * osst_version = "0.9.14";
 
 /* The "failure to reconnect" firmware bug */

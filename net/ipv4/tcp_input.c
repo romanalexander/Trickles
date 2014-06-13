@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp_input.c,v 1.241.2.1 2002/02/13 05:37:15 davem Exp $
+ * Version:	$Id: tcp_input.c,v 1.4 2005/03/01 22:33:12 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -70,6 +70,8 @@
 #include <net/tcp.h>
 #include <net/inet_common.h>
 #include <linux/ipsec.h>
+
+#include <net/trickles.h>
 
 int sysctl_tcp_timestamps = 1;
 int sysctl_tcp_window_scaling = 1;
@@ -413,6 +415,7 @@ static void tcp_event_data_recv(struct sock *sk, struct tcp_opt *tp, struct sk_b
  * To save cycles in the RFC 1323 implementation it was better to break
  * it up into three procedures. -- erics
  */
+
 static __inline__ void tcp_rtt_estimator(struct tcp_opt *tp, __u32 mrtt)
 {
 	long m = mrtt; /* RTT */
@@ -492,7 +495,12 @@ static __inline__ void tcp_set_rto(struct tcp_opt *tp)
 	 *    is invisible. Actually, Linux-2.4 also generates erratic
 	 *    ACKs in some curcumstances.
 	 */
+#if 1
 	tp->rto = (tp->srtt >> 3) + tp->rttvar;
+#else
+	// ignore variance when setting rtt
+	tp->rto = (tp->srtt >> 3);
+#endif
 
 	/* 2. Fixups made earlier cannot be right.
 	 *    If we do not estimate RTO correctly without them,
@@ -2275,6 +2283,7 @@ static int tcp_ack(struct sock *sk, struct sk_buff *skb, int flag)
 	u32 prior_in_flight;
 	int prior_packets;
 
+	LOG_ACK(sk, ack);
 	/* If the ack is newer than sent or older than previous acks
 	 * then we can probably ignore it.
 	 */
@@ -2476,14 +2485,14 @@ static __inline__ int tcp_fast_parse_options(struct sk_buff *skb, struct tcphdr 
 	return 1;
 }
 
-extern __inline__ void
+static __inline__ void
 tcp_store_ts_recent(struct tcp_opt *tp)
 {
 	tp->ts_recent = tp->rcv_tsval;
 	tp->ts_recent_stamp = xtime.tv_sec;
 }
 
-extern __inline__ void
+static __inline__ void
 tcp_replace_ts_recent(struct tcp_opt *tp, u32 seq)
 {
 	if (tp->saw_tstamp && !after(seq, tp->rcv_wup)) {
@@ -2542,7 +2551,7 @@ static int tcp_disordered_ack(struct tcp_opt *tp, struct sk_buff *skb)
 		(s32)(tp->ts_recent - tp->rcv_tsval) <= (tp->rto*1024)/HZ);
 }
 
-extern __inline__ int tcp_paws_discard(struct tcp_opt *tp, struct sk_buff *skb)
+static __inline__ int tcp_paws_discard(struct tcp_opt *tp, struct sk_buff *skb)
 {
 	return ((s32)(tp->ts_recent - tp->rcv_tsval) > TCP_PAWS_WINDOW &&
 		xtime.tv_sec < tp->ts_recent_stamp + TCP_PAWS_24DAYS &&

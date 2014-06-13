@@ -1,4 +1,4 @@
-/* $Id: ia32_ioctl.c,v 1.44 2004/03/21 22:32:20 ak Exp $
+/* $Id: ia32_ioctl.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $
  * ioctl32.c: Conversion between 32bit and 64bit native ioctls.
  *
  * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)

@@ -34,6 +34,10 @@
 
 /*
  * $Log: cumana_1.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:42  ashieh
+ * initial version
+ *
+ *
  * Revision 1.3  1998/05/03 20:45:32  alan
  * ARM SCSI update. This adds the eesox driver and massively updates the
  * Cumana driver. The folks who bought cumana arent anal retentive all

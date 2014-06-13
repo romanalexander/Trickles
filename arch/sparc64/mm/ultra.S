@@ -1,4 +1,4 @@
-/* $Id: ultra.S,v 1.70.2.1 2002/03/03 10:31:56 davem Exp $
+/* $Id: ultra.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * ultra.S: Don't expand these all over the place...
  *
  * Copyright (C) 1997, 2000 David S. Miller (davem@redhat.com)

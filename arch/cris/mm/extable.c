@@ -2,6 +2,10 @@
  * linux/arch/cris/mm/extable.c
  *
  * $Log: extable.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.4  2002/03/19 15:21:10  bjornw
  * Fixed warning
  *

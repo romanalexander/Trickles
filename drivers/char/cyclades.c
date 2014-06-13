@@ -2,7 +2,7 @@
 #define	Z_WAKE
 #undef	Z_EXT_CHARS_IN_BUFFER
 static char rcsid[] =
-"$Revision: 2.3.2.8 $$Date: 2000/07/06 18:14:16 $";
+"$Revision: 1.1.1.1 $$Date: 2004/06/19 05:03:18 $";
 
 /*
  *  linux/drivers/char/cyclades.c
@@ -25,6 +25,10 @@ static char rcsid[] =
  * This version supports shared IRQ's (only for PCI boards).
  *
  * $Log: cyclades.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:18  ashieh
+ * initial version
+ *
+ *
  * Revision 2.3.2.8   2000/07/06 18:14:16 ivan
  * Fixed the PCI detection function to work properly on Alpha systems.
  * Implemented support for TIOCSERGETLSR ioctl.

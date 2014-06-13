@@ -6,7 +6,7 @@
  * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.
  */
 
-/* $Id$
+/* $Id: hinv.h,v 1.1.1.1 2004/06/19 05:02:59 ashieh Exp $
  *
  * ARCS hardware/memory inventory/configuration and system ID definitions.
  */

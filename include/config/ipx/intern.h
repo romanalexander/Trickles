@@ -1,0 +1,1 @@
+#define CONFIG_IPX_INTERN 1

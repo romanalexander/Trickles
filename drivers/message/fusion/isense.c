@@ -11,7 +11,7 @@
  *  (mailto:sjralston1@netscape.net)
  *  (mailto:mpt_linux_developer@lsil.com)
  *
- *  $Id: isense.c,v 1.34 2003/03/18 22:49:48 pdelaney Exp $
+ *  $Id: isense.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 /*

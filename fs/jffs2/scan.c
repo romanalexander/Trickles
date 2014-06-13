@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: scan.c,v 1.51.2.4 2003/11/02 13:51:18 dwmw2 Exp $
+ * $Id: scan.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 #include <linux/kernel.h>

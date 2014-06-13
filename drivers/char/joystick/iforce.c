@@ -1,5 +1,5 @@
 /*
- * $Id: iforce.c,v 1.56 2001/05/27 14:41:26 jdeneux Exp $
+ * $Id: iforce.c,v 1.1.1.1 2004/06/19 05:03:20 ashieh Exp $
  *
  *  Copyright (c) 2000-2001 Vojtech Pavlik <vojtech@suse.cz>
  *  Copyright (c) 2001 Johann Deneux <deneux@ifrance.com>

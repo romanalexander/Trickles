@@ -14,7 +14,7 @@
  *
  *	hacked by Andi Kleen for x86-64.
  * 
- *  $Id: hw_irq.h,v 1.31 2003/02/18 18:35:55 ak Exp $
+ *  $Id: hw_irq.h,v 1.1.1.1 2004/06/19 05:02:51 ashieh Exp $
  */
 
 #include <linux/config.h>

@@ -6,6 +6,10 @@
  *  Authors:  Bjorn Wesen 
  * 
  *  $Log: fault.c,v $
+ *  Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ *  initial version
+ *
+ *
  *  Revision 1.23  2003/10/16 05:32:32  starvik
  *  Only read TLB_SELECT if DEBUG
  *

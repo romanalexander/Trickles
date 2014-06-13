@@ -1,4 +1,4 @@
-/* $Id: memscan.S,v 1.4 1996/09/08 02:01:20 davem Exp $
+/* $Id: memscan.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * memscan.S: Optimized memscan for the Sparc.
  *
  * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)

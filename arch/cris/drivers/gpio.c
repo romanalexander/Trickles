@@ -1,4 +1,4 @@
-/* $Id: gpio.c,v 1.25 2003/06/24 07:24:31 johana Exp $
+/* $Id: gpio.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  * Etrax general port I/O device
  *
@@ -9,6 +9,10 @@
  *             Johan Adolfsson  (read/set directions, write, port G)
  *
  * $Log: gpio.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.25  2003/06/24 07:24:31  johana
  * Added gpio_pa_irq_enabled_mask to keep track of what interrupts we have
  * enabled so we anly clear those that we have enabled and let bits/pins

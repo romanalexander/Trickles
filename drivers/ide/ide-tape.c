@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1995 - 1999 Gadi Oxman <gadio@netvision.net.il>
  *
- * $Header$
+ * $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/ide/ide-tape.c,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  *
  * This driver was constructed as a student project in the software laboratory
  * of the faculty of electrical engineering in the Technion - Israel's

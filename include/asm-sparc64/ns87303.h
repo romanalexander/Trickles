@@ -1,4 +1,4 @@
-/* $Id: ns87303.h,v 1.3 2000/01/09 15:16:34 ecd Exp $
+/* $Id: ns87303.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $
  * ns87303.h: Configuration Register Description for the
  *            National Semiconductor PC87303 (SuperIO).
  *

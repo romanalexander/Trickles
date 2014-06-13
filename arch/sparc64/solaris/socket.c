@@ -1,4 +1,4 @@
-/* $Id: socket.c,v 1.5 2001/02/13 01:16:44 davem Exp $
+/* $Id: socket.c,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * socket.c: Socket syscall emulation for Solaris 2.6+
  *
  * Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)

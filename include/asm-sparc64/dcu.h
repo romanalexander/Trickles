@@ -1,4 +1,4 @@
-/* $Id: dcu.h,v 1.2 2001/03/01 23:23:33 davem Exp $ */
+/* $Id: dcu.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $ */
 #ifndef _SPARC64_DCU_H
 #define _SPARC64_DCU_H
 

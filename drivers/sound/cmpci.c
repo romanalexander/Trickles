@@ -3653,7 +3653,7 @@ static int __init init_cmpci(void)
 {
 	if (!pci_present())   /* No PCI bus in this machine! */
 		return -ENODEV;
-	printk(KERN_INFO "cmpci: version $Revision: 6.16 $ time " __TIME__ " " __DATE__ "\n");
+	printk(KERN_INFO "cmpci: version $Revision: 1.1.1.1 $ time " __TIME__ " " __DATE__ "\n");
 	return pci_module_init(&cm_driver);
 }
 

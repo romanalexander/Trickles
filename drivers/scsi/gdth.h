@@ -10,7 +10,7 @@
  *
  * <achim.leubner@intel.com>
  *
- * $Id: gdth.h,v 1.46 2002/02/05 09:39:53 achim Exp $
+ * $Id: gdth.h,v 1.1.1.1 2004/06/19 05:03:25 ashieh Exp $
  */
 
 #include <linux/version.h>

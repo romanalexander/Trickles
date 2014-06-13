@@ -1,7 +1,7 @@
 #
 # linux/drivers/devices/Makefile
 #
-# $Id: Makefile,v 1.4 2001/06/26 21:10:05 spse Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
 
 O_TARGET	:= devlink.o
 

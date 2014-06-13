@@ -1,4 +1,4 @@
-/* $Id: signal.c,v 1.1.1.1.2.12 2003/10/01 10:54:28 kkojima Exp $
+/* $Id: signal.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  *  linux/arch/sh/kernel/signal.c
  *

@@ -1,4 +1,4 @@
-/* $Id: VIScsumcopyusr.S,v 1.2 2000/02/20 23:21:40 davem Exp $
+/* $Id: VIScsumcopyusr.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * VIScsumcopyusr.S: High bandwidth IP checksumming with simultaneous
  *                   copying utilizing the UltraSparc Visual Instruction Set.
  *

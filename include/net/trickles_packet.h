@@ -1,0 +1,621 @@
+#ifndef TRICKLES_PACKET_H
+#define TRICKLES_PACKET_H
+
+#ifndef USERTEST
+#include <linux/ip.h>
+#endif
+
+#ifndef __KERNEL__
+#include <asm/types.h>
+#endif // __KERNEL__
+
+#include <linux/rtnetlink.h>
+
+#define CHUNKID
+
+/* Packet formats */
+typedef int _bool;
+
+enum ContinuationState {
+  CONT_NORMAL= 0,
+  CONT_RECOVERY = 1,
+  CONT_BOOTSTRAP = 2
+};
+
+#define HMACLEN 16
+#ifdef USE_SHA1
+#error "Need to change all occurences of HMACLEN to 20"
+#endif
+
+#ifdef __KERNEL__
+#define HMAC_PHEADER_LEN (4+1+1+4+2+4+2)
+
+/* Pseudoheader contents:
+   Server IP
+   Server Port
+   Client IP
+   Client Port
+*/
+struct PseudoHeader {
+  __u32 seq;
+  __u8 type;
+  __u8 first;
+  __u32 serverAddr;
+  __u16 serverPort;
+  __u32 clientAddr;
+  __u16 clientPort;
+}  __attribute__ ((packed));
+
+typedef struct PseudoHeader PseudoHeader;
+#endif // __KERNEL__
+
+#define CONTTYPE_MINIMAL (0)
+#define CONTTYPE_FULL1 (1) // Ack for 1 packet
+#define CONTTYPE_FULL2 (2) // Ack for 2 packets; always attached to the second packet. E.g., 1st packet has no continuation, but 2nd packet has a CONTTYPE_FULL2 continuation
+
+#define CONTTYPE_HASHCOMPRESSED (0x80) // modifier for FULL continuation types: sequence number 
+
+#define CONTTYPELEN_MINIMAL ((int)(((struct WireContinuation*)0)->minimalContinuationEnd))
+#define CONTTYPELEN_HASHCOMPRESS ((int)(((struct WireContinuation*)0)->hash.end))
+#define CONTTYPELEN_FULL (sizeof(struct WireContinuation))
+
+#define SET_DEFERRED_INITIALCWND(MSK) do { (MSK)->startCwnd = 0; } while(0)
+#define IS_DEFERRED_INITIALCWND(MSK) ((MSK)->startCwnd == 0)
+
+#define WIRE_CONTINUATION_FIELDS		\
+  /* Time measurements, in ms */		\
+  __u32 timestamp;				\
+  __u32 mrtt;					\
+						\
+  __u8 state;					\
+						\
+  /* For recovery */			\
+  __u32 firstLoss;				\
+  __u32 firstBootstrapSeq;			\
+						\
+  /* For AckTCPCwnd computation */	\
+  __u32 startCwnd; /* XXX "Initial Window Size" */	\
+  __u32 ssthresh;				\
+  __u32 TCPBase;				\
+						\
+  /* For token checking */		\
+  __u64 tokenCounterBase
+
+
+struct WireContinuation {
+	__u8 continuationType; // XXX bitfield
+	union {
+		struct { // hash compressed minimal header for data packets
+			// sequence number predicted
+			__u32 seq;
+
+			__u32 timestamp;
+			__u32 mrtt;
+
+			//__u16 clientTimestamp : 12; // don't need this: can store timestamp on client side
+
+			__u16 parentSeq; // parentSeq + clientState are used to match the parent, from whose predictions we're to reconstruct the full packet header. 
+#if 0
+			__u8 clientState;
+			// Note that parentSeq + clientState are narrower than actual width! The combined 24 bits should be enough to disambiguate most cases
+
+			// client predicts multiple children for each parent packet: use position field to disambiguate
+			__u16 position;
+#endif
+
+			__u8 mac[HMACLEN];  // XXX Can drop some bytes
+			__u8 end[0];
+		} hash;
+		struct { // standard minimal header
+			// packet name
+			__u32 seq;
+
+			__u8 firstChild; // 1 bit flag. TODO: Merge with state
+
+			// Client-specified fields
+			__u32 clientState; // used to record client state transitions
+			__u32 parent; // used in client-side scoreboard
+			__u32 clientTimestamp; // used to implement rtt estimation
+	
+			__u8 minimalContinuationEnd[0];
+			// Security
+			__u8 mac[HMACLEN];  // XXX Can drop some bytes
+			__u8 hmac_start[0]; // skip client-specific, MAC portions when preforming HMAC
+		};
+		struct {
+			// GDB is stupid and does not understand anonymous structs within unions
+			// So create a named struct with the exact same fields
+
+			// packet name
+			__u32 seq;
+
+			__u8 firstChild; // 1 bit flag. TODO: Merge with state
+
+			// Client-specified fields
+			__u32 clientState; // used to record client state transitions
+			__u32 parent; // used in client-side scoreboard
+			__u32 clientTimestamp; // used to implement rtt estimation
+	
+			__u8 minimalContinuationEnd[0];
+			// Security
+			__u8 mac[HMACLEN];  // XXX Can drop some bytes
+			__u8 hmac_start[0]; // skip client-specific, MAC portions when preforming HMAC
+		} named;
+	};
+
+	WIRE_CONTINUATION_FIELDS;
+}  __attribute__ ((packed));
+typedef struct WireContinuation WireContinuation;
+
+#ifdef __KERNEL__
+struct CachedWireContinuation {
+	PseudoHeader hdr;
+	__u8 copy_start[0];
+	WIRE_CONTINUATION_FIELDS;
+}  __attribute__ ((packed));
+#endif // __KERNEL__
+
+#define WIRECONT_MAC_LEN (((__u8*)(((WireContinuation *)0) + 1) - (__u8*)((WireContinuation *)0)->hmac_start))
+
+struct WireSack {
+  __u32 left, right;
+  __u32 nonceSummary;
+} __attribute__ ((packed));
+
+typedef struct WireSack WireSack;
+
+struct WireAckProof {
+	//#define MAXSACKS 16
+// 0715 increase sack resolution to allow improved reordering resilience
+#define MAXSACKS 64
+  __u8 numSacks;
+  WireSack sacks[0];
+} __attribute__ ((packed));
+
+typedef struct WireAckProof WireAckProof;
+
+enum TrickleRequestType {
+  /* Transport REQuest */
+  TREQ_NORMAL = 0,
+  TREQ_SLOWSTART = 1
+};
+
+struct WireTrickleRequest {
+  __u8 type;
+  WireContinuation cont;
+
+  // xxx These fields are misnamed. Should really be request_len 
+  __u16 ucont_len;
+  WireAckProof ackProof; // variable length
+
+  /* followed by:
+     __u8 ucont[0];
+     __u8 data[0];
+  */
+} __attribute__ ((packed));
+
+#define MAX_TRICKLES_SERVER_HDR_LEN (sizeof(WireTrickleResponse))
+#define MAX_TRICKLES_CLIENT_HDR_LEN (sizeof(WireTrickleRequest) + (MAXSACKS *  sizeof(WireSack)))
+
+typedef struct WireTrickleRequest WireTrickleRequest;
+
+#define RESPONSELEN_MINIMAL (sizeof(WireTrickleResponse) - (CONTTYPELEN_FULL - CONTTYPELEN_MINIMAL))
+#define RESPONSELEN_HASHCOMPRESS (sizeof(WireTrickleResponse) - (CONTTYPELEN_FULL - CONTTYPELEN_HASHCOMPRESS))
+
+// N.B. ChunkLen includes the chunk header
+
+
+// N.B. chunkLen is essential because there may be situations where packets are padded. In such situations, implicitly determining chunklen would suck in padding bytes
+#define RESPONSECHUNK_FIELDS			\
+  /* __u32 chunkID; */				\
+  __u8 type : 4;				\
+  __u8 flags : 4;				\
+  __u16 chunkLen;			\
+
+#define PADDING_CHUNK (0x00)
+
+enum ResponseChunkTypes {
+	RCHUNK_PUSH_HINT = 1,
+	RCHUNK_DATA = 2,
+	RCHUNK_SKIP = 3,
+	RCHUNK_FINHINT = 4
+};
+
+#define IS_VALID_CHUNKTYPE(X) ((X) == RCHUNK_PUSH_HINT || (X) == RCHUNK_DATA || (X) == RCHUNK_SKIP || (X) == RCHUNK_FINHINT)
+
+struct ResponseChunk {
+  RESPONSECHUNK_FIELDS;
+    __u8 chunkData[0];
+} __attribute__ ((packed));
+
+static inline int ResponseChunk_isPadding(struct ResponseChunk *c) {
+	return c->type == 0 && c->flags == 0;
+}
+
+static inline void ResponseChunk_print(struct ResponseChunk *c) {
+	printk("{ type=%d/%d, len=%d }", c->type, c->flags, ntohs(c->chunkLen));
+}
+
+static inline void ResponseChunk_printAll(char *start, int len) {
+	struct ResponseChunk *curr = (struct ResponseChunk *)start;
+	int count;
+	for(count = 0; (char*)curr < start + len; count++) {
+		printk(" [%d] = ", count);
+		if(ResponseChunk_isPadding(curr)) {
+			printk("{ padding } ");
+			curr = (struct ResponseChunk *)((char*)curr + 1);
+			continue;
+		}
+		ResponseChunk_print(curr);
+		curr = (struct ResponseChunk *)
+			((char*)curr + ntohs(curr->chunkLen));
+		if(count > 10) {
+			printk("!!! too many chunks !!!");
+			break;
+		}
+	}
+}
+
+#define DATA_LEN(C)					\
+	ntohs((C)->chunkLen) - sizeof(struct DataChunk)
+
+#define NEXT_CHUNK_ADDR(C) 	\
+  ((void*)((char*)(C) + ntohs((C)->chunkLen)))
+
+struct PushHintChunk {
+  RESPONSECHUNK_FIELDS;
+#ifdef CHUNKID
+  __u32 chunkID;
+#endif
+  __u32 start, end;
+} __attribute__((packed));
+
+static inline void pushhint_dump(struct PushHintChunk *phchunk) {
+	printk("PHChunk %p = { type = %d, chunkLen = %d, range=[%d-%d] }\n",
+	       phchunk, phchunk->type, ntohs(phchunk->chunkLen),
+	       ntohl(phchunk->start), ntohl(phchunk->end));
+}
+
+struct DataChunk {
+  RESPONSECHUNK_FIELDS
+#ifdef CHUNKID
+  __u32 chunkID;
+#endif
+  __u32 byteNum;
+  __u8 data[0];
+} __attribute__((packed));
+
+// For both Skip and SkipHint, bytenum is the last byte in the enclosing continuation
+struct SkipChunk {
+	RESPONSECHUNK_FIELDS
+#ifdef CHUNKID
+	__u32 chunkID;
+#endif
+	__u32 byteNum;
+	__u32 len;
+} __attribute__((packed));
+
+struct FINHintChunk {
+	RESPONSECHUNK_FIELDS
+#ifdef CHUNKID
+	__u32 chunkID;
+#endif
+	__u32 byteNum;
+	__u32 len;
+} __attribute__((packed));
+
+#define FIN_HINT_SIZE (sizeof(struct FINHintChunk))
+
+// DataChunk flags
+#define DCHUNK_FIN 	0x1
+
+static inline int isDataSubchunk(struct ResponseChunk *d) {
+	return (d->type == RCHUNK_DATA || 
+		d->type == RCHUNK_SKIP ||
+		d->type == RCHUNK_FINHINT);
+}
+
+static inline int DataSubchunk_validate(struct ResponseChunk *d) {
+	int c0 = 1,c1 = 1,c2 = 1,c3 = 1;
+	BUG_TRAP((c0 = isDataSubchunk(d)));
+	switch(d->type) {
+	case RCHUNK_DATA:
+		BUG_TRAP((c1 = !(d->flags & ~DCHUNK_FIN)));
+		break;
+	case RCHUNK_SKIP:
+	case RCHUNK_FINHINT:
+		BUG_TRAP((c1 = (d->flags == 0)));
+		break;
+	}
+	return c0&&c1&&c2&&c3;
+}
+
+
+
+// New version of WireTrickleResponse2 that supports multiple byte
+// ranges
+struct WireTrickleResponse {
+  __u32 nonce;
+  __u8 numSiblings;
+  __u8 position; // position relative to siblings
+
+  __u16 ucont_len;
+  WireContinuation cont;
+  // followed by
+  // char ucont_data[0]
+  // struct ResponseChunk chunks[0];
+
+  // N.B. Since cont is variable length, it's not possible to access
+  // ``ucont_data'' or ``chunks'' through a field
+} __attribute__((packed));
+
+typedef struct WireTrickleResponse WireTrickleResponse;
+
+typedef struct {
+  __u32 left, right;
+  __u32 nonceSummary;
+} Sack;
+
+//#define MAX_KERNEL_SACKS (MAXSACKS * 4)
+#define MAX_KERNEL_SACKS (MAXSACKS)
+typedef struct {
+  int numSacks;
+  CONTINUATION_TYPE *cont;
+  Sack sacks[MAX_KERNEL_SACKS];
+} AckProof;
+
+//
+// Packet formats for continuation management and bytestream conversion
+// These data structures are packed into the user continuation field
+//
+
+// WireUC == shorthand for WireUserContinuation
+// CVT == bytestream conversion
+// MGMT == continuation management
+
+enum UC_Type {
+	UC_INCOMPLETE,
+	UC_COMPLETE,
+	UC_UPDATE,
+	UC_DATA,
+	UC_NEWCONT
+};
+
+#define STANDARD_UC_RESP_FIELDS			\
+  __u8 type;					\
+  __u8 error;					\
+  __u16 len;					\
+  __u8 standardEnd[0];
+
+struct WireUC_RespHeader {
+	STANDARD_UC_RESP_FIELDS
+} __attribute__ ((packed));
+
+#define STANDARD_UC_REQ_FIELDS			\
+  __u8 type;					\
+  __u16 len;					\
+  __u8 standardEnd[0];
+
+struct WireUC_ReqHeader {
+	STANDARD_UC_REQ_FIELDS
+} __attribute__ ((packed));
+
+struct WireUC_CVT_IncompleteContinuation {
+  // valid start to use when converting to complete continuation
+  __u32 validStart;
+  char data[0];
+} __attribute__ ((packed));
+
+struct WireUC_CVT_IncompleteResponse {
+  STANDARD_UC_RESP_FIELDS
+  __u32 ack_seq; // sequence number of data to parse. must match completeResponse
+
+  struct WireUC_CVT_IncompleteContinuation newCont;
+} __attribute__ ((packed));
+
+struct WireUC_CVT_IncompleteRequest {
+  STANDARD_UC_REQ_FIELDS
+  __u32 seq; // must match completerequest
+
+  // don't need byteNumber here; the server will include in predCont if it needs it
+  struct WireUC_CVT_IncompleteContinuation predCont;
+} __attribute__ ((packed));
+
+struct WireUC_Continuation {
+  __u32 seq;
+  __u32 validStart, validEnd;
+  /* field bits:
+     0: dependencies
+  */
+#define FIELD_DEPS (0x01)
+#define FIELD_ALL (FIELD_DEPS)
+
+  __u8 fields;
+
+  // used to generate bytes [validStart, validEnd)
+  char data[0];
+} __attribute__ ((packed));
+
+#ifdef __KERNEL__
+
+#define UC_CONTINUATION_TRYFREE(UC)		\
+  ({						\
+    int res = 0;				\
+    if(atomic_dec_and_test(&(UC)->refcnt)) {	\
+      /* printk("UC_cont freed %p\n", UC); */	\
+      kfree(UC);				\
+      res = 1;					\
+    } else {					\
+      /* printk("couldn't UC_cont free %p @%d\n", UC, atomic_read(&(UC)->refcnt)); */ \
+    }						\
+    res;					\
+  })
+
+struct SkipCell {
+	struct alloc_head *prev;
+	struct alloc_head *next;
+	struct alloc_head_list *list;
+
+	unsigned start, end;
+};
+
+struct UC_Continuation {
+  struct alloc_head *prev;
+  struct alloc_head *next;
+  struct alloc_head_list *list;
+
+  unsigned seq; // Used to perform freshness comparisons. Continuations with higher sequence numbers will replace those with lower sequence numbers
+  unsigned validStart, validEnd; // Actual validStart and validEnd, e.g. what we got from the server
+
+	u8 FIN_received	: 1;
+  u8 	FINHint	: 1;
+  unsigned FINHintPosition;
+
+  // Definition of priority: The client maintains the invariant that
+  // there are no overlapping continuations in tp->t.ucontList
+  //
+  // However, the client cannot change validStart and validEnd, since
+  // in general the client is not allowed to change fields in
+  // server-supplied data structures.
+  unsigned clientValidStart, clientValidEnd; // start and end used by client, e.g. after resolving priority
+
+  /* field bits:
+     0: dependencies
+  */
+  __u8 fields;
+
+  // Most UC_Continuations do not require reference counts, with the
+  // exception of UC_Continuations used in ConversionRequests, which
+  // is shared with tp->t.prevConvCont
+  atomic_t refcnt;
+
+  unsigned dataLen;
+  union {
+    struct {
+      unsigned obsoleteAt; // no dependencies on continuation after byte # obsoleteAt
+      char data[0];
+    } kernel;
+    struct {
+      char data[0];
+    } client;
+  };
+};
+#endif // __KERNEL__
+
+// In "push"-based update, the server periodically supplies the client
+// with new continuations
+
+// In "pull"-based update, the server provides the client with a
+// continuation dependency graph. The client requests new
+// continuations once dependencies are available
+
+struct WireUC_DepRange {
+  __u32 start, end;
+};
+struct WireUC_Dependency {
+  struct WireUC_DepRange succ, 
+    pred;
+};
+
+#ifdef __KERNEL__
+struct UC_DependencyNode {
+  /* Alloc head fields */
+  struct alloc_head *prev;
+  struct alloc_head *next;
+  struct alloc_head_list *list;
+
+  unsigned start, end;
+
+  _bool resolved; // resolved = 1 if cont points to continuation that covers the first part of the range
+  struct UC_Continuation *cont;
+  _bool requested; // requested = 1 if all dependencies were met, and a for the update was enqueued
+
+  int refCnt;
+  struct vector depLinks; // contains UC_DependencyLink
+};
+
+struct UC_DependencyLink {
+  unsigned destStart, destEnd;
+  struct UC_DependencyNode *dest;
+};
+#endif // __KERNEL__
+
+struct WireUC_MGMT_Dependency {
+  // Encode dependencies for "pull"-based update
+  __u8 numDeps;
+  struct WireUC_Dependency deps[0];
+} __attribute__ ((packed));
+
+struct WireUC_MGMT_UpdateResponse {
+  STANDARD_UC_RESP_FIELDS
+
+  struct WireUC_Continuation newCont;
+} __attribute__ ((packed));
+
+struct WireUC_MGMT_UpdateRequest {
+  STANDARD_UC_REQ_FIELDS
+
+  __u32 newStart, newEnd; // valid range of desired continuation. Advisory: server may send response for any range
+  __u8 numContinuations;  // number of continuations
+  /* Each continuation is of the form:
+     __u16 len; WireUC_Continuation cont;
+     ...
+  */
+} __attribute__ ((packed));
+
+#if 0
+struct WireUC_CVT_CompleteContinuation {
+  // SUBCLASS OF WIREUC_CONTINUATION
+  __u32 pduStart, pduEnd; 
+
+  // Complete continuation usable for [pduStart,pduEnd)
+  char data[0];
+};
+#endif
+
+struct WireUC_CVT_CompleteRequest {
+  STANDARD_UC_REQ_FIELDS
+  __u32 seq; // sequence number of data to parse. must match incompleterequest
+  __u8 isParallel : 1;
+
+  struct WireUC_Continuation predCont;
+} __attribute__ ((packed));
+
+struct WireUC_CVT_CompleteResponse {
+  STANDARD_UC_RESP_FIELDS
+  __u32 ack_seq; // must match incompleteresponse
+
+  __u16 piggyLength; // length of piggybacked data
+
+#if 0
+  __u32 pduStart, pduEnd; // Non-binding hint
+#endif
+
+  struct WireUC_Continuation newCont;
+} __attribute__ ((packed));
+
+/* NOTE!!! Client assumes that range responses are sorted within each given packet */
+
+struct WireUC_DataRequestRange {
+  __u32 start;
+  __u32 end;
+} __attribute__((packed));
+
+struct WireUC_DataRequest {
+  STANDARD_UC_REQ_FIELDS
+  __u8 numRequestRanges;
+  struct WireUC_DataRequestRange ranges[0];
+  // char data[0]; 
+} __attribute__((packed));
+
+#define WIREUC_DATAREQUEST_SIZE(NUM_RANGES)  (sizeof(struct WireUC_DataRequest) + sizeof(struct WireUC_DataRequestRange) * NUM_RANGES)
+
+struct WireUC_NewContinuationResponse {
+  STANDARD_UC_RESP_FIELDS
+
+  struct WireUC_Continuation newCont;
+};
+
+#undef STANDARD_UC_REQ_FIELDS
+#undef STANDARD_UC_RESP_FIELDS
+#endif // TRICKLES_PACKET_H

@@ -128,6 +128,38 @@ enum {
 #define TCP_INFO		11	/* Information about this connection. */
 #define TCP_QUICKACK		12	/* Block/reenable quick acks */
 
+#define TCP_TRICKLES		15	/* get/set Trickles options */
+#define TCP_CMINISOCK_PIPE	16      /* Get/set Trickles command pipe options */
+
+#define TCP_MAC_CHANGED		17      /* get whether different source MAC was ever received */
+#define TCP_TRICKLES_CWND       18      /* get the simulation cwnd of the last continuation sent to the server */
+#define TCP_TRICKLES_SSTHRESH   19      /* get the simulation cwnd of the last continuation sent to the server */
+
+
+#define TCP_DROPRATE            20      /* set drop probability. In units of 1/1000 */
+#define TCP_INSTRUMENTATION	21      /* enable send instrumentation */
+#define TCP_TRICKLES_DUMP	22      /* trigger kernel log dump */
+
+#define TCP_TRICKLES_ADDSERVER 	23 /* add a new remote server IP to this socket */
+#define TCP_TRICKLES_PROBERATE 	24 /* probe rate parameter for checking remote hosts */
+
+#define TCP_TRICKLES_ENABLE      0x1 /* enable trickles */
+#define TCP_TRICKLES_RSERVER     0x8 /* "server side" */
+#define TCP_TRICKLES_RCV_START  0x10
+#define TCP_TRICKLES_TGEN       0x20 /* use kernel mode traffic generation */
+#define TCP_TRICKLES_BUFFERDISCARD 0x40 /* Discard data received by client. Used to enable better client scalability during server performance testing */
+#define TCP_TRICKLES_EDGE        0x80 /* edge sensitive trickle poll() behavior */
+#define TCP_TRICKLES_BULKPOLL        0x100 /* edge sensitive trickle poll() behavior */
+#define TCP_TRICKLES_SYNDATA 0x200 /* Send data on syn() */
+
+#define TCP_TRICKLES_PAR_REQUEST 0x400
+#define TCP_TRICKLES_DISABLE_HASHCOMPRESS 0x800
+
+// The following placeholders don't actually do anything. They allow
+// the stcp flag field to be used by the servertrickles code to enable/disable certain debugging modes
+#define TCP_TRICKLES_EXTRACT_TEST 0x100 
+#define TCP_TRICKLES_INSERT_TEST 0x200 
+
 #define TCPI_OPT_TIMESTAMPS	1
 #define TCPI_OPT_SACK		2
 #define TCPI_OPT_WSCALE		4

@@ -1,4 +1,4 @@
-#ident "$Id: cpuid.c,v 1.4 2001/10/24 23:58:53 ak Exp $"
+#ident "$Id: cpuid.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $"
 /* ----------------------------------------------------------------------- *
  *   
  *   Copyright 2000 H. Peter Anvin - All Rights Reserved

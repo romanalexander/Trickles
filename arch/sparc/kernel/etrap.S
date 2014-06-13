@@ -1,4 +1,4 @@
-/* $Id: etrap.S,v 1.31 2000/01/08 16:38:18 anton Exp $
+/* $Id: etrap.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * etrap.S: Sparc trap window preparation for entry into the
  *          Linux kernel.
  *

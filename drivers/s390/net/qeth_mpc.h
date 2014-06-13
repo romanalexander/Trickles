@@ -11,7 +11,7 @@
 #ifndef __QETH_MPC_H__
 #define __QETH_MPC_H__
 
-#define VERSION_QETH_MPC_H "$Revision: 1.42 $"
+#define VERSION_QETH_MPC_H "$Revision: 1.1.1.1 $"
 
 #define QETH_IPA_TIMEOUT (card->ipa_timeout)
 #define QETH_MPC_TIMEOUT 2000

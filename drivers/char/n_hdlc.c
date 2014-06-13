@@ -9,7 +9,7 @@
  *	Al Longyear <longyear@netcom.com>, Paul Mackerras <Paul.Mackerras@cs.anu.edu.au>
  *
  * Original release 01/11/99
- * $Id: n_hdlc.c,v 3.7 2003/05/01 15:45:29 paulkf Exp $
+ * $Id: n_hdlc.c,v 1.1.1.1 2004/06/19 05:03:18 ashieh Exp $
  *
  * This code is released under the GNU General Public License (GPL)
  *
@@ -78,7 +78,7 @@
  */
 
 #define HDLC_MAGIC 0x239e
-#define HDLC_VERSION "$Revision: 3.7 $"
+#define HDLC_VERSION "$Revision: 1.1.1.1 $"
 
 #include <linux/version.h>
 #include <linux/config.h>

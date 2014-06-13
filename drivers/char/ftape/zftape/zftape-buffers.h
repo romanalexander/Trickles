@@ -19,9 +19,9 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
  *
- * $Source: /homes/cvs/ftape-stacked/ftape/zftape/zftape-buffers.h,v $
- * $Revision: 1.2 $
- * $Date: 1997/10/05 19:18:59 $
+ * $Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/zftape/zftape-buffers.h,v $
+ * $Revision: 1.1.1.1 $
+ * $Date: 2004/06/19 05:03:20 $
  *
  *   memory allocation routines.
  *

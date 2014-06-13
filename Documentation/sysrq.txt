@@ -1,6 +1,6 @@
 Linux Magic System Request Key Hacks
 Documentation for sysrq.c version 1.15
-Last update: $Date: 2001/01/28 10:15:59 $
+Last update: $Date: 2004/06/19 05:04:09 $
 
 *  What is the magic SysRq key?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -22,6 +22,8 @@
 #define DEBUGP(format, args...)
 #endif
 
+#define FILTER_ONLY (0)
+
 /* If the original packet is part of a connection, but the connection
    is not confirmed, our manufactured reply will not be associated
    with it, so we need to do this manually. */
@@ -396,7 +398,7 @@ static int check(const char *tablename,
   	}
 
 	/* Only allow these for packet filtering. */
-	if (strcmp(tablename, "filter") != 0) {
+	if (FILTER_ONLY && strcmp(tablename, "filter") != 0) {
 		DEBUGP("REJECT: bad table `%s'.\n", tablename);
 		return 0;
 	}
@@ -429,6 +431,9 @@ static int __init init(void)
 {
 	if (ipt_register_target(&ipt_reject_reg))
 		return -EINVAL;
+	if(!FILTER_ONLY) {
+		printk("Warning: ipt_REJECT is hacked to allow use in any chain\n");
+	}
 	return 0;
 }
 

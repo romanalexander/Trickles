@@ -115,7 +115,7 @@
  *  12-05-2000  tglx: Dave Ellis (DGE@sixnetio) provided the fix for
  *		WRITE_VERIFY long time ago. Thanks for remembering me.	
  *	
- * $Id: nand.c,v 1.36 2002/12/05 20:59:11 gleixner Exp $
+ * $Id: nand.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

@@ -1,4 +1,4 @@
-/* $Id: cs4231.h,v 1.13 1999/09/21 14:37:27 davem Exp $
+/* $Id: cs4231.h,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  * drivers/sbus/audio/cs4231.h
  *
  * Copyright (C) 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)

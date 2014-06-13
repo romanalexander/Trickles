@@ -10,7 +10,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * $Id: intrep.h,v 1.14 2001/09/23 23:28:37 dwmw2 Exp $
+ * $Id: intrep.h,v 1.1.1.1 2004/06/19 05:02:41 ashieh Exp $
  *
  */
 

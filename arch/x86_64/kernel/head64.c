@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2000 Andrea Arcangeli <andrea@suse.de> SuSE
  *
- *  $Id: head64.c,v 1.27 2003/03/31 15:12:07 ak Exp $
+ *  $Id: head64.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $
  */
 
 #include <asm/bootsetup.h>

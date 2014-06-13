@@ -30,7 +30,7 @@
 #ifndef _VXFS_INODE_H_
 #define _VXFS_INODE_H_
 
-#ident "$Id: vxfs_inode.h,v 1.15 2001/05/26 22:41:23 hch Exp hch $"
+#ident "$Id: vxfs_inode.h,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $"
 
 /*
  * Veritas filesystem driver - inode structure.

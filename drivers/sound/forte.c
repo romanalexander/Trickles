@@ -50,7 +50,7 @@
 #include <asm/io.h>
 
 #define DRIVER_NAME	"forte"
-#define DRIVER_VERSION 	"$Id: forte.c,v 1.65 2003/09/18 15:28:39 mkp Exp $"
+#define DRIVER_VERSION 	"$Id: forte.c,v 1.1.1.1 2004/06/19 05:03:33 ashieh Exp $"
 #define PFX 		DRIVER_NAME ": "
 
 #undef M_DEBUG

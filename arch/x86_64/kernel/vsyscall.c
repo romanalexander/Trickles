@@ -12,7 +12,7 @@
  *  vsyscalls. One vsyscall can reserve more than 1 slot to avoid
  *  jumping out of line if necessary.
  *
- *  $Id: vsyscall.c,v 1.26 2003/02/18 11:55:47 ak Exp $
+ *  $Id: vsyscall.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $
  */
 
 /*

@@ -2,7 +2,7 @@
 #define _GAMEPORT_H
 
 /*
- * $Id: gameport.h,v 1.11 2001/04/26 10:24:46 vojtech Exp $
+ * $Id: gameport.h,v 1.1.1.1 2004/06/19 05:02:52 ashieh Exp $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *

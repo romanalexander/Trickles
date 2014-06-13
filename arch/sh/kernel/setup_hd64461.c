@@ -1,5 +1,5 @@
 /*
- *	$Id: setup_hd64461.c,v 1.9 2001/07/15 23:26:56 gniibe Exp $
+ *	$Id: setup_hd64461.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *	Copyright (C) 2000 YAEGASHI Takeshi
  *	Hitachi HD64461 companion chip support
  */

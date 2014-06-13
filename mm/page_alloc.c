@@ -89,6 +89,7 @@ static void __free_pages_ok (struct page *page, unsigned int order)
 	struct page *base;
 	zone_t *zone;
 
+	arch_free_page(page, order);
 	/*
 	 * Yes, think what happens when other parts of the kernel take 
 	 * a reference to a page in order to pin it for io. -ben

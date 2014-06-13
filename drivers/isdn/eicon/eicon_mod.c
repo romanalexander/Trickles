@@ -1,4 +1,4 @@
-/* $Id: eicon_mod.c,v 1.1.4.1 2001/11/20 14:19:35 kai Exp $
+/* $Id: eicon_mod.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * ISDN lowlevel-module for Eicon active cards.
  * 
@@ -44,7 +44,7 @@
 static eicon_card *cards = (eicon_card *) NULL;   /* glob. var , contains
                                                      start of card-list   */
 
-static char *eicon_revision = "$Revision: 1.1.4.1 $";
+static char *eicon_revision = "$Revision: 1.1.1.1 $";
 
 extern char *eicon_pci_revision;
 extern char *eicon_isa_revision;

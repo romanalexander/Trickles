@@ -2,7 +2,7 @@
  * NV-RAM memory access on autcpu12 
  * (C) 2002 Thomas Gleixner (gleixner@autronix.de)
  *
- * $Id: autcpu12-nvram.c,v 1.1 2002/02/22 09:30:24 gleixner Exp $ 
+ * $Id: autcpu12-nvram.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $ 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

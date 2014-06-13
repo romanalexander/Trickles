@@ -1,4 +1,4 @@
-/* $Id: process.c,v 1.24 2003/03/06 14:19:32 pkj Exp $
+/* $Id: process.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  * 
  *  linux/arch/cris/kernel/process.c
  *
@@ -8,6 +8,10 @@
  *  Authors:   Bjorn Wesen (bjornw@axis.com)
  *
  *  $Log: process.c,v $
+ *  Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ *  initial version
+ *
+ *
  *  Revision 1.24  2003/03/06 14:19:32  pkj
  *  Use a cpu_idle() function identical to the one used by i386.
  *

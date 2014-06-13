@@ -1,5 +1,5 @@
 /*
- * $Id: keybdev.c,v 1.3 2000/05/28 17:31:36 vojtech Exp $
+ * $Id: keybdev.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *

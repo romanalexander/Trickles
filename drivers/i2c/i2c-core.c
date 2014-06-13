@@ -20,7 +20,7 @@
 /* With some changes from Kyösti Mälkki <kmalkki@cc.hut.fi>.
    All SMBus-related things are written by Frodo Looijaard <frodol@dds.nl> */
 
-/* $Id: i2c-core.c,v 1.64 2001/08/13 01:35:56 mds Exp $ */
+/* $Id: i2c-core.c,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $ */
 
 #include <linux/module.h>
 #include <linux/kernel.h>

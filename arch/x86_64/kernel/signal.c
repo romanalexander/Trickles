@@ -8,7 +8,7 @@
  *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes
  *  2000-2001   x86-64 support by Andi Kleen
  * 
- *  $Id: signal.c,v 1.43 2003/09/06 18:10:44 ak Exp $
+ *  $Id: signal.c,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $
  */
 
 #include <linux/sched.h>

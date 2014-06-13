@@ -1,0 +1,16 @@
+all: bridge.o
+obj-y		:= br.o br_device.o br_fdb.o br_forward.o br_if.o br_input.o \
+			br_ioctl.o br_notify.o \
+			br_stp_if.o br_stp_timer.o br_emuswitch.o br_stubs.o
+obj-c := $(obj-y:o=c)
+#-DCONFIG_EMUSWITCH=1
+CFLAGS= -D__KERNEL__ -I/var/tmp/ashieh/linux-2.4.26-kgdb-trickles/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -g -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE  -nostdinc -iwithprefix include
+
+bridge.o: $(obj-y)
+	ld -m elf_i386 -e stext  -r -o bridge.o br.o br_device.o br_fdb.o br_forward.o br_if.o br_input.o br_ioctl.o br_notify.o br_stp_if.o br_stp_timer.o br_stubs.o br_emuswitch.o
+
+include dep
+.PHONY: dep
+dep: $(obj-c)
+	gcc $(CFLAGS) -M $(obj-c) > dep
+

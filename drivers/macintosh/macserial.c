@@ -8,7 +8,7 @@
  *
  * Receive DMA code by Takashi Oe <toe@unlserve.unl.edu>.
  *
- * $Id: macserial.c,v 1.24.2.4 1999/10/19 04:36:42 paulus Exp $
+ * $Id: macserial.c,v 1.1.1.1 2004/06/19 05:03:41 ashieh Exp $
  */
 
 #include <linux/config.h>

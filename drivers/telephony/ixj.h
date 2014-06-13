@@ -38,7 +38,7 @@
  * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  *****************************************************************************/
-static char ixj_h_rcsid[] = "$Id: ixj.h,v 4.1 2001/08/04 14:49:27 craigs Exp $";
+static char ixj_h_rcsid[] = "$Id: ixj.h,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $";
 
 #define IXJ_VERSION 3031
 

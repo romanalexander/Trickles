@@ -1,4 +1,4 @@
-/* $Id: entry.S,v 1.42 2003/07/07 09:00:50 johana Exp $
+/* $Id: entry.S,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  *  linux/arch/cris/entry.S
  *
@@ -7,6 +7,10 @@
  *  Authors:	Bjorn Wesen (bjornw@axis.com)
  *
  *  $Log: entry.S,v $
+ *  Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ *  initial version
+ *
+ *
  *  Revision 1.42  2003/07/07 09:00:50  johana
  *  Added CONFIG_ETRAX_DEBUG_INTERRUPT support.
  *

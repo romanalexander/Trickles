@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2001 Deep Blue Solutions Ltd.
  *
- *  $Id: cpu.c,v 1.2 2001/09/22 12:11:17 rmk Exp $
+ *  $Id: cpu.c,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

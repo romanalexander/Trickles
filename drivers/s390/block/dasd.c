@@ -6,7 +6,7 @@
  * Bugreports.to..: <Linux390@de.ibm.com>
  * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001
  *
- * $Revision: 1.311 $
+ * $Revision: 1.1.1.1 $
  *
  * History of changes (starts July 2000)
  * 11/09/00 complete redesign after code review

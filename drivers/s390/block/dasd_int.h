@@ -5,7 +5,7 @@
  * Bugreports.to..: <Linux390@de.ibm.com>
  * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000
  *
- * $Revision: 1.36 $
+ * $Revision: 1.1.1.1 $
  *
  * History of changes (starts July 2000)
  * 02/01/01 added dynamic registration of ioctls

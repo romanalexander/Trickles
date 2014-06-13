@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: erase.c,v 1.24.2.1 2003/11/02 13:51:17 dwmw2 Exp $
+ * $Id: erase.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 #include <linux/kernel.h>

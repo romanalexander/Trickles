@@ -28,7 +28,7 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-/* $Id: planb.c,v 2.11 2002/04/03 15:57:57 mlan Exp mlan $ */
+/* $Id: planb.c,v 1.1.1.1 2004/06/19 05:03:51 ashieh Exp $ */
 
 #include <linux/version.h>
 #include <linux/init.h>

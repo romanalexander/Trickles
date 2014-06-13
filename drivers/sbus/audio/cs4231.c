@@ -1,4 +1,4 @@
-/* $Id: cs4231.c,v 1.47 2001/10/08 22:19:50 davem Exp $
+/* $Id: cs4231.c,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  * drivers/sbus/audio/cs4231.c
  *
  * Copyright 1996, 1997, 1998, 1999 Derrick J Brashear (shadow@andrew.cmu.edu)

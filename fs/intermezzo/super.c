@@ -23,8 +23,8 @@
  *  presto's super.c
  */
 
-static char rcsid[] __attribute ((unused)) = "$Id: super.c,v 1.41 2002/10/03 03:50:49 rread Exp $";
-#define INTERMEZZO_VERSION "$Revision: 1.41 $"
+static char rcsid[] __attribute ((unused)) = "$Id: super.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $";
+#define INTERMEZZO_VERSION "$Revision: 1.1.1.1 $"
 
 #include <stdarg.h>
 

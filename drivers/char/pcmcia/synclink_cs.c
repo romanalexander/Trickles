@@ -1,7 +1,7 @@
 /*
  * linux/drivers/char/synclink_cs.c
  *
- * $Id: synclink_cs.c,v 3.10 2003/09/05 14:04:26 paulkf Exp $
+ * $Id: synclink_cs.c,v 1.1.1.1 2004/06/19 05:03:21 ashieh Exp $
  *
  * Device driver for Microgate SyncLink PC Card
  * multiprotocol serial adapter.
@@ -507,7 +507,7 @@ MODULE_LICENSE("GPL");
 #endif
 
 static char *driver_name = "SyncLink PC Card driver";
-static char *driver_version = "$Revision: 3.10 $";
+static char *driver_version = "$Revision: 1.1.1.1 $";
 
 static struct tty_driver serial_driver, callout_driver;
 static int serial_refcount;

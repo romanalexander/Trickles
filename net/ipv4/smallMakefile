@@ -1,0 +1,79 @@
+PREPROCESS=preprocess_cache.pl
+KINCLUDE=/home/ashieh/current/include
+# Debugging
+CFLAGS=-D__KERNEL__ -I$(KINCLUDE) -Wall -Wstrict-prototypes -Wno-trigraphs -O0 -fno-strict-aliasing -fno-common -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium3 -DMODULE -fno-inline -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc -Wno-unused-function
+
+
+# Optimized
+#INLINE=-fno-inline
+#CFLAGS=-D__KERNEL__ -I$(KINCLUDE) -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium3 -DMODULE $(INLINE) -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc
+CC=gcc33
+
+# Profile
+#CFLAGS=-D__KERNEL__ -I$(KINCLUDE) -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fno-inline -DCONFIG_DEBUG_SLAB -DCONFIG_KGDB -pipe -mpreferred-stack-boundary=2 -march=pentium4 -DMODULE -ggdb3 -DOPENSSL_HMAC -mcpu=pentiumpro   -nostdinc -iwithprefix include -DKBUILD_BASENAME=tmalloc
+CC=gcc33
+
+# aeskey.c aestab.c md5_one.c md5_dgst.c
+SOURCES=trickles-conversion.c trickles.c tmalloc.c trickles-server.c trickles-userapi.c state_cache.c msk_table.c
+
+OBJS=$(SOURCES:.c=.o)
+TRICKLES_MOD_DEPS = $(SOURCES:.c=.o) crypto/crypto.o
+
+TRICKLES_LIBS := /local/ashieh/lib/htonl.o /local/ashieh/lib/htons.o /usr/lib/gcc-lib/i386-redhat-linux/3.3.4/libgcc.a /usr/lib/libm.a  #libintel.a  #/opt/intel_cc_80/lib/libirc.a
+TRICKLES_MOD := trickles-mod.o
+#TRICKLES_MOD := trickles-mod1.o
+all: deps $(TRICKLES_MOD)
+
+deps: $(SOURCES)
+	gcc -M $(CFLAGS) $(SOURCES) > deps
+
+include deps
+
+$(TRICKLES_MOD): $(TRICKLES_MOD_DEPS)
+	$(LD)  --relocatable $(TRICKLES_LIBS) $(TRICKLES_MOD_DEPS) -o $@
+	cp trickles-mod.o /home/ashieh/
+
+
+clean:
+	rm $(OBJS)
+
+#blah.o: state_cache.c $(PREPROCESS)
+xxxtrickles-userapi.o: trickles-userapi.c $(PREPROCESS)
+	rm -f trickles-userapi_1.c trickles-userapi_2.c 
+	$(CC) -E $(CFLAGS) trickles-userapi.c -o trickles-userapi_1.c
+	indent trickles-userapi_1.c -st | sed 's/^#.\+//' > trickles-userapi_2.c || (( 1 ))
+	$(CC) $(CFLAGS)  -Wno-unused-variable -c -o trickles-userapi.o trickles-userapi_2.c #-Werror 
+
+	#chmod a-w state_cache_1.c state_cache_2.c
+
+	#./$(PREPROCESS) state_cache_1.c state_cache_2.c
+
+blah_trickles-server.o: trickles-server.c $(PREPROCESS)
+	rm -f trickles-server_1.c trickles-server_2.c 
+	$(CC) -E $(CFLAGS) trickles-server.c -o trickles-server_1.c
+	indent trickles-server_1.c -st | sed 's/^#.\+//' > trickles-server_2.c || (( 1 ))
+	$(CC) $(CFLAGS)  -Wno-unused-variable -c -o trickles-server.o trickles-server_2.c #-Werror 
+
+	#chmod a-w state_cache_1.c state_cache_2.c
+
+	#./$(PREPROCESS) state_cache_1.c state_cache_2.c
+
+state_cache.o: state_cache.c $(PREPROCESS)
+#blah.o: state_cache.c $(PREPROCESS)
+
+#state_cache.o: state_cache.c $(PREPROCESS)
+blah.o: state_cache.c $(PREPROCESS)
+	rm -f state_cache_1.c state_cache_2.c
+	$(CC) -E $(CFLAGS) state_cache.c -o state_cache_1.c
+	indent state_cache_1.c -o state_cache_2.c || (( 1 ))
+	#chmod a-w state_cache_1.c state_cache_2.c
+	$(CC) $(CFLAGS)  -Wno-unused-variable -Werror -c -o state_cache.o state_cache_2.c
+
+	#./$(PREPROCESS) state_cache_1.c state_cache_2.c
+
+state_cache_1.o: state_cache.c $(PREPROCESS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+crypto/crypto.o:
+	( cd crypto ; make -f Makefile TOPDIR=/local/ashieh/linux-trickles-uml-merge.host crypto.o )
+

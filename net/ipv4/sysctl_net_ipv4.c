@@ -1,7 +1,7 @@
 /*
  * sysctl_net_ipv4.c: sysctl interface to net IPV4 subsystem.
  *
- * $Id: sysctl_net_ipv4.c,v 1.50 2001/10/20 00:00:11 davem Exp $
+ * $Id: sysctl_net_ipv4.c,v 1.3 2005/03/01 22:33:12 ashieh Exp $
  *
  * Begun April 1, 1996, Mike Shaver.
  * Added /proc/sys/net/ipv4 directory entry (empty =) ). [MS]
@@ -59,6 +59,11 @@ extern int sysctl_tcp_westwood;
 struct ipv4_config ipv4_config;
 
 extern ctl_table ipv4_route_table[];
+
+/* From trickles_shared.c */
+extern int sysctl_trickles_mss;
+extern int sysctl_trickles_hashcompress;
+#include <net/trickles_state_cache.h>
 
 #ifdef CONFIG_SYSCTL
 
@@ -238,6 +243,28 @@ ctl_table ipv4_table[] = {
         {NET_TCP_WESTWOOD, "tcp_westwood",
          &sysctl_tcp_westwood, sizeof(int), 0644, NULL,
          &proc_dointvec},
+	{NET_TRICKLES_MSS, "tcp_trickles_mss",
+	 &sysctl_trickles_mss, sizeof(int), 0644, NULL, &proc_dointvec},
+
+	/* Continuation, Nonce, and TCB caches */
+	/* Each cache has: enable, policy, hits, total */
+#define CACHE_SYSCTL_ENTRY(NAME)						\
+	{NET_TRICKLES_##NAME##_ENABLE, "trickles_" # NAME "_enable",	\
+	 &sysctl_trickles_##NAME##_enable, sizeof(int), 0644, NULL, &proc_dointvec}, \
+	{NET_TRICKLES_##NAME##_POLICY, "trickles_" # NAME "_policy",	\
+	 &sysctl_trickles_##NAME##_policy, sizeof(int), 0644, NULL, &proc_dointvec}, \
+	{NET_TRICKLES_##NAME##_HITS, "trickles_" # NAME "_hits",	\
+	 &sysctl_trickles_##NAME##_hits, sizeof(int), 0644, NULL, &proc_dointvec}, \
+	{NET_TRICKLES_##NAME##_TOTAL, "trickles_" # NAME "_total",	\
+	 &sysctl_trickles_##NAME##_total, sizeof(int), 0644, NULL, &proc_dointvec}
+
+	CACHE_SYSCTL_ENTRY(Continuation),
+	CACHE_SYSCTL_ENTRY(Nonce),
+	CACHE_SYSCTL_ENTRY(TCB),
+
+	{NET_TRICKLES_HASHCOMPRESS, "tcp_trickles_hashcompress",
+	 &sysctl_trickles_hashcompress, sizeof(int), 0644, NULL, &proc_dointvec},
+
 	{0}
 };
 

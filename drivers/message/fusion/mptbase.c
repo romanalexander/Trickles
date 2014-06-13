@@ -49,7 +49,7 @@
  *  (mailto:sjralston1@netscape.net)
  *  (mailto:mpt_linux_developer@lsil.com)
  *
- *  $Id: mptbase.c,v 1.130 2003/05/07 14:08:30 pdelaney Exp $
+ *  $Id: mptbase.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 /*

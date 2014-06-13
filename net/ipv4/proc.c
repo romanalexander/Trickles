@@ -7,7 +7,7 @@
  *		PROC file system.  It is mainly used for debugging and
  *		statistics.
  *
- * Version:	$Id: proc.c,v 1.45 2001/05/16 16:45:35 davem Exp $
+ * Version:	$Id: proc.c,v 1.2 2004/07/19 20:39:45 ashieh Exp $
  *
  * Authors:	Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
  *		Gerald J. Heim, <heim@peanuts.informatik.uni-tuebingen.de>
@@ -218,5 +218,58 @@ int netstat_get_info(char *buffer, char **start, off_t offset, int length)
 		len = length;
 	if (len < 0)
 		len = 0; 
+	return len;
+}
+
+extern atomic_t g_device_skb;
+extern atomic_t g_other_skb;
+extern atomic_t g_device_skb_num;
+extern atomic_t g_other_skb_num;
+
+extern int meminfo_read_proc(char *page, char **start, off_t off,
+			     int count, int *eof, void *data);
+
+int netmem_get_info(char *buffer, char **start, off_t offset, int length)
+{
+	// Atomically read all memory statistics
+	static char sbuffer[4096];
+	static int slen = 0;
+	int len;
+	if(slen == 0) {
+		int eof = 0;
+		char *start, data;
+		local_bh_disable();
+		slen = sprintf(sbuffer, 
+			      "DevSKB: %d(%d)\n"
+			      "OtherSKB: %d(%d)\n",
+			      atomic_read(&g_device_skb),
+			       atomic_read(&g_device_skb_num),
+			       atomic_read(&g_other_skb),
+			       atomic_read(&g_other_skb_num));
+		// MemInfo
+		slen += meminfo_read_proc(sbuffer + slen, &start, 0, 4096 - slen,
+					 &eof, &data);
+		if(!eof) {
+			printk("meminfo_read_proc did not eof\n");
+		}
+		local_bh_enable();
+	}
+	len = slen;
+
+	if (offset >= len)
+	{
+		*start = buffer;
+		// done with this read transaction; rebuild on next read
+		slen = 0;
+		return 0;
+	}
+	*start = buffer;
+	len -= offset;
+	if (len > length)
+		len = length;
+	if (len < 0)
+		len = 0; 
+	memcpy(buffer, sbuffer + offset, len);
+	slen -= len;
 	return len;
 }

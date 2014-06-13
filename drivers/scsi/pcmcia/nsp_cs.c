@@ -25,7 +25,7 @@
 
 ***********************************************************************/
 
-/* $Id: nsp_cs.c,v 1.25 2003/09/24 10:38:18 elca Exp $ */
+/* $Id: nsp_cs.c,v 1.1.1.1 2004/06/19 05:03:32 ashieh Exp $ */
 
 #include <linux/version.h>
 #include <linux/module.h>
@@ -65,7 +65,7 @@
 #include "nsp_cs.h"
 
 MODULE_AUTHOR("YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>");
-MODULE_DESCRIPTION("WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module $Revision: 1.25 $");
+MODULE_DESCRIPTION("WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module $Revision: 1.1.1.1 $");
 MODULE_SUPPORTED_DEVICE("sd,sr,sg,st");
 MODULE_LICENSE("GPL");
 
@@ -1399,7 +1399,7 @@ static struct Scsi_Host *nsp_detect(Scsi_Host_Template *sht)
 
 	snprintf(data->nspinfo,
 		 sizeof(data->nspinfo),
-		 "NinjaSCSI-3/32Bi Driver $Revision: 1.25 $ IO:0x%04lx-0x%04lx MMIO(virt addr):0x%04lx IRQ:%02d",
+		 "NinjaSCSI-3/32Bi Driver $Revision: 1.1.1.1 $ IO:0x%04lx-0x%04lx MMIO(virt addr):0x%04lx IRQ:%02d",
 		 host->io_port, host->io_port + host->n_io_port - 1,
 		 host->base,
 		 host->irq);
@@ -1503,7 +1503,7 @@ nsp_proc_info(
 
 
 	SPRINTF("NinjaSCSI status\n\n");
-	SPRINTF("Driver version:        $Revision: 1.25 $\n");
+	SPRINTF("Driver version:        $Revision: 1.1.1.1 $\n");
 	SPRINTF("SCSI host No.:         %d\n",          hostno);
 	SPRINTF("IRQ:                   %d\n",          host->irq);
 	SPRINTF("IO:                    0x%lx-0x%lx\n", host->io_port, host->io_port + host->n_io_port - 1);

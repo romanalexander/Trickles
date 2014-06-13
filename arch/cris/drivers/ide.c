@@ -1,4 +1,4 @@
-/* $Id: ide.c,v 1.30 2003/07/08 07:24:47 pkj Exp $
+/* $Id: ide.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  * Etrax specific IDE functions, like init and PIO-mode setting etc.
  * Almost the entire ide.c is used for the rest of the Etrax ATA driver.
@@ -8,6 +8,10 @@
  *             Mikael Starvik     (pio setup stuff)
  *
  * $Log: ide.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.30  2003/07/08 07:24:47  pkj
  * Corrected spelling mistakes originally found in 2.5.x
  *

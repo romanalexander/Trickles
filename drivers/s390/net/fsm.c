@@ -1,5 +1,5 @@
 /**
- * $Id: fsm.c,v 1.3 2001/06/18 16:49:19 felfert Exp $
+ * $Id: fsm.c,v 1.1.1.1 2004/06/19 05:03:50 ashieh Exp $
  *
  * A generic FSM based on fsm used in isdn4linux
  *

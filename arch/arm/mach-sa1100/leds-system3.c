@@ -5,13 +5,17 @@
  *
  * Original (leds-footbridge.c) by Russell King
  *
- * $Id: leds-system3.c,v 1.1.6.1 2001/12/04 15:19:26 seletz Exp $
+ * $Id: leds-system3.c,v 1.1.1.1 2004/06/19 05:04:04 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
  * $Log: leds-system3.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:04  ashieh
+ * initial version
+ *
+ *
  * Revision 1.1.6.1  2001/12/04 15:19:26  seletz
  * - merged from linux_2_4_13_ac5_rmk2
  *

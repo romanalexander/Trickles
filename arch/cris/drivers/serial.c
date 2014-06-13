@@ -1,4 +1,4 @@
-/* $Id: serial.c,v 1.58 2003/08/29 17:32:50 johana Exp $
+/* $Id: serial.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  *
  * Serial port driver for the ETRAX 100LX chip
  *
@@ -7,6 +7,10 @@
  *    Many, many authors. Based once upon a time on serial.c for 16x50.
  *
  * $Log: serial.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.58  2003/08/29 17:32:50  johana
  * Fixed CMSPAR (Mark/Space) support. CMSPAR|PARODD = Mark(1) parity.
  *
@@ -455,7 +459,7 @@
  *
  */
 
-static char *serial_version = "$Revision: 1.58 $";
+static char *serial_version = "$Revision: 1.1.1.1 $";
 
 #include <linux/config.h>
 #include <linux/version.h>

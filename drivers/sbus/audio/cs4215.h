@@ -1,4 +1,4 @@
-/* $Id: cs4215.h,v 1.8 2000/10/27 07:01:38 uzi Exp $
+/* $Id: cs4215.h,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  * drivers/sbus/audio/cs4215.h
  *
  * Copyright (C) 1997 Rudolf Koenig (rfkoenig@immd4.informatik.uni-erlangen.de)

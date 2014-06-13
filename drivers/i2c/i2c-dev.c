@@ -28,7 +28,7 @@
 /* The devfs code is contributed by Philipp Matthias Hahn 
    <pmhahn@titan.lahn.de> */
 
-/* $Id: i2c-dev.c,v 1.40 2001/08/25 01:28:01 mds Exp $ */
+/* $Id: i2c-dev.c,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $ */
 
 #include <linux/config.h>
 #include <linux/kernel.h>

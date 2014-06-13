@@ -5,7 +5,7 @@
  *              high-performance and highly available server based on a
  *              cluster of servers.
  *
- * Version:     $Id: ip_vs_ctl.c,v 1.30.2.3 2003/07/29 14:37:12 wensong Exp $
+ * Version:     $Id: ip_vs_ctl.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:     Wensong Zhang <wensong@linuxvirtualserver.org>
  *              Peter Kese <peter.kese@ijs.si>

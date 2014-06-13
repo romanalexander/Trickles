@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: background.c,v 1.16 2001/10/08 09:22:38 dwmw2 Exp $
+ * $Id: background.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

@@ -1,4 +1,4 @@
-/* $Id: b1dma.c,v 1.1.4.1 2001/11/20 14:19:34 kai Exp $
+/* $Id: b1dma.c,v 1.1.1.1 2004/06/19 05:03:36 ashieh Exp $
  * 
  * Common module for AVM B1 cards that support dma with AMCC
  * 
@@ -28,7 +28,7 @@
 #include "capicmd.h"
 #include "capiutil.h"
 
-static char *revision = "$Revision: 1.1.4.1 $";
+static char *revision = "$Revision: 1.1.1.1 $";
 
 /* ------------------------------------------------------------- */
 

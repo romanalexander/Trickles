@@ -1,4 +1,4 @@
-/* $Id: head.S,v 1.47 2003/07/08 09:53:35 starvik Exp $
+/* $Id: head.S,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
  * 
  * Head of the kernel - alter with care
  *
@@ -7,6 +7,10 @@
  * Authors:	Bjorn Wesen (bjornw@axis.com)
  * 
  * $Log: head.S,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.47  2003/07/08 09:53:35  starvik
  * Corrected last CVS log entry
  *

@@ -21,7 +21,7 @@
 
 /* With some changes from Frodo Looijaard <frodol@dds.nl> */
 
-/* $Id: i2c-pcf8584.h,v 1.3 2000/01/18 23:54:07 frodo Exp $ */
+/* $Id: i2c-pcf8584.h,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $ */
 
 #ifndef I2C_PCF8584_H
 #define I2C_PCF8584_H 1

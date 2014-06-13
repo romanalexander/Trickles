@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.62 2000/12/15 00:41:17 davem Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
 # Makefile for the linux kernel.
 #
 # Note! Dependencies are done automagically by 'make dep', which also

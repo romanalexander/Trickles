@@ -1,7 +1,7 @@
 #
 # linux/drivers/nand/Makefile
 #
-# $Id: Makefile,v 1.10 2002/12/01 13:23:05 gleixner Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
 
 O_TARGET	:= nandlink.o
 

@@ -8,7 +8,7 @@
  * modify it under the terms of the GNU General Public License version
  * 2 as published by the Free Software Foundation.
  *
- * $Id: lasat.c,v 1.1 2003/01/24 14:26:38 dwmw2 Exp $
+ * $Id: lasat.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  */
 

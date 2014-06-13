@@ -3,6 +3,10 @@
  *	       Hans-Peter Nilsson (hp@axis.com)
  *
  * $Log: uaccess.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:01  ashieh
+ * initial version
+ *
+ *
  * Revision 1.12  2003/06/17 14:00:42  starvik
  * Merge of Linux 2.4.21
  *

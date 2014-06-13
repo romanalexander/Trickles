@@ -24,7 +24,7 @@
 /*
  * RFCOMM FCS calculation.
  *
- * $Id: crc.c,v 1.2 2002/09/21 09:54:32 holtmann Exp $
+ * $Id: crc.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 /* reversed, 8-bit, poly=0x07 */

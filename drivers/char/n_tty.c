@@ -25,9 +25,11 @@
  *		who actually finally proved there really was a race.
  *
  * 2002/03/18   Implemented n_tty_wakeup to send SIGIO POLL_OUTs to
- *		waiting writing processes-Sapan Bhatia <sapan@corewars.org>.
- *		Also fixed a bug in BLOCKING mode where write_chan returns
- *		EAGAIN
+ *		waiting writing processes-Sapan Bhatia <sapan@corewars.org>
+ *
+ * 2002/03/19   Fixed write_chan to stay put if console driver returns
+ *              EAGAIN and not return since it returns an EAGAIN in a 
+ *		non-blocking operation-Sapan Bhatia <sapan@corewars.org>
  */
 
 #include <linux/types.h>
@@ -1177,9 +1179,9 @@ static ssize_t write_chan(struct tty_struct * tty, struct file * file,
 		if (O_OPOST(tty) && !(test_bit(TTY_HW_COOK_OUT, &tty->flags))) {
 			while (nr > 0) {
 				ssize_t num = opost_block(tty, b, nr);
-				if (num < 0) {
-					if (num == -EAGAIN)
-						break;
+				if (num < 0){
+				        if(num == -EAGAIN)
+					        break;
 					retval = num;
 					goto break_out;
 				}

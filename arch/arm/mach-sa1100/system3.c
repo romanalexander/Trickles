@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2001 Stefan Eletzhofer <stefan.eletzhofer@eletztrick.de>
  *
- * $Id: system3.c,v 1.1.6.1 2001/12/04 17:28:06 seletz Exp $
+ * $Id: system3.c,v 1.1.1.1 2004/06/19 05:04:04 ashieh Exp $
  *
  * This file contains all PT Sytsem 3 tweaks. Based on original work from
  * Nicolas Pitre's assabet fixes
@@ -13,6 +13,10 @@
  * published by the Free Software Foundation.
  *
  * $Log: system3.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:04  ashieh
+ * initial version
+ *
+ *
  * Revision 1.1.6.1  2001/12/04 17:28:06  seletz
  * - merged from previous branch
  *

@@ -1,4 +1,4 @@
-/* $Id: eicon_isa.c,v 1.1.4.1 2001/11/20 14:19:35 kai Exp $
+/* $Id: eicon_isa.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * ISDN low-level module for Eicon active ISDN-Cards.
  * Hardware-specific code for old ISA cards.
@@ -20,7 +20,7 @@
 #define release_shmem release_region
 #define request_shmem request_region
 
-char *eicon_isa_revision = "$Revision: 1.1.4.1 $";
+char *eicon_isa_revision = "$Revision: 1.1.1.1 $";
 
 #undef EICON_MCA_DEBUG
 

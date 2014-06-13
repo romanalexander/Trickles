@@ -6,7 +6,7 @@
  * Instead the northbridge registers are read directly. 
  * 
  * Copyright 2002 Andi Kleen, SuSE Labs.
- * $Id: k8topology.c,v 1.12 2004/01/29 00:51:01 ak Exp $
+ * $Id: k8topology.c,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $
  */
 #include <linux/kernel.h>
 #include <linux/init.h>

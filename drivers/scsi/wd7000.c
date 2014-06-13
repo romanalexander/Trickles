@@ -1,4 +1,4 @@
-/* $Id: $
+/* $Id: wd7000.c,v 1.1.1.1 2004/06/19 05:03:27 ashieh Exp $
  *  linux/drivers/scsi/wd7000.c
  *
  *  Copyright (C) 1992  Thomas Wuensche

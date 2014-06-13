@@ -1,6 +1,6 @@
 /*
  *
- * linux/drivers/s390/net/qeth.c ($Revision: 1.337 $)
+ * linux/drivers/s390/net/qeth.c ($Revision: 1.1.1.1 $)
  *
  * Linux on zSeries OSA Express and HiperSockets support
  *
@@ -171,7 +171,7 @@ MODULE_PARM_DESC(qeth_sparebufs,"the number of pre-allocated spare buffers " \
 static int global_stay_in_mem=0;
 
 /****************** MODULE STUFF **********************************/
-#define VERSION_QETH_C "$Revision: 1.337 $"
+#define VERSION_QETH_C "$Revision: 1.1.1.1 $"
 static const char *version="qeth S/390 OSA-Express driver (" \
 	VERSION_QETH_C "/" VERSION_QETH_H "/" VERSION_QETH_MPC_H
 	QETH_VERSION_IPV6 QETH_VERSION_VLAN ")";

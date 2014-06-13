@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: readinode.c,v 1.58.2.8 2003/11/02 13:54:20 dwmw2 Exp $
+ * $Id: readinode.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

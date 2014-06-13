@@ -391,10 +391,11 @@ static int vma_merge(struct mm_struct * mm, struct vm_area_struct * prev,
 	return 0;
 }
 
-unsigned long do_mmap_pgoff(struct file * file, unsigned long addr, unsigned long len,
-	unsigned long prot, unsigned long flags, unsigned long pgoff)
+unsigned long do_mmap_pgoff(struct mm_struct *mm, struct file * file, 
+			    unsigned long addr, unsigned long len,
+			    unsigned long prot, unsigned long flags, 
+			    unsigned long pgoff)
 {
-	struct mm_struct * mm = current->mm;
 	struct vm_area_struct * vma, * prev;
 	unsigned int vm_flags;
 	int correct_wcount = 0;
@@ -999,6 +1000,11 @@ int do_munmap(struct mm_struct *mm, unsigned long addr, size_t len)
 		}
 		remove_shared_vm_struct(mpnt);
 		mm->map_count--;
+
+		if((mpnt->vm_file != NULL) && (mpnt->vm_file->f_op != NULL) &&
+		   (mpnt->vm_file->f_op->munmap != NULL))
+		        mpnt->vm_file->f_op->munmap(mpnt->vm_file, mpnt, st, 
+						    size);
 
 		zap_page_range(mm, st, size);
 

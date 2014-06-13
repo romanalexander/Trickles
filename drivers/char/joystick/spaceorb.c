@@ -1,5 +1,5 @@
 /*
- * $Id: spaceorb.c,v 1.7 2000/05/29 11:19:51 vojtech Exp $
+ * $Id: spaceorb.c,v 1.1.1.1 2004/06/19 05:03:20 ashieh Exp $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  * 

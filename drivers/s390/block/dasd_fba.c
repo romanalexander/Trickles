@@ -4,7 +4,7 @@
  * Bugreports.to..: <Linux390@de.ibm.com>
  * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000
  *
- * $Revision: 1.50 $
+ * $Revision: 1.1.1.1 $
  *
  * History of changes
  *          fixed partition handling and HDIO_GETGEO

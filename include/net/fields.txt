@@ -1,0 +1,87 @@
+	struct cminisock *prev;
+	struct cminisock *next;
+	struct alloc_head_list *list;
+	enum cminisock_ctl ctl;
+
+	enum cminisock_event_tag tag;
+	__u32 saddr, daddr;
+	__u16 source, dest;
+
+	struct sock *sk
+
+	__u32 flags;
+	__u32 rcv_nxt;
+
+	__u32 cum_nonce;
+
+	unsigned seq;
+	unsigned continuationType;
+
+	unsigned clientState;
+	unsigned parent;
+	__u32 rawTimestamp; // wire representations
+	__u32 rawMrtt; 
+
+	unsigned timestamp; // in jiffies (server) units
+	unsigned clientTimestamp; // in jiffies (client) units
+	unsigned mrtt; // in jiffies units * 8 (3 fractional bits)
+	__u32 state; // should be enum ContinuationState
+	unsigned firstChild; // 1 if first child; 0 otherwise
+
+	__u32 firstLoss;
+	__u32 firstBootstrapSeq;
+	unsigned startCwnd;
+	unsigned ssthresh;
+	unsigned TCPBase;
+	__u64 tokenCounterBase; // starting offset for tokens in this connection
+
+	int ucont_len;
+	char *ucont_data; // kmalloc in client code, tmalloc in server code
+
+#if 0
+	__u16 rcv_ucont_offset;
+	__u16 ucont_offset; // DEBUGGING INFORMATION : Offset of ucont from beginning of packet
+#endif
+
+#ifdef PROPAGATE_ACKSEQ
+	__u32 ack_seq;
+	int simulationLen;
+	int simulationNumPackets;
+	__u32 dbg_timestamp;
+	__u32 dbg_mark;
+#endif
+
+	/* input sent to server during conversion phase */
+	int input_len;
+	char *input; // kmalloc in client code, tmalloc in server code
+	char mac[40];
+
+#if 0
+	unsigned minResponseLen; // vestigial
+#endif
+	__u32 firstTransportChild;
+	int numTransportChildren;
+
+	int numChildrenReceived;
+	struct cminisock *parentMSK;
+
+	/* Debugging */
+	int seqnum; // this minisock is the seqnum-th delivered to userspace
+
+	int simulated; // client: 'simulated' == true <=> server-side simulation has been executed
+	int executionTrace; // server - debugging information - used to print out execution path during server-side processing
+	int actualCwnd;
+
+#define CONTLIST (-1)
+#define SKBLIST  (-2)
+	int mark; // 0429 debugging mark / scratch space
+
+	char clientside_copy_end[0];
+	int num_packets;
+	// 0517 - should we use variable length array or ptr? 
+	// Variable length array work nicely if we had resizing malloc. But we don't.
+	// Variable length array would also require moving cminisock allocation to tmalloc
+	struct cminisock_packet *packets; // variable number of packets
+	int refCnt;
+	int cacheRecycleIndex; // points to the result packet that should  reuse this continuation
+	struct sock *serverSK; // used for allocation. Initialized ONLY in executeTrickle, and during downcall (do_sendmsg)

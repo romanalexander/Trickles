@@ -1,4 +1,4 @@
-/* $Id: asi.h,v 1.5 2001/03/29 11:47:47 davem Exp $ */
+/* $Id: asi.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $ */
 #ifndef _SPARC64_ASI_H
 #define _SPARC64_ASI_H
 

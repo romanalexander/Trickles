@@ -8,7 +8,7 @@
  *  License. See the file COPYING in the main directory of this archive for
  *  more details.
  *
- *  $Header: /cvsroot/linux/drivers/video/pm3fb.h,v 1.1 2002/02/25 19:11:06 marcelo Exp $
+ *  $Header: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/video/pm3fb.h,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $
  *
  */
 

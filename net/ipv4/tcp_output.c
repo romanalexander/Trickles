@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp_output.c,v 1.144 2001/11/06 22:21:08 davem Exp $
+ * Version:	$Id: tcp_output.c,v 1.4 2005/03/01 22:33:12 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -40,6 +40,8 @@
 
 #include <linux/compiler.h>
 #include <linux/smp_lock.h>
+
+#include <net/trickles.h>
 
 /* People can turn this off for buggy TCP's found in printers etc. */
 int sysctl_tcp_retrans_collapse = 1;
@@ -275,6 +277,7 @@ int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb)
 
 		TCP_INC_STATS(TcpOutSegs);
 
+		LOG_CWND(sk, tcb->seq);
 		err = tp->af_specific->queue_xmit(skb, 0);
 		if (err <= 0)
 			return err;
@@ -1213,10 +1216,20 @@ int tcp_connect(struct sock *sk)
 {
 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
 	struct sk_buff *buff;
+	int sendData = 0;
 
 	tcp_connect_init(sk);
 
-	buff = alloc_skb(MAX_TCP_HEADER + 15, sk->allocation);
+#if 1 // 10/03 -- add piggybacked data on SYN 
+	if((tp->trickles_opt & TCP_TRICKLES_ENABLE) &&
+	   (tp->trickles_opt & TCP_TRICKLES_SYNDATA)) {
+		//printk("hit syn path\n");
+		sendData = 1;
+		buff = alloc_skb(ETHERNET_MTU, sk->allocation);
+	} else {
+		buff = alloc_skb(MAX_TCP_HEADER + 15, sk->allocation);
+	}
+#endif
 	if (unlikely(buff == NULL))
 		return -ENOBUFS;
 
@@ -1231,6 +1244,12 @@ int tcp_connect(struct sock *sk)
 	TCP_SKB_CB(buff)->end_seq = tp->write_seq;
 	tp->snd_nxt = tp->write_seq;
 	tp->pushed_seq = tp->write_seq;
+
+	if(sendData) {
+		//printk("pre piggyback hook\n");
+		trickles_syn_piggyback_hook(sk,buff); 
+		//printk("post piggyback hook\n");
+	}
 
 	/* Send it off. */
 	TCP_SKB_CB(buff)->when = tcp_time_stamp;

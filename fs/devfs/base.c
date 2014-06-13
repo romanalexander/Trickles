@@ -1365,6 +1365,7 @@ static struct devfs_entry *_devfs_find_entry (devfs_handle_t dir,
 	if (entry != NULL) return entry;
     }
     /*  Have to search by major and minor: slow  */
+    printk("name %s major %d minor %d\n", name, major, minor);
     if ( (major == 0) && (minor == 0) ) return NULL;
     return _devfs_find_by_dev (root_entry, major, minor, type);
 }   /*  End Function _devfs_find_entry  */

@@ -3,6 +3,10 @@
  * HISTORY:
  *
  * $Log: pgtable.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:01  ashieh
+ * initial version
+ *
+ *
  * Revision 1.17  2002/12/02 08:14:08  starvik
  * Merge of Linux 2.4.20
  *

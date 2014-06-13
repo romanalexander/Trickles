@@ -5,7 +5,7 @@
  *                     Steven J. Hill <sjhill@cotw.com>
  *		       Thomas Gleixner <tglx@linutronix.de>
  *
- * $Id: nand.h,v 1.19 2002/12/02 21:48:17 gleixner Exp $
+ * $Id: nand.h,v 1.1.1.1 2004/06/19 05:02:52 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

@@ -49,10 +49,12 @@ extern int console_printk[];
 # define ATTRIB_NORET  __attribute__((noreturn))
 # define NORET_AND     noreturn,
 
-#ifdef __i386__
+#if defined(__i386__) || defined(UM_FASTCALL)
 #define FASTCALL(x)	x __attribute__((regparm(3)))
+#define fastcall        __attribute__((regparm(3)))
 #else
 #define FASTCALL(x)	x
+#define fastcall
 #endif
 
 struct completion;
@@ -195,5 +197,12 @@ struct sysinfo {
 };
 
 #define BUG_ON(condition) do { if (unlikely((condition)!=0)) BUG(); } while(0)
+
+#define WARN_ON(condition) do { \
+        if (unlikely((condition)!=0)) { \
+                printk("Badness in %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__); \
+                dump_stack(); \
+        } \
+} while (0)
 
 #endif /* _LINUX_KERNEL_H */

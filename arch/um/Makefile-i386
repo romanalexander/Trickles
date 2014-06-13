@@ -1,0 +1,46 @@
+ifeq ($(CONFIG_HOST_2G_2G),y)
+TOP_ADDR = 0x80000000
+else
+TOP_ADDR = 0xc0000000
+endif
+
+ifeq ($(CONFIG_MODE_SKAS),y)
+  ifneq ($(CONFIG_MODE_TT),y)
+     START = 0x8048000
+  endif
+endif
+
+ARCH_CFLAGS = -U__$(SUBARCH)__ -U$(SUBARCH)
+
+ifneq ($(CONFIG_GPROF),y)
+ARCH_CFLAGS += -DUM_FASTCALL
+endif
+
+ELF_ARCH = $(SUBARCH)
+ELF_FORMAT = elf32-$(SUBARCH)
+
+I386_H = $(ARCH_DIR)/include/sysdep-i386
+SYS = $(ARCH_DIR)/sys-i386
+UTIL = $(SYS)/util
+SUBDIRS += $(UTIL)
+
+SYS_HEADERS = $(I386_H)/sc.h $(I386_H)/thread.h
+
+$(I386_H)/sc.h : $(UTIL)/mk_sc
+	$(UTIL)/mk_sc > $@
+
+$(I386_H)/thread.h : $(UTIL)/mk_thread
+	$(UTIL)/mk_thread > $@
+
+$(UTIL)/mk_sc : $(UTIL)/mk_sc.c
+	$(MAKE) -C $(UTIL) mk_sc
+
+$(UTIL)/mk_thread : $(UTIL)/mk_thread_user.c $(UTIL)/mk_thread_kern.c \
+	$(I386_H)/sc.h
+	$(MAKE) -C $(UTIL) mk_thread
+
+sysclean :
+	rm -f $(SYS_HEADERS)
+	$(MAKE) -C $(UTIL) clean
+	$(MAKE) -C $(SYS) clean
+

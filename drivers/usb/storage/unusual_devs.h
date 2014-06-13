@@ -1,7 +1,7 @@
 /* Driver for USB Mass Storage compliant devices
  * Ununsual Devices File
  *
- * $Id: unusual_devs.h,v 1.32 2002/02/25 02:41:24 mdharm Exp $
+ * $Id: unusual_devs.h,v 1.1.1.1 2004/06/19 05:03:47 ashieh Exp $
  *
  * Current development and maintenance by:
  *   (c) 2000-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)

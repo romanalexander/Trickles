@@ -1,7 +1,7 @@
 /*
  * IPVS:        Weighted Least-Connection Scheduling module
  *
- * Version:     $Id: ip_vs_wlc.c,v 1.10.2.1 2003/04/11 14:02:35 wensong Exp $
+ * Version:     $Id: ip_vs_wlc.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:     Wensong Zhang <wensong@linuxvirtualserver.org>
  *              Peter Kese <peter.kese@ijs.si>

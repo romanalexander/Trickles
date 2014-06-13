@@ -1,7 +1,7 @@
 /* 
  * Direct MTD block device access
  *
- * $Id: mtdblock.c,v 1.51 2001/11/20 11:42:33 dwmw2 Exp $
+ * $Id: mtdblock.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  * 02-nov-2000	Nicolas Pitre		Added read-modify-write with cache
  */

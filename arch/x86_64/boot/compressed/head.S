@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 1991, 1992, 1993  Linus Torvalds
  *
- *  $Id: head.S,v 1.3 2001/04/20 00:59:28 ak Exp $	 		
+ *  $Id: head.S,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $	 		
  */
 
 /*

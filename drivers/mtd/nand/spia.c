@@ -8,7 +8,7 @@
  *			to controllines	(due to change in nand.c)
  *			page_cache added
  *
- * $Id: spia.c,v 1.16 2002/03/05 13:50:47 dwmw2 Exp $
+ * $Id: spia.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

@@ -7,6 +7,10 @@
 *! Functions exported: ds1302_readreg, ds1302_writereg, ds1302_init
 *!
 *! $Log: ds1302.c,v $
+*! Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+*! initial version
+*!
+*!
 *! Revision 1.19  2003/06/12 08:02:05  johana
 *! Removed faulty comma from printk.
 *! Fixed warning () -> (void)
@@ -108,7 +112,7 @@
 *!
 *! (C) Copyright 1999, 2000, 2001  Axis Communications AB, LUND, SWEDEN
 *!
-*! $Id: ds1302.c,v 1.19 2003/06/12 08:02:05 johana Exp $
+*! $Id: ds1302.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $
 *!
 *!***************************************************************************/
 

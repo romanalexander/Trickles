@@ -13,6 +13,10 @@
  * L. Haag
  *
  * $Log: n_r3964.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:18  ashieh
+ * initial version
+ *
+ *
  * Revision 1.8  2000/03/23 14:14:54  dwmw2
  * Fix race in sleeping in r3964_read()
  *
@@ -217,7 +221,7 @@ static int __init r3964_init(void)
 {
    int status;
    
-   printk ("r3964: Philips r3964 Driver $Revision: 1.8 $\n");
+   printk ("r3964: Philips r3964 Driver $Revision: 1.1.1.1 $\n");
 
    /*
     * Register the tty line discipline

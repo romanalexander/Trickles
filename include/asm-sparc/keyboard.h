@@ -1,4 +1,4 @@
-/* $Id: keyboard.h,v 1.7 2001/08/18 09:40:46 davem Exp $
+/* $Id: keyboard.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  * linux/include/asm-sparc/keyboard.h
  *
  * sparc64 Created Aug 29 1997 by Eddie C. Dost (ecd@skynet.be)

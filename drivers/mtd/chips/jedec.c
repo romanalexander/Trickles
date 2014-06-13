@@ -11,7 +11,7 @@
  * not going to guess how to send commands to them, plus I expect they will
  * all speak CFI..
  *
- * $Id: jedec.c,v 1.14 2002/06/27 02:19:12 dwmw2 Exp $
+ * $Id: jedec.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  */
 
 #include <linux/mtd/jedec.h>

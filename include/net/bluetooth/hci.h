@@ -23,7 +23,7 @@
 */
 
 /*
- *  $Id: hci.h,v 1.5 2002/06/27 17:29:30 maxk Exp $
+ *  $Id: hci.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  */
 
 #ifndef __HCI_H

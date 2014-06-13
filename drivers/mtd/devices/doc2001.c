@@ -4,7 +4,7 @@
  * (c) 1999 Machine Vision Holdings, Inc.
  * (c) 1999, 2000 David Woodhouse <dwmw2@infradead.org>
  *
- * $Id: doc2001.c,v 1.38 2002/12/10 15:05:42 gleixner Exp $
+ * $Id: doc2001.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #include <linux/kernel.h>

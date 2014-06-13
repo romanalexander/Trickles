@@ -1,4 +1,4 @@
-/* $Id: eicon_isa.h,v 1.1.4.1 2001/11/20 14:19:35 kai Exp $
+/* $Id: eicon_isa.h,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * ISDN low-level module for Eicon active ISDN-Cards.
  *

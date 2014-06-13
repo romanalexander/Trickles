@@ -105,4 +105,6 @@
 #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
 #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
 
+#define TIOCGDB         0x547F  /* enable GDB stub mode on this tty */
+
 #endif /* _ASM_PPC_IOCTLS_H */

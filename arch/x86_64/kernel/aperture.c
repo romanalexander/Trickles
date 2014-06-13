@@ -8,7 +8,7 @@
  * because only the bootmem allocator can allocate 32+MB. 
  * 
  * Copyright 2002 Andi Kleen, SuSE Labs.
- * $Id: aperture.c,v 1.8 2004/02/27 18:30:19 ak Exp $
+ * $Id: aperture.c,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $
  */
 #include <linux/config.h>
 #include <linux/kernel.h>

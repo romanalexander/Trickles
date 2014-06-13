@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp.c,v 1.215 2001/10/31 08:17:58 davem Exp $
+ * Version:	$Id: tcp.c,v 1.2 2005/03/25 17:50:36 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -260,6 +260,8 @@
 #include <asm/uaccess.h>
 #include <asm/ioctls.h>
 
+#include <net/trickles.h>
+
 int sysctl_tcp_fin_timeout = TCP_FIN_TIMEOUT;
 
 struct tcp_mib	tcp_statistics[NR_CPUS*2];
@@ -382,6 +384,13 @@ unsigned int tcp_poll(struct file * file, struct socket *sock, poll_table *wait)
 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
 
 	poll_wait(file, sk->sleep, wait);
+	if (sk->state == TCP_LISTEN) {
+		if((tp->trickles_opt & TCP_TRICKLES_ENABLE)) {
+			return trickles_sock_poll_hook(file,sock,wait);
+		} else {
+			return tcp_listen_poll(sk, wait);
+		}
+	}
 	if (sk->state == TCP_LISTEN)
 		return tcp_listen_poll(sk, wait);
 
@@ -450,6 +459,12 @@ unsigned int tcp_poll(struct file * file, struct socket *sock, poll_table *wait)
 				 */
 				if (tcp_wspace(sk) >= tcp_min_write_space(sk))
 					mask |= POLLOUT | POLLWRNORM;
+			}
+			// Trickles bytestream conversion compatibility
+			if(tp->trickles_opt & TCP_TRICKLES_ENABLE) {
+				if(TRICKLES_HAS_SENDSPACE(sk)) {
+					mask |= POLLOUT | POLLWRNORM;
+				}
 			}
 		}
 
@@ -1279,7 +1294,7 @@ static inline void tcp_eat_skb(struct sock *sk, struct sk_buff * skb)
  * calculation of whether or not we must ACK for the sake of
  * a window update.
  */
-static void cleanup_rbuf(struct sock *sk, int copied)
+void cleanup_rbuf(struct sock *sk, int copied)
 {
 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
 	int time_to_ack = 0;
@@ -1290,49 +1305,56 @@ static void cleanup_rbuf(struct sock *sk, int copied)
 	BUG_TRAP(skb==NULL || before(tp->copied_seq, TCP_SKB_CB(skb)->end_seq));
 #endif
 
-	if (tcp_ack_scheduled(tp)) {
-		   /* Delayed ACKs frequently hit locked sockets during bulk receive. */
-		if (tp->ack.blocked
-		    /* Once-per-two-segments ACK was not sent by tcp_input.c */
-		    || tp->rcv_nxt - tp->rcv_wup > tp->ack.rcv_mss
-		    /*
-		     * If this read emptied read buffer, we send ACK, if
-		     * connection is not bidirectional, user drained
-		     * receive buffer and there was a small segment
-		     * in queue.
-		     */
-		    || (copied > 0 &&
-			(tp->ack.pending&TCP_ACK_PUSHED) &&
-			!tp->ack.pingpong &&
-			atomic_read(&sk->rmem_alloc) == 0)) {
-			time_to_ack = 1;
-		}
-	}
-
-  	/* We send an ACK if we can now advertise a non-zero window
-	 * which has been raised "significantly".
-	 *
-	 * Even if window raised up to infinity, do not send window open ACK
-	 * in states, where we will not receive more. It is useless.
-  	 */
-	if(copied > 0 && !time_to_ack && !(sk->shutdown&RCV_SHUTDOWN)) {
-		__u32 rcv_window_now = tcp_receive_window(tp);
-
-		/* Optimize, __tcp_select_window() is not cheap. */
-		if (2*rcv_window_now <= tp->window_clamp) {
-			__u32 new_window = __tcp_select_window(sk);
-
-			/* Send ACK now, if this read freed lots of space
-			 * in our buffer. Certainly, new_window is new window.
-			 * We can advertise it now, if it is not less than current one.
-			 * "Lots" means "at least twice" here.
-			 */
-			if(new_window && new_window >= 2*rcv_window_now)
+	if(tp->trickles_opt & TCP_TRICKLES_ENABLE) {
+		local_bh_disable();
+		bh_lock_sock(sk);
+		trickles_send_ack_hook(sk);
+		bh_unlock_sock(sk);
+		local_bh_enable();
+	} else {
+		if (tcp_ack_scheduled(tp)) {
+			/* Delayed ACKs frequently hit locked sockets during bulk receive. */
+			if (tp->ack.blocked
+			    /* Once-per-two-segments ACK was not sent by tcp_input.c */
+			    || tp->rcv_nxt - tp->rcv_wup > tp->ack.rcv_mss
+			    /*
+			     * If this read emptied read buffer, we send ACK, if
+			     * connection is not bidirectional, user drained
+			     * receive buffer and there was a small segment
+			     * in queue.
+			     */
+			    || (copied > 0 &&
+				(tp->ack.pending&TCP_ACK_PUSHED) &&
+				!tp->ack.pingpong &&
+				atomic_read(&sk->rmem_alloc) == 0)) {
 				time_to_ack = 1;
+			}
 		}
+		/* We send an ACK if we can now advertise a non-zero window
+		 * which has been raised "significantly".
+		 *
+		 * Even if window raised up to infinity, do not send window open ACK
+		 * in states, where we will not receive more. It is useless.
+		 */
+		if(copied > 0 && !time_to_ack && !(sk->shutdown&RCV_SHUTDOWN)) {
+			__u32 rcv_window_now = tcp_receive_window(tp);
+
+			/* Optimize, __tcp_select_window() is not cheap. */
+			if (2*rcv_window_now <= tp->window_clamp) {
+				__u32 new_window = __tcp_select_window(sk);
+
+				/* Send ACK now, if this read freed lots of space
+				 * in our buffer. Certainly, new_window is new window.
+				 * We can advertise it now, if it is not less than current one.
+				 * "Lots" means "at least twice" here.
+				 */
+				if(new_window && new_window >= 2*rcv_window_now)
+					time_to_ack = 1;
+			}
+		}
+		if (time_to_ack)
+			tcp_send_ack(sk);
 	}
-	if (time_to_ack)
-		tcp_send_ack(sk);
 }
 
 /* Now socket state including sk->err is changed only under lock,
@@ -2394,6 +2416,35 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char *optval,
 		}
 		break;
 
+	case TCP_TRICKLES:
+		if(sk->state != TCP_CLOSE || tp->trickles_opt != 0) {
+			err = -EINVAL;
+			break;
+		}
+		trickles_init_sock_hook(sk, val);
+		break;
+	case TCP_TRICKLES_ADDSERVER:
+		trickles_setsockopt_hook(sk,optname, val);
+		break;
+	case TCP_CMINISOCK_PIPE:
+		if(!((tp->trickles_opt & TCP_TRICKLES_ENABLE) && sk->state == TCP_LISTEN)) {
+			printk("setsockopt: CMINISOCK configuration attempted, but either TRICKLES not enabled, or sk->state != TCP_LISTEN\n");
+			err = -EINVAL;
+			break;
+		}
+		err = cminisock_config_pipe_hook(sk, optval, optlen, CMINISOCK_IN);
+		break;
+	case TCP_DROPRATE:
+		if(val < 0) {
+			printk("negative tcp drop rate specified\n");
+		}
+		printk("Set drop rate to %d\n", val);
+		tp->drop_rate = val;
+		break;
+	case TCP_INSTRUMENTATION:
+		tp->instrumentation = val;
+		break;
+
 	default:
 		err = -ENOPROTOOPT;
 		break;
@@ -2518,7 +2569,23 @@ int tcp_getsockopt(struct sock *sk, int level, int optname, char *optval,
 	case TCP_QUICKACK:
 		val = !tp->ack.pingpong;
 		break;
+	case TCP_TRICKLES:
+		val = tp->trickles_opt;
+		break;
+	case TCP_CMINISOCK_PIPE:
+		if(!((tp->trickles_opt & TCP_TRICKLES_ENABLE) && sk->state == TCP_LISTEN)) {
+			return -EINVAL;
+			break;
+		}
+		return cminisock_config_pipe_hook(sk, optval, (int)optlen, CMINISOCK_OUT);
+		break;
+ 	case TCP_MAC_CHANGED:
+ 		val = tp->mac_changed;
+ 		break;
 	default:
+		if(tp->trickles_opt & TCP_TRICKLES_ENABLE) {
+			return trickles_getsockopt_hook(sk, level, optname, optval, optlen);
+		}
 		return -ENOPROTOOPT;
 	};
 

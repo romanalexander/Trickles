@@ -669,8 +669,10 @@ static struct super_block *get_sb_bdev(struct file_system_type *fs_type,
 	if (!dev_name || !*dev_name)
 		return ERR_PTR(-EINVAL);
 	error = path_lookup(dev_name, LOOKUP_FOLLOW|LOOKUP_POSITIVE, &nd);
-	if (error)
+	if (error) {
+		printk("path lookup error\n");
 		return ERR_PTR(error);
+	}
 	inode = nd.dentry->d_inode;
 	error = -ENOTBLK;
 	if (!S_ISBLK(inode->i_mode))
@@ -800,14 +802,20 @@ do_kern_mount(const char *fstype, int flags, char *name, void *data)
 	mnt = alloc_vfsmnt(name);
 	if (!mnt)
 		goto out;
-	if (type->fs_flags & FS_REQUIRES_DEV)
+	if (type->fs_flags & FS_REQUIRES_DEV) {
+		printk("bdev\n");
 		sb = get_sb_bdev(type, flags, name, data);
-	else if (type->fs_flags & FS_SINGLE)
+	}
+	else if (type->fs_flags & FS_SINGLE) {
+		printk("single\n");
 		sb = get_sb_single(type, flags, name, data);
-	else
+	} else {
+		printk("nodev\n");
 		sb = get_sb_nodev(type, flags, name, data);
-	if (IS_ERR(sb))
+	}
+	if (IS_ERR(sb)) {
 		goto out_mnt;
+	}
 	if (type->fs_flags & FS_NOMOUNT)
 		sb->s_flags |= MS_NOUSER;
 	mnt->mnt_sb = sb;

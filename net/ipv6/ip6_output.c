@@ -5,7 +5,7 @@
  *	Authors:
  *	Pedro Roque		<roque@di.fc.ul.pt>	
  *
- *	$Id: ip6_output.c,v 1.33 2001/09/20 00:35:35 davem Exp $
+ *	$Id: ip6_output.c,v 1.1.1.1 2004/06/19 05:03:03 ashieh Exp $
  *
  *	Based on linux/net/ipv4/ip_output.c
  *

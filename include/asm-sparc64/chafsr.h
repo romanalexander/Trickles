@@ -1,4 +1,4 @@
-/* $Id: chafsr.h,v 1.1 2001/03/28 10:56:34 davem Exp $ */
+/* $Id: chafsr.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $ */
 #ifndef _SPARC64_CHAFSR_H
 #define _SPARC64_CHAFSR_H
 

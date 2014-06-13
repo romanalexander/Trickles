@@ -128,16 +128,17 @@ static void shmem_removepage(struct page *page)
  * 	      	       +-> 48-51
  * 	      	       +-> 52-55
  */
-static swp_entry_t *shmem_swp_entry(struct shmem_inode_info *info, unsigned long index, unsigned long *page)
+static void *shmem_block(unsigned long index, unsigned long *page,
+			 unsigned long *direct, void ***indirect)
 {
 	unsigned long offset;
 	void **dir;
 
 	if (index < SHMEM_NR_DIRECT)
-		return info->i_direct+index;
-	if (!info->i_indirect) {
+		return direct+index;
+	if (!*indirect) {
 		if (page) {
-			info->i_indirect = (void **) *page;
+			*indirect = (void **) *page;
 			*page = 0;
 		}
 		return NULL;			/* need another page */
@@ -146,7 +147,7 @@ static swp_entry_t *shmem_swp_entry(struct shmem_inode_info *info, unsigned long
 	index -= SHMEM_NR_DIRECT;
 	offset = index % ENTRIES_PER_PAGE;
 	index /= ENTRIES_PER_PAGE;
-	dir = info->i_indirect;
+	dir = *indirect;
 
 	if (index >= ENTRIES_PER_PAGE/2) {
 		index -= ENTRIES_PER_PAGE/2;
@@ -169,7 +170,21 @@ static swp_entry_t *shmem_swp_entry(struct shmem_inode_info *info, unsigned long
 		*dir = (void *) *page;
 		*page = 0;
 	}
-	return (swp_entry_t *) *dir + offset;
+	return (unsigned long **) *dir + offset;
+}
+
+static swp_entry_t *shmem_swp_entry(struct shmem_inode_info *info, unsigned long index, unsigned long *page)
+{
+	return((swp_entry_t *) shmem_block(index, page, 
+					   (unsigned long *) info->i_direct, 
+					   &info->i_indirect));
+}
+
+static unsigned long *shmem_map_count(struct shmem_inode_info *info, 
+				      unsigned long index, unsigned long *page)
+{
+	return((unsigned long *) shmem_block(index, page, info->map_direct, 
+					     &info->map_indirect));
 }
 
 /*
@@ -838,6 +853,7 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
 	ops = &shmem_vm_ops;
 	if (!S_ISREG(inode->i_mode))
 		return -EACCES;
+
 	UPDATE_ATIME(inode);
 	vma->vm_ops = ops;
 	return 0;
@@ -1723,4 +1739,125 @@ int shmem_zero_setup(struct vm_area_struct *vma)
 	return 0;
 }
 
+static int adjust_map_counts(struct shmem_inode_info *info, 
+			     unsigned long offset, unsigned long len, 
+			     int adjust)
+{
+	unsigned long idx, i, *count, page = 0;
+
+	spin_lock(&info->lock);
+	offset >>= PAGE_SHIFT;
+	len >>= PAGE_SHIFT;
+	for(i = 0; i < len; i++){
+		idx = (i + offset) >> (PAGE_CACHE_SHIFT - PAGE_SHIFT);
+
+		while((count = shmem_map_count(info, idx, &page)) == NULL){
+			spin_unlock(&info->lock);
+			page = get_zeroed_page(GFP_KERNEL);
+			if(page == 0)
+				return(-ENOMEM);
+			spin_lock(&info->lock);
+		}
+
+		if(page != 0)
+			free_page(page);
+
+		*count += adjust;
+	}
+	spin_unlock(&info->lock);
+	return(0);
+}
+
 EXPORT_SYMBOL(shmem_file_setup);
+
+struct file_operations anon_file_operations;
+
+static int anon_mmap(struct file *file, struct vm_area_struct *vma)
+{
+        struct file *new;
+	struct inode *inode;
+	loff_t size = vma->vm_end - vma->vm_start;
+	int err;
+
+	if(file->private_data == NULL){
+	        new = shmem_file_setup("dev/anon", size);
+		if(IS_ERR(new))
+			return(PTR_ERR(new));
+
+		new->f_op = &anon_file_operations;
+		file->private_data = new;
+	}
+	
+	if (vma->vm_file)
+		fput(vma->vm_file);
+	vma->vm_file = file->private_data;
+	get_file(vma->vm_file);
+
+	inode = vma->vm_file->f_dentry->d_inode;
+	err = adjust_map_counts(SHMEM_I(inode), vma->vm_pgoff, size, 1);
+	if(err)
+		return(err);
+
+	vma->vm_ops = &shmem_vm_ops;
+	return 0;
+}
+
+static void anon_munmap(struct file *file, struct vm_area_struct *vma, 
+			unsigned long start, unsigned long len)
+{
+	struct inode *inode = file->f_dentry->d_inode;
+	struct shmem_inode_info *info = SHMEM_I(inode);
+	pgd_t *pgd;
+	pmd_t *pmd;
+	pte_t *pte;
+	struct page *page;
+	unsigned long addr, idx, *count;
+
+	for(addr = start; addr < start + len; addr += PAGE_SIZE){
+		idx = (addr - vma->vm_start + vma->vm_pgoff);
+		idx >>= PAGE_CACHE_SHIFT;
+
+		count = shmem_map_count(info, idx, NULL);
+		BUG_ON(count == NULL);
+
+		(*count)--;
+		if(*count > 0)
+			continue;
+
+		pgd = pgd_offset(vma->vm_mm, addr);
+		if(pgd_none(*pgd))
+			continue;
+
+		pmd = pmd_offset(pgd, addr);
+		if(pmd_none(*pmd))
+			continue;
+
+		pte = pte_offset(pmd, addr);
+		if(!pte_present(*pte)) /* XXX need to handle swapped pages */
+			continue;
+
+		*pte = pte_mkclean(*pte);
+
+		page = pte_page(*pte);
+		LockPage(page);
+		lru_cache_del(page);
+		ClearPageDirty(page);
+		remove_inode_page(page);
+		UnlockPage(page);
+
+		page_cache_release(page);
+	}
+}
+
+int anon_release(struct inode *inode, struct file *file)
+{
+	if(file->private_data != NULL)
+		fput(file->private_data);
+	return(0);
+}
+
+struct file_operations anon_file_operations = {
+	.mmap		= anon_mmap,
+	.munmap 	= anon_munmap,
+	.release	= anon_release,
+};

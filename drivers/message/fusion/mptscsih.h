@@ -20,7 +20,7 @@
  *  (mailto:sjralston1@netscape.net)
  *  (mailto:mpt_linux_developer@lsil.com)
  *
- *  $Id: mptscsih.h,v 1.1.2.2 2003/05/07 14:08:35 pdelaney Exp $
+ *  $Id: mptscsih.h,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 /*

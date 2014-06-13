@@ -1,5 +1,5 @@
 /*
- * $Id: pcmciamtd.c,v 1.39 2003/01/06 17:51:38 spse Exp $
+ * $Id: pcmciamtd.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * pcmciamtd.c - MTD driver for PCMCIA flash memory cards
  *
@@ -47,7 +47,7 @@ static const int debug = 0;
 
 
 #define DRIVER_DESC	"PCMCIA Flash memory card driver"
-#define DRIVER_VERSION	"$Revision: 1.39 $"
+#define DRIVER_VERSION	"$Revision: 1.1.1.1 $"
 
 /* Size of the PCMCIA address space: 26 bits = 64 MB */
 #define MAX_PCMCIA_ADDR	0x4000000

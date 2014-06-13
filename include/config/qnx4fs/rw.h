@@ -1,0 +1,1 @@
+#define CONFIG_QNX4FS_RW 1

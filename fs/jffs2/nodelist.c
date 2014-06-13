@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: nodelist.c,v 1.30.2.6 2003/02/24 21:49:33 dwmw2 Exp $
+ * $Id: nodelist.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

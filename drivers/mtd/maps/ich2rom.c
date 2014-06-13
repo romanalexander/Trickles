@@ -2,7 +2,7 @@
  * ich2rom.c
  *
  * Normal mappings of chips in physical memory
- * $Id: ich2rom.c,v 1.2 2002/10/18 22:45:48 eric Exp $
+ * $Id: ich2rom.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #include <linux/module.h>

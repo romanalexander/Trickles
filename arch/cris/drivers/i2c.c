@@ -18,6 +18,10 @@
 *|                                 was high, causing DS75 to see  a stop condition
 *|
 *! $Log: i2c.c,v $
+*! Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+*! initial version
+*!
+*!
 *! Revision 1.12  2003/06/23 14:43:47  oskarp
 *! * i2c_sendnack is added.
 *!   - i2c_readreg now generates nack on last received byte, instead of ack.
@@ -72,7 +76,7 @@
 *! (C) Copyright 1999-2002 Axis Communications AB, LUND, SWEDEN
 *!
 *!***************************************************************************/
-/* $Id: i2c.c,v 1.12 2003/06/23 14:43:47 oskarp Exp $ */
+/* $Id: i2c.c,v 1.1.1.1 2004/06/19 05:04:08 ashieh Exp $ */
 /****************** INCLUDE FILES SECTION ***********************************/
 
 #include <linux/module.h>

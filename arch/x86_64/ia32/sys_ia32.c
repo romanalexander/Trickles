@@ -16,7 +16,7 @@
  *
  * This file assumes that there is a hole at the end of user address space.
  *
- * $Id: sys_ia32.c,v 1.70 2004/03/03 23:36:43 ak Exp $
+ * $Id: sys_ia32.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $
  */
 
 #include <linux/config.h>
@@ -3042,7 +3042,7 @@ struct exec_domain ia32_exec_domain = {
 
 static int __init ia32_init (void)
 {
-	printk("IA32 emulation $Id: sys_ia32.c,v 1.70 2004/03/03 23:36:43 ak Exp $\n");  
+	printk("IA32 emulation $Id: sys_ia32.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $\n");  
 	ia32_exec_domain.signal_map = default_exec_domain.signal_map;
 	ia32_exec_domain.signal_invmap = default_exec_domain.signal_invmap;
 	register_exec_domain(&ia32_exec_domain);

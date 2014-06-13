@@ -4,7 +4,7 @@
  *	Authors:	Alan Cox <iiitac@pyr.swan.ac.uk>
  *			Florian La Roche <rzsfl@rz.uni-sb.de>
  *
- *	Version:	$Id: skbuff.c,v 1.90 2001/11/07 05:56:19 davem Exp $
+ *	Version:	$Id: skbuff.c,v 1.2 2004/07/19 20:39:45 ashieh Exp $
  *
  *	Fixes:	
  *		Alan Cox	:	Fixed the worst of the load balancer bugs.
@@ -60,6 +60,12 @@
 
 #include <asm/uaccess.h>
 #include <asm/system.h>
+
+// ashieh 0715 - bookkeeping for sk_buff memory allocation
+atomic_t g_device_skb = ATOMIC_INIT(0);
+atomic_t g_other_skb = ATOMIC_INIT(0);
+atomic_t g_device_skb_num = ATOMIC_INIT(0);
+atomic_t g_other_skb_num = ATOMIC_INIT(0);
 
 int sysctl_hot_list_len = 128;
 
@@ -208,6 +214,8 @@ struct sk_buff *alloc_skb(unsigned int size,int gfp_mask)
 	atomic_set(&(skb_shinfo(skb)->dataref), 1);
 	skb_shinfo(skb)->nr_frags = 0;
 	skb_shinfo(skb)->frag_list = NULL;
+
+	record_new_skb(skb, RECORD_OTHER_SKB, 1);
 	return skb;
 
 nodata:
@@ -286,6 +294,7 @@ static void skb_release_data(struct sk_buff *skb)
 		if (skb_shinfo(skb)->frag_list)
 			skb_drop_fraglist(skb);
 
+		record_free_skb_body(skb);
 		kfree(skb->head);
 	}
 }
@@ -310,6 +319,8 @@ void kfree_skbmem(struct sk_buff *skb)
 
 void __kfree_skb(struct sk_buff *skb)
 {
+	record_free_skb_head(skb);
+
 	if (skb->list) {
 	 	printk(KERN_WARNING "Warning: kfree_skb passed an skb still "
 		       "on a list (from %p).\n", NET_CALLER(skb));
@@ -406,6 +417,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, int gfp_mask)
 #ifdef CONFIG_NETFILTER
 	nf_conntrack_get(skb->nfct);
 #endif
+	record_new_skb(n, skb->alloc_pool, 0);
 	return n;
 }
 
@@ -486,6 +498,7 @@ struct sk_buff *skb_copy(const struct sk_buff *skb, int gfp_mask)
 		BUG();
 
 	copy_skb_header(n, skb);
+	record_transfer_skb(n, skb->alloc_pool);
 
 	return n;
 }
@@ -597,6 +610,7 @@ struct sk_buff *pskb_copy(struct sk_buff *skb, int gfp_mask)
 	}
 
 	copy_skb_header(n, skb);
+	record_transfer_skb(n, skb->alloc_pool);
 
 	return n;
 }
@@ -731,6 +745,7 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
 		BUG();
 
 	copy_skb_header(n, skb);
+	record_transfer_skb(n, skb->alloc_pool);
 	return n;
 }
 
@@ -1236,3 +1251,12 @@ void __init skb_init(void)
 	for (i=0; i<NR_CPUS; i++)
 		skb_queue_head_init(&skb_head_pool[i].list);
 }
+
+#if 0
+// ashieh 0715 - memory bookkeeping
+extern atomic_t g_device_skb;
+extern atomic_t g_device_skb_num;
+extern atomic_t g_other_skb;
+extern atomic_t g_other_skb_num;
+#endif
+

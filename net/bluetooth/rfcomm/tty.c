@@ -24,7 +24,7 @@
 /*
  * RFCOMM TTY.
  *
- * $Id: tty.c,v 1.26 2002/10/18 20:12:12 maxk Exp $
+ * $Id: tty.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

@@ -4,7 +4,7 @@
  * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)
  * Based on linux/drivers/video/skeletonfb.c by Geert Uytterhoeven.
  * --------------------------------------------------------------------------
- * $Id: pm2fb.c,v 1.163 1999/02/21 14:06:49 illo Exp $
+ * $Id: pm2fb.c,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $
  * --------------------------------------------------------------------------
  * TODO multiple boards support
  * --------------------------------------------------------------------------

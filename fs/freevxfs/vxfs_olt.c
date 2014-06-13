@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  */
 
-#ident "$Id: vxfs_olt.c,v 1.10 2002/01/02 23:03:58 hch Exp hch $"
+#ident "$Id: vxfs_olt.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $"
 
 /* 
  * Veritas filesystem driver - object location table support.

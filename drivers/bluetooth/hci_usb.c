@@ -28,7 +28,7 @@
  *    Copyright (c) 2000 Greg Kroah-Hartman        <greg@kroah.com>
  *    Copyright (c) 2000 Mark Douglas Corner       <mcorner@umich.edu>
  *
- * $Id: hci_usb.c,v 1.8 2002/07/18 17:23:09 maxk Exp $    
+ * $Id: hci_usb.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $    
  */
 #define VERSION "2.5"
 

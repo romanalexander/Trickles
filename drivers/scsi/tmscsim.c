@@ -7,7 +7,7 @@
  ***********************************************************************/
 /* (C) Copyright: put under GNU GPL in 10/96  (see README.tmscsim)	*
 *************************************************************************/
-/* $Id: tmscsim.c,v 2.60.2.30 2000/12/20 01:07:12 garloff Exp $		*/
+/* $Id: tmscsim.c,v 1.1.1.1 2004/06/19 05:03:24 ashieh Exp $		*/
 /*	Enhancements and bugfixes by					*
  *	Kurt Garloff <kurt@garloff.de>	<garloff@suse.de>		*
  ***********************************************************************/

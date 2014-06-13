@@ -2,7 +2,7 @@
 #define __HID_H
 
 /*
- * $Id: hid.h,v 1.10 2001/05/10 15:56:07 vojtech Exp $
+ * $Id: hid.h,v 1.1.1.1 2004/06/19 05:03:42 ashieh Exp $
  *
  *  Copyright (c) 1999 Andreas Gal
  *  Copyright (c) 2000-2001 Vojtech Pavlik

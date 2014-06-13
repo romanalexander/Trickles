@@ -1,4 +1,4 @@
-/* $Id: avm_a1p.c,v 1.1.4.1 2001/11/20 14:19:35 kai Exp $
+/* $Id: avm_a1p.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * low level stuff for the following AVM cards:
  * A1 PCMCIA
@@ -57,7 +57,7 @@
 #define byteout(addr,val) outb(val,addr)
 #define bytein(addr) inb(addr)
 
-static const char *avm_revision = "$Revision: 1.1.4.1 $";
+static const char *avm_revision = "$Revision: 1.1.1.1 $";
 
 static inline u_char
 ReadISAC(struct IsdnCardState *cs, u_char offset)

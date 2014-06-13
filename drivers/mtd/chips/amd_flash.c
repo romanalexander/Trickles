@@ -3,7 +3,7 @@
  *
  * Author: Jonas Holmberg <jonas.holmberg@axis.com>
  *
- * $Id: amd_flash.c,v 1.19 2003/01/24 13:30:11 dwmw2 Exp $
+ * $Id: amd_flash.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  * Copyright (c) 2001 Axis Communications AB
  *

@@ -5,7 +5,7 @@
  *              high-performance and highly available server based on a
  *              cluster of servers.
  *
- * Version:     $Id: ip_vs_sched.c,v 1.11 2001/11/04 08:58:43 wensong Exp $
+ * Version:     $Id: ip_vs_sched.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:     Wensong Zhang <wensong@linuxvirtualserver.org>
  *              Peter Kese <peter.kese@ijs.si>

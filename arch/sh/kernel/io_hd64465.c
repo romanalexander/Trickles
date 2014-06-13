@@ -1,5 +1,5 @@
 /*
- * $Id: io_hd64465.c,v 1.7 2001/05/09 07:39:36 gniibe Exp $
+ * $Id: io_hd64465.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  * by Greg Banks <gbanks@pocketpenguins.com>
  * (c) 2000 PocketPenguins Inc
  *

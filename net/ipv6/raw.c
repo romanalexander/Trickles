@@ -7,7 +7,7 @@
  *
  *	Adapted from linux/net/ipv4/raw.c
  *
- *	$Id: raw.c,v 1.50.2.1 2002/03/05 12:47:34 davem Exp $
+ *	$Id: raw.c,v 1.1.1.1 2004/06/19 05:03:03 ashieh Exp $
  *
  *	Fixes:
  *	Hideaki YOSHIFUJI	:	sin6_scope_id support

@@ -25,7 +25,7 @@
 /*
  * BlueZ SCO sockets.
  *
- * $Id: sco.c,v 1.4 2002/07/22 20:32:54 maxk Exp $
+ * $Id: sco.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 #define VERSION "0.3"
 

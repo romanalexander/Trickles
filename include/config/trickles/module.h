@@ -1,0 +1,1 @@
+#define CONFIG_TRICKLES_MODULE 1

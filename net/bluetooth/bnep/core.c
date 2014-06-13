@@ -26,7 +26,7 @@
 */
 
 /*
- * $Id: core.c,v 1.18 2002/07/14 07:09:19 maxk Exp $
+ * $Id: core.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */ 
 
 #define __KERNEL_SYSCALLS__

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999,2000 Dan Aizenstros (dan@vcubed.com)
  *
- * $Id: pci-v320usc.h,v 1.1 2003/02/20 04:26:36 gerg Exp $
+ * $Id: pci-v320usc.h,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  */
 
 #ifndef _V320USC_H_

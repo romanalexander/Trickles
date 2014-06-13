@@ -20,9 +20,9 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
  *
- * $Source: /homes/cvs/ftape-stacked/ftape/lowlevel/fdc-io.h,v $
- * $Revision: 1.3 $
- * $Date: 1997/10/05 19:18:06 $
+ * $Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/lowlevel/fdc-io.h,v $
+ * $Revision: 1.1.1.1 $
+ * $Date: 2004/06/19 05:03:20 $
  *
  *      This file contains the declarations for the low level
  *      functions that communicate with the floppy disk controller,

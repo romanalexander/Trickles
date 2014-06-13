@@ -6,7 +6,7 @@
  *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)
  *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)
  *
- *	$Id: nettel.c,v 1.1 2002/08/08 06:30:13 gerg Exp $
+ *	$Id: nettel.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 /****************************************************************************/

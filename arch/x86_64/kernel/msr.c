@@ -1,4 +1,4 @@
-#ident "$Id: msr.c,v 1.8 2003/01/10 15:17:43 ak Exp $"
+#ident "$Id: msr.c,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $"
 /* ----------------------------------------------------------------------- *
  *   
  *   Copyright 2000 H. Peter Anvin - All Rights Reserved

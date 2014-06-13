@@ -1,4 +1,4 @@
-/* $Id: rtrap.S,v 1.57.2.2 2002/03/03 10:31:56 davem Exp $
+/* $Id: rtrap.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * rtrap.S: Preparing for return from trap on Sparc V9.
  *
  * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)

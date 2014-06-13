@@ -1,4 +1,4 @@
-/* $Id: kcapi.c,v 1.1.4.1 2001/11/20 14:19:34 kai Exp $
+/* $Id: kcapi.c,v 1.1.1.1 2004/06/19 05:03:36 ashieh Exp $
  * 
  * Kernel CAPI 2.0 Module
  * 
@@ -33,7 +33,7 @@
 #include <linux/b1lli.h>
 #endif
 
-static char *revision = "$Revision: 1.1.4.1 $";
+static char *revision = "$Revision: 1.1.1.1 $";
 
 /* ------------------------------------------------------------- */
 

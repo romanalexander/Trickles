@@ -1,6 +1,9 @@
 #
 # IP configuration
 #
+
+tristate 'Trickles' CONFIG_TRICKLES
+
 bool '  IP: multicasting' CONFIG_IP_MULTICAST
 bool '  IP: advanced router' CONFIG_IP_ADVANCED_ROUTER
 if [ "$CONFIG_IP_ADVANCED_ROUTER" = "y" ]; then
@@ -21,7 +24,7 @@ if [ "$CONFIG_IP_PNP" = "y" ]; then
    bool '    IP: BOOTP support' CONFIG_IP_PNP_BOOTP
    bool '    IP: RARP support' CONFIG_IP_PNP_RARP
 # not yet ready..
-#   bool '    IP: ARP support' CONFIG_IP_PNP_ARP		
+#   bool '    IP: ARP support' CONFIG_IP_PNP_ARP
 fi
 tristate '  IP: tunneling' CONFIG_NET_IPIP
 tristate '  IP: GRE tunnels over IP' CONFIG_NET_IPGRE

@@ -154,6 +154,22 @@ static struct dev_name_struct {
 	{ "pf",		0x2f00 },
 	{ "apblock", APBLOCK_MAJOR << 8},
 	{ "ddv", DDV_MAJOR << 8},
+	{ "ubd0", UBD_MAJOR << 8 | 0 << 4},
+	{ "ubda", UBD_MAJOR << 8 | 0 << 4},
+	{ "ubd1", UBD_MAJOR << 8 | 1 << 4},
+	{ "ubdb", UBD_MAJOR << 8 | 1 << 4},
+	{ "ubd2", UBD_MAJOR << 8 | 2 << 4},
+	{ "ubdc", UBD_MAJOR << 8 | 2 << 4},
+	{ "ubd3", UBD_MAJOR << 8 | 3 << 4},
+	{ "ubdd", UBD_MAJOR << 8 | 3 << 4},
+	{ "ubd4", UBD_MAJOR << 8 | 4 << 4},
+	{ "ubde", UBD_MAJOR << 8 | 4 << 4},
+	{ "ubd5", UBD_MAJOR << 8 | 5 << 4},
+	{ "ubdf", UBD_MAJOR << 8 | 5 << 4},
+	{ "ubd6", UBD_MAJOR << 8 | 6 << 4},
+	{ "ubdg", UBD_MAJOR << 8 | 6 << 4},
+	{ "ubd7", UBD_MAJOR << 8 | 7 << 4},
+	{ "ubdh", UBD_MAJOR << 8 | 7 << 4},
 	{ "jsfd",    JSFD_MAJOR << 8},
 #if defined(CONFIG_ARCH_S390)
 	{ "dasda", (DASD_MAJOR << MINORBITS) },
@@ -367,8 +383,8 @@ retry:
 		 * Allow the user to distinguish between failed open
 		 * and bad superblock on root device.
 		 */
-		printk ("VFS: Cannot open root device \"%s\" or %s\n",
-			root_device_name, kdevname (ROOT_DEV));
+		printk ("VFS: Cannot open root device \"%s\" or %s, reason %d\n",
+			root_device_name, kdevname (ROOT_DEV), err);
 		printk ("Please append a correct \"root=\" boot option\n");
 		panic("VFS: Unable to mount root fs on %s",
 			kdevname(ROOT_DEV));
@@ -406,11 +422,15 @@ static int __init create_dev(char *name, kdev_t dev, char *devfs_name)
 
 	handle = devfs_find_handle(NULL, dev ? NULL : devfs_name,
 				MAJOR(dev), MINOR(dev), DEVFS_SPECIAL_BLK, 1);
-	if (!handle)
+	if (!handle) {
+		printk("couldnt generate devfs handle\n");
 		return -1;
+	}
 	n = devfs_generate_path(handle, path + 5, sizeof (path) - 5);
-	if (n < 0)
+	if (n < 0) {
+		printk("couldnt generate devfs path\n");
 		return -1;
+	}
 	return sys_symlink(path + n + 5, name);
 }
 
@@ -773,7 +793,8 @@ static void __init mount_root(void)
 	}
 #endif
 	devfs_make_root(root_device_name);
-	create_dev("/dev/root", ROOT_DEV, root_device_name);
+	int err = create_dev("/dev/root", ROOT_DEV, root_device_name);
+	printk("create_dev err = %d, (%d,%d) %s\n", err, MAJOR(ROOT_DEV), MINOR(ROOT_DEV), root_device_name);
 #ifdef CONFIG_BLK_DEV_FD
 	if (MAJOR(ROOT_DEV) == FLOPPY_MAJOR) {
 		/* rd_doload is 2 for a dual initrd/ramload setup */
@@ -902,7 +923,7 @@ void prepare_namespace(void)
 	sys_mkdir("/root", 0700);
 	sys_mknod("/dev/console", S_IFCHR|0600, MKDEV(TTYAUX_MAJOR, 1));
 #ifdef CONFIG_DEVFS_FS
-	sys_mount("devfs", "/dev", "devfs", 0, NULL);
+	int err = sys_mount("devfs", "/dev", "devfs", 0, NULL);
 	do_devfs = 1;
 #endif
 

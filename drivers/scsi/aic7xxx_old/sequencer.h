@@ -33,7 +33,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *      $Id: sequencer.h,v 1.3 1997/09/27 19:37:31 gibbs Exp $
+ *      $Id: sequencer.h,v 1.1.1.1 2004/06/19 05:03:31 ashieh Exp $
  */
 
 #ifdef __LITTLE_ENDIAN_BITFIELD

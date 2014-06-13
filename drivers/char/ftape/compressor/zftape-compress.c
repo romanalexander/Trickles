@@ -27,9 +27,9 @@
  *     changed * appropriately. See below.
  */
 
- char zftc_src[] ="$Source: /homes/cvs/ftape-stacked/ftape/compressor/zftape-compress.c,v $";
- char zftc_rev[] = "$Revision: 1.1.6.1 $";
- char zftc_dat[] = "$Date: 1997/11/16 15:15:56 $";
+ char zftc_src[] ="$Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/compressor/zftape-compress.c,v $";
+ char zftc_rev[] = "$Revision: 1.1.1.1 $";
+ char zftc_dat[] = "$Date: 2004/06/19 05:03:19 $";
 
 #include <linux/errno.h>
 #include <linux/mm.h>

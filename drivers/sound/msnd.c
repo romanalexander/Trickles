@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Id: msnd.c,v 1.17 1999/03/21 16:50:09 andrewtv Exp $
+ * $Id: msnd.c,v 1.1.1.1 2004/06/19 05:03:34 ashieh Exp $
  *
  ********************************************************************/
 

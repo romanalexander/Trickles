@@ -1,4 +1,4 @@
-/* $Id: btfixupprep.c,v 1.6 2001/08/22 15:27:47 davem Exp $
+/* $Id: btfixupprep.c,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
    Simple utility to prepare vmlinux image for sparc.
    Resolves all BTFIXUP uses and settings and creates
    a special .s object to link to the image.

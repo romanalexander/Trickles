@@ -13,9 +13,13 @@
  * General Public License for more details.
  *
  *
- * $Id: aha152x.c,v 2.5 2002/04/14 11:24:53 fischer Exp $
+ * $Id: aha152x.c,v 1.1.1.1 2004/06/19 05:03:23 ashieh Exp $
  *
  * $Log: aha152x.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:23  ashieh
+ * initial version
+ *
+ *
  * Revision 2.5  2002/04/14 11:24:53  fischer
  * - isapnp support
  * - abort fixed

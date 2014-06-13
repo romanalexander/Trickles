@@ -26,7 +26,7 @@
 */
 
 /*
- * $Id: rfcomm.h,v 1.31 2002/10/18 20:12:11 maxk Exp $
+ * $Id: rfcomm.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  */
 
 #ifndef __RFCOMM_H

@@ -8,7 +8,7 @@
  * any future changes wrt the API will result in a change of the APIVERSION reported
  * to userspace by the DASDAPIVER-ioctl
  *
- * $Revision: 1.53 $
+ * $Revision: 1.1.1.1 $
  *
  * History of changes (starts July 2000)
  * 05/04/01 created by moving the kernel interface to drivers/s390/block/dasd_int.h

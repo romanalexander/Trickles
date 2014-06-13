@@ -90,6 +90,9 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/smp_lock.h>
+#ifdef CONFIG_GDB_CONSOLE
+#include <linux/kgdb.h>
+#endif
 
 #include <asm/uaccess.h>
 #include <asm/system.h>
@@ -650,6 +653,23 @@ void start_tty(struct tty_struct *tty)
 	wake_up_interruptible(&tty->write_wait);
 }
 
+#ifdef CONFIG_TTY_LOG
+
+int (*open_log)(void *, void *) = NULL;
+int (*write_log)(int, const char *, int, void *, int) = NULL;
+void (*close_log)(int, void *) = NULL;
+
+void register_tty_logger(int (*opener)(void *, void *),
+			 int (*writer)(int, const char *, int, void *, int),
+			 void (*closer)(int, void *))
+{
+        open_log = opener;
+	write_log = writer;
+	close_log = closer;
+}
+
+#endif
+
 static ssize_t tty_read(struct file * file, char * buf, size_t count, 
 			loff_t *ppos)
 {
@@ -690,8 +710,13 @@ static ssize_t tty_read(struct file * file, char * buf, size_t count,
 	else
 		i = -EIO;
 	unlock_kernel();
-	if (i > 0)
+	if (i > 0){
 		inode->i_atime = CURRENT_TIME;
+#ifdef CONFIG_TTY_LOG
+		if((tty->log_fd >= 0) && (write_log != NULL))
+			(*write_log)(tty->log_fd, buf, i, tty, 1);
+#endif
+	}
 	return i;
 }
 
@@ -745,6 +770,10 @@ static inline ssize_t do_tty_write(
 	if (written) {
 		file->f_dentry->d_inode->i_mtime = CURRENT_TIME;
 		ret = written;
+#ifdef CONFIG_TTY_LOG
+		if((tty->log_fd >= 0) && (write_log != NULL))
+			(*write_log)(tty->log_fd, buf - ret, ret, tty, 0);
+#endif
 	}
 	up(&tty->atomic_write);
 	return ret;
@@ -972,6 +1001,7 @@ static int init_dev(kdev_t device, struct tty_struct **ret_tty)
 			goto release_mem_out;
 		}
 	}
+
 	goto success;
 
 	/*
@@ -1291,6 +1321,11 @@ static void release_dev(struct file * filp)
 	run_task_queue(&tq_timer);
 	flush_scheduled_tasks();
 
+#ifdef CONFIG_TTY_LOG
+	if((tty->log_fd >= 0) && (close_log != NULL))
+		(*close_log)(tty->log_fd, tty);
+#endif
+
 	/* 
 	 * The release_mem function takes care of the details of clearing
 	 * the slots and preserving the termios structure.
@@ -1449,6 +1484,11 @@ init_dev_done:
 			nr_warns++;
 		}
 	}
+
+#ifdef CONFIG_TTY_LOG
+	if((tty->log_fd < 0) && (open_log != NULL))
+	       tty->log_fd = (*open_log)(tty, current->tty);
+#endif
 	return 0;
 }
 
@@ -2048,6 +2088,9 @@ static void initialize_tty_struct(struct tty_struct *tty)
 	spin_lock_init(&tty->read_lock);
 	INIT_LIST_HEAD(&tty->tty_files);
 	INIT_TQUEUE(&tty->SAK_tq, 0, 0);
+#ifdef CONFIG_TTY_LOG
+	tty->log_fd = -1;
+#endif
 }
 
 /*
@@ -2247,6 +2290,9 @@ void __init console_init(void)
 #endif
 #ifdef CONFIG_AU1X00_SERIAL_CONSOLE
 	au1x00_serial_console_init();
+#endif
+#ifdef CONFIG_GDB_CONSOLE
+	gdb_console_init();
 #endif
 #ifdef CONFIG_SERIAL_CONSOLE
 #if (defined(CONFIG_8xx) || defined(CONFIG_CPM2))

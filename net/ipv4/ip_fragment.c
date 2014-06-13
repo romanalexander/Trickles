@@ -5,7 +5,7 @@
  *
  *		The IP fragmentation functionality.
  *		
- * Version:	$Id: ip_fragment.c,v 1.58.2.1 2002/01/12 07:53:15 davem Exp $
+ * Version:	$Id: ip_fragment.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:	Fred N. van Kempen <waltje@uWalt.NL.Mugnet.ORG>
  *		Alan Cox <Alan.Cox@linux.org>

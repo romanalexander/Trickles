@@ -83,6 +83,7 @@ struct inode_operations bad_inode_ops =
  
 void make_bad_inode(struct inode * inode) 
 {
+	inode->i_state = 0;
 	inode->i_mode = S_IFREG;
 	inode->i_atime = inode->i_mtime = inode->i_ctime = CURRENT_TIME;
 	inode->i_op = &bad_inode_ops;	

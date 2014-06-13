@@ -1,5 +1,5 @@
 /*
- * $Id: ctcmain.c,v 1.63 2003/10/22 19:32:57 felfert Exp $
+ * $Id: ctcmain.c,v 1.1.1.1 2004/06/19 05:03:50 ashieh Exp $
  *
  * CTC / ESCON network driver
  *
@@ -35,7 +35,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.63 $
+ * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.1.1.1 $
  *
  */
 
@@ -419,7 +419,7 @@ static __inline__ int ctc_test_and_set_busy(net_device *dev)
  */
 static void print_banner(void) {
 	static int printed = 0;
-	char vbuf[] = "$Revision: 1.63 $";
+	char vbuf[] = "$Revision: 1.1.1.1 $";
 	char *version = vbuf;
 
 	if (printed)

@@ -1,5 +1,5 @@
 /*
- * $Id: setup_hd64465.c,v 1.4 2001/07/15 23:26:56 gniibe Exp $
+ * $Id: setup_hd64465.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * Setup and IRQ handling code for the HD64465 companion chip.
  * by Greg Banks <gbanks@pocketpenguins.com>

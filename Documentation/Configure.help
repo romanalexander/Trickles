@@ -16011,6 +16011,63 @@ CONFIG_USB_SPEEDTOUCH
   The module will be called speedtch.o. If you want to compile it as
   a module, say M here and read <file:Documentation/modules.txt>.
 
+Support for /proc/mm
+CONFIG_PROC_MM
+  Enables support for address space separation through /proc/mm.
+  A host kernel needs to have this enabled in order for UML to
+  run in skas mode.  UML kernels do not need to have this option
+  unless they will host sub-UMLs.
+
+  If you don't know what this does just say Y.
+
+Separate Kernel Address Space support
+CONFIG_MODE_SKAS
+  This option controls whether skas (separate kernel address space)
+  support is compiled in.  If you have applied the skas patch to the
+  host and enabled support for /proc/mm in the host kernel, then you
+  certainly want to say Y here (and consider saying N to
+  CONFIG_MODE_TT).  Otherwise, it is safe to say Y.  Disabling this
+  option will shrink the UML binary slightly.
+
+Tracing thread support
+CONFIG_MODE_TT
+  This option controls whether tracing thread support is compiled
+  into UML.  Normally, this should be set to Y.  If you intend to
+  use only skas mode (and the host has the skas patch applied to it),
+  then it is OK to say N here.
+
+Force a static link
+CONFIG_STATIC_LINK
+  If CONFIG_MODE_TT is disabled, then this option gives you the ability
+  to force a static link of UML.  Normally, if only skas mode is built
+  in to UML, it will be linked as a shared binary.  This is inconvenient
+  for use in a chroot jail.  So, if you intend to run UML inside a
+  chroot, and you disable CONFIG_MODE_TT, you probably want to say Y
+  here.
+
+2G/2G host address space split
+CONFIG_HOST_2G_2G
+  Most Linux machines are configured so that the kernel occupies the
+  upper 1G of the 4G address space and processes use the lower 3G.
+  However, some machine are configured with a 2G/2G split, with the
+  kernel occupying the upper 2G and processes using the lower 2G.
+
+  To allow UML to run on a such host you have to say Y here. N should be
+  a safe choice most of the time.
+
+Kernel stack size order
+CONFIG_KERNEL_STACK_ORDER
+  This option determines the size of UML kernel stacks.  They will
+  be 1 << order pages.  The default is OK unless you're running Valgrind
+  on UML, in which case, set this to 3.
+
+UML ubd block driver
+CONFIG_BLK_DEV_UBD
+  The User-Mode Linux port includes a driver called UBD which will let
+  you access arbitrary files on the host computer as block devices.
+  Unless you know that you do not need such virtual block devices say
+  Y here.
+
 CONFIG_USB_GADGET
   USB is a master/slave protocol, organized with one master
   host (such as a PC) controlling up to 127 peripheral devices.
@@ -16095,17 +16152,15 @@ CONFIG_USB_ETH
 
 Always do synchronous disk IO for UBD
 CONFIG_BLK_DEV_UBD_SYNC
-  The User-Mode Linux port includes a driver called UBD which will let
-  you access arbitrary files on the host computer as block devices.
-  Writes to such a block device are not immediately written to the
-  host's disk; this may cause problems if, for example, the User-Mode
-  Linux 'Virtual Machine' uses a journalling file system and the host
-  computer crashes.
+  Writes to the virtual block device are not immediately written to the host's
+  disk; this may cause problems if, for example, the User-Mode Linux
+  'Virtual Machine' uses a journalling filesystem and the host computer
+  crashes.
 
   Synchronous operation (i.e. always writing data to the host's disk
   immediately) is configurable on a per-UBD basis by using a special
   kernel command line option.  Alternatively, you can say Y here to
-  turn on synchronous operation by default for all block.
+  turn on synchronous operation by default for all block devices.
 
   If you're running a journalling file system (like reiserfs, for
   example) in your virtual machine, you will want to say Y here.  If
@@ -16117,6 +16172,7 @@ Enable ptrace proxy
 CONFIG_PT_PROXY
   This option enables a debugging interface which allows gdb to debug
   the kernel without needing to actually attach to kernel threads.
+  CONFIG_XTERM_CHAN must be enabled in order to enable CONFIG_PT_PROXY.
   If you want to do kernel debugging, say Y here; otherwise say N.
 
 Management console
@@ -16163,6 +16219,9 @@ CONFIG_GPROF
   See <http://user-mode-linux.sourceforge.net/gprof.html> for more
   details.
 
+  This option requires that CONFIG_MODE_TT be disabled, as UML will
+  not build with both enabled.
+
   If you're involved in UML kernel development and want to use gprof,
   say Y.  If you're unsure, say N.
 
@@ -16186,6 +16245,19 @@ CONFIG_HOSTFS
   If you'd like to be able to work with files stored on the host, 
   say Y or M here; otherwise say N.
 
+HoneyPot ProcFS
+CONFIG_HPPFS
+  hppfs (HoneyPot ProcFS) is a filesystem which allows UML /proc
+  entries to be overridden, removed, or fabricated from the host.
+  Its purpose is to allow a UML to appear to be a physical machine
+  by removing or changing anything in /proc which gives away the
+  identity of a UML.
+
+  See <http://user-mode-linux.sf.net/hppfs.html> for more information.
+
+  You only need this if you are setting up a UML honeypot.  Otherwise,
+  it is safe to say 'N' here.
+
 Example IO Memory driver
 CONFIG_MMAPPER
   The User-Mode Linux port can provide support for IO Memory
@@ -16200,6 +16272,21 @@ CONFIG_MMAPPER
 
   If you'd like to be able to provide a simulated IO port space for
   User-Mode Linux processes, say Y.  If unsure, say N.
+
+Anonymous Memory support
+CONFIG_DEV_ANON
+  Don't ask. Just say Y.
+
+Support for software watchdog inside UML
+CONFIG_UML_WATCHDOG
+  Support for a virtual hardware watchdog. It's safe to say N here.
+
+COW block device
+CONFIG_COW
+  This is a layered driver which sits above two other block devices.
+  One is read-only, and the other is a read-write layer which stores
+  all changes.  This provides the illusion that the read-only layer
+  can be mounted read-write and changed.
 
 Virtual Serial Line
 CONFIG_SSL
@@ -16311,25 +16398,196 @@ CONFIG_UML_NET_MCAST
 
 SLIP transport
 CONFIG_UML_NET_SLIP
-  The Slip User-Mode Linux network transport allows a running UML to
+  The slip User-Mode Linux network transport allows a running UML to
   network with its host over a point-to-point link.  Unlike Ethertap,
   which can carry any Ethernet frame (and hence even non-IP packets),
-  the Slip transport can only carry IP packets.
+  the slip transport can only carry IP packets.
 
-  To use this, your host must support Slip devices.
+  To use this, your host must support slip devices.
 
   For more information, see
   <http://user-mode-linux.sourceforge.net/networking.html>.  That site
-  has examples of the UML command line to use to enable Slip
+  has examples of the UML command line to use to enable slip
   networking, and details of a few quirks with it.
 
-  The Ethertap Transport is preferred over Slip because of its
-  limitation.  If you prefer Slip, however, say Y here.  Otherwise
+  The Ethertap Transport is preferred over slip because of its
+  limitations.  If you prefer slip, however, say Y here.  Otherwise
   choose the Multicast transport (to network multiple UMLs on 
   multiple hosts), Ethertap (to network with the host and the
   outside world), and/or the Daemon transport (to network multiple
   UMLs on a single host).  You may choose more than one without
   conflict.  If you don't need UML networking, say N.
+
+SLiRP transport
+CONFIG_UML_NET_SLIRP
+  The SLiRP User-Mode Linux network transport allows a running UML
+  to network by invoking a program that can handle SLIP encapsulated
+  packets.  This is commonly (but not limited to) the application
+  known as SLiRP, a program that can re-socket IP packets back onto
+  the host on which it is run.  Only IP packets are supported,
+  unlike other network transports that can handle all Ethernet
+  frames.  In general, slirp allows the UML the same IP connectivity
+  to the outside world that the host user is permitted, and unlike
+  other transports, SLiRP works without the need of root level
+  privleges, setuid binaries, or SLIP devices on the host.  This
+  also means not every type of connection is possible, but most
+  situations can be accomodated with carefully crafted slirp
+  commands that can be passed along as part of the network device's
+  setup string.  The effect of this transport on the UML is similar
+  that of a host behind a firewall that masquerades all network
+  connections passing through it (but is less secure).
+
+  To use this you should first have slirp compiled somewhere
+  accessible on the host, and have read its documentation.  If you
+  don't need UML networking, say N.
+
+  Startup example: "eth0=slirp,FE:FD:01:02:03:04,/usr/local/bin/slirp"
+
+pcap transport
+CONFIG_UML_NET_PCAP
+ The pcap transport makes a pcap packet stream on the host look
+  like an ethernet device inside UML.  This is useful for making
+  UML act as a network monitor for the host.  You must have libcap
+  installed in order to build the pcap transport into UML.
+
+  For more information, see
+  <http://user-mode-linux.sourceforge.net/networking.html>  That site
+  has examples of the UML command line to use to enable this option.
+
+  If you intend to use UML as a network monitor for the host, say
+  Y here.  Otherwise, say N.
+
+Default main console channel initialization
+CONFIG_CON_ZERO_CHAN
+  This is the string describing the channel to which the main console
+  will be attached by default.  This value can be overridden from the
+  command line.  The default value is "fd:0,fd:1", which attaches the
+  main console to stdin and stdout.
+  It is safe to leave this unchanged.
+
+Default console channel initialization
+CONFIG_CON_CHAN
+  This is the string describing the channel to which all consoles
+  except the main console will be attached by default.  This value can
+  be overridden from the command line.  The default value is "xterm",
+  which brings them up in xterms.
+  It is safe to leave this unchanged, although you may wish to change
+  this if you expect the UML that you build to be run in environments
+  which don't have X or xterm available.
+
+Default serial line channel initialization
+CONFIG_SSL_CHAN
+  This is the string describing the channel to which the serial lines
+  will be attached by default.  This value can be overridden from the
+  command line.  The default value is "pty", which attaches them to
+  traditional pseudo-terminals.
+  It is safe to leave this unchanged, although you may wish to change
+  this if you expect the UML that you build to be run in environments
+  which don't have a set of /dev/pty* devices.
+
+Nesting level
+CONFIG_NEST_LEVEL
+  This is set to the number of layers of UMLs that this UML will be run
+  in.  Normally, this is zero, meaning that it will run directly on the
+  host.  Setting it to one will build a UML that can run inside a UML
+  that is running on the host.  Generally, if you intend this UML to run
+  inside another UML, set CONFIG_NEST_LEVEL to one more than the host UML.
+  Note that if the hosting UML has its CONFIG_KERNEL_HALF_GIGS set to 
+  greater than one, then the guest UML should have its CONFIG_NEST_LEVEL 
+  set to the host's CONFIG_NEST_LEVEL + CONFIG_KERNEL_HALF_GIGS.
+  Only change this if you are running nested UMLs.
+
+Kernel address space size (in .5G units)
+CONFIG_KERNEL_HALF_GIGS
+  This determines the amount of address space that UML will allocate for
+  its own, measured in half Gigabyte units.  The default is 1.
+  Change this only if you need to boot UML with an unusually large amount
+  of physical memory.
+
+UML sound support
+CONFIG_UML_SOUND
+  This option enables UML sound support.  If enabled, it will pull in
+  soundcore and the UML hostaudio relay, which acts as a intermediary
+  between the host's dsp and mixer devices and the UML sound system.
+  It is safe to say 'Y' here.
+
+UML SMP support
+CONFIG_UML_SMP
+  This option enables UML SMP support.  UML implements virtual SMP by
+  allowing as many processes to run simultaneously on the host as
+  there are virtual processors configured.  Obviously, if the host is
+  a uniprocessor, those processes will timeshare, but, inside UML,
+  will appear to be running simultaneously.  If the host is a
+  multiprocessor, then UML processes may run simultaneously, depending
+  on the host scheduler.
+  CONFIG_SMP will be set to whatever this option is set to.
+  It is safe to leave this unchanged.
+
+file descriptor channel support
+CONFIG_FD_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to already set up file descriptors.  Generally, the main
+  console is attached to file descriptors 0 and 1 (stdin and stdout),
+  so it would be wise to leave this enabled unless you intend to
+  attach it to some other host device.
+
+null device channel support
+CONFIG_NULL_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to a device similar to /dev/null.  Data written to it disappears
+  and there is never any data to be read.
+
+port channel support
+CONFIG_PORT_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to host portals.  They may be accessed with 'telnet <host>
+  <port number>'.  Any number of consoles and serial lines may be
+  attached to a single portal, although what UML device you get when
+  you telnet to that portal will be unpredictable.
+  It is safe to say 'Y' here.
+
+pty channel support
+CONFIG_PTY_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to host pseudo-terminals.  Access to both traditional
+  pseudo-terminals (/dev/pty*) and pts pseudo-terminals are controlled
+  with this option.  The assignment of UML devices to host devices
+  will be announced in the kernel message log.
+  It is safe to say 'Y' here.
+
+tty channel support
+CONFIG_TTY_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to host terminals.  Access to both virtual consoles
+  (/dev/tty*) and the slave side of pseudo-terminals (/dev/ttyp* and
+  /dev/pts/*) are controlled by this option.
+  It is safe to say 'Y' here.
+
+xterm channel support
+CONFIG_XTERM_CHAN
+  This option enables support for attaching UML consoles and serial
+  lines to xterms.  Each UML device so assigned will be brought up in
+  its own xterm.
+  If you disable this option, then CONFIG_PT_PROXY will be disabled as
+  well, since UML's gdb currently requires an xterm.
+  It is safe to say 'Y' here.
+
+tty logging
+CONFIG_TTY_LOG
+  This option enables logging of all data going through pseudo-terminals
+  to the host.  This is primarily useful for honeypots, where you want
+  secure keystroke logging that can't be detected or disabled by root.
+  Say 'N' unless you are setting up a UML honeypot or otherwise know that
+  you want this option.
+
+UML real-time clock support
+CONFIG_UML_REAL_TIME_CLOCK
+  This option ties the UML clock to the host clock, so that time passes at
+  the same rate as on the host, regardless of how much CPU time the UML is
+  getting.  This should normally be enabled.  The exception would be if you're
+  debugging UML.  In this case, time spent staring at the debugger with UML
+  stopped will cause lots of timer ticks to be backed up, and UML will spent
+  lots of time calling the timer when it is finally continued.
 
 Microtek USB scanner support
 CONFIG_USB_MICROTEK
@@ -22092,6 +22350,31 @@ CONFIG_SGIWD93_SCSI
   If you have a Western Digital WD93 SCSI controller on
   an SGI MIPS system, say Y.  Otherwise, say N.
 
+KGDB: Remote (serial) kernel debugging with gdb
+CONFIG_KGDB
+  If you say Y here, it will be possible to remotely debug the
+  kernel using gdb. This enlarges your kernel image disk size by
+  several megabytes and requires a machine with more than 128 MB
+  RAM to avoid excessive linking time. 
+  To use this feature you need to perform some basic setup described
+  briefly in Documentation/i386/gdb-serial.txt.
+  More documentation of kernel debugger available at
+  http://kgdb.sourceforge.net
+  This is only useful for kernel hackers. If unsure, say N.
+
+KGDB: Thread analysis
+CONFIG_KGDB_THREAD
+  With thread analysis enabled, gdb can talk to kgdb stub to list
+  threads and to get stack trace for a thread. This option also enables
+  some code which helps gdb get exact status of thread. Thread analysis
+  adds some overhead to schedule and down functions. You can disable this
+  option if you do not want to compromise on speed.
+
+KGDB: Console messagegs through gdb
+CONFIG_GDB_CONSOLE
+  If you say Y here, console messages will appear through gdb.
+  Other consoles such as tty or ttyS will continue to work as usual.
+  
 Magic System Request Key support
 CONFIG_MAGIC_SYSRQ
   If you say Y here, you will have some control over the system even

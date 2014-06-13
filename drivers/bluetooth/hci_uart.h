@@ -23,7 +23,7 @@
 */
 
 /*
- * $Id: hci_uart.h,v 1.2 2002/09/09 01:17:32 maxk Exp $
+ * $Id: hci_uart.h,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 
 #ifndef N_HCI 

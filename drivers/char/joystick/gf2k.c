@@ -1,5 +1,5 @@
 /*
- * $Id: gf2k.c,v 1.12 2000/06/04 14:53:44 vojtech Exp $
+ * $Id: gf2k.c,v 1.1.1.1 2004/06/19 05:03:20 ashieh Exp $
  *
  *  Copyright (c) 1998-2000 Vojtech Pavlik
  *

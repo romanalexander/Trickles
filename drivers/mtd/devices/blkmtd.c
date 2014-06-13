@@ -1,5 +1,5 @@
 /*
- * $Id: blkmtd.c,v 1.17 2003/01/24 13:00:24 dwmw2 Exp $
+ * $Id: blkmtd.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * blkmtd.c - use a block device as a fake MTD
  *

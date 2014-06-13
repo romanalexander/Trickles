@@ -1,4 +1,4 @@
-/* $Id: isdnl1.c,v 1.1.4.1 2001/11/20 14:19:36 kai Exp $
+/* $Id: isdnl1.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * common low level stuff for Siemens Chipsetbased isdn cards
  *
@@ -18,7 +18,7 @@
  *
  */
 
-const char *l1_revision = "$Revision: 1.1.4.1 $";
+const char *l1_revision = "$Revision: 1.1.1.1 $";
 
 #define __NO_VERSION__
 #include <linux/init.h>

@@ -27,4 +27,8 @@
 #define __attribute_used__	/* not implemented */
 #endif /* __GNUC__ */
 
+/* no checker support, so we unconditionally define this as (null) */
+#define __user
+#define __iomem
+
 #endif /* __LINUX_COMPILER_H */

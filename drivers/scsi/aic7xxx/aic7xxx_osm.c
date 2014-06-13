@@ -1,7 +1,7 @@
 /*
  * Adaptec AIC7xxx device driver for Linux.
  *
- * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.c#234 $
+ * $Id: aic7xxx_osm.c,v 1.1.1.1 2004/06/19 05:03:31 ashieh Exp $
  *
  * Copyright (c) 1994 John Aycock
  *   The University of Calgary Department of Computer Science.

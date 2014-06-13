@@ -3,13 +3,17 @@
  *
  * Copyright (C) 2001 Stefan Eletzhofer <stefan.eletzhofer@eletztrick.de>
  *
- * $Id: system3.h,v 1.2.4.2 2001/12/04 14:58:50 seletz Exp $
+ * $Id: system3.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
  * $Log: system3.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:02:56  ashieh
+ * initial version
+ *
+ *
  * Revision 1.2.4.2  2001/12/04 14:58:50  seletz
  * - removed neponset hack
  * - removed irq definitions (now in irqs.h)

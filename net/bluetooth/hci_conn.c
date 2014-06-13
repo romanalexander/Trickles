@@ -25,7 +25,7 @@
 /*
  * HCI Connection handling.
  *
- * $Id: hci_conn.c,v 1.5 2002/07/17 18:46:25 maxk Exp $
+ * $Id: hci_conn.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

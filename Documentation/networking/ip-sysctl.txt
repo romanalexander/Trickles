@@ -672,4 +672,4 @@ IPv6 Update by:
 Pekka Savola <pekkas@netcore.fi>
 YOSHIFUJI Hideaki / USAGI Project <yoshfuji@linux-ipv6.org>
 
-$Id: ip-sysctl.txt,v 1.19.2.1 2001/12/13 08:59:27 davem Exp $
+$Id: ip-sysctl.txt,v 1.1.1.1 2004/06/19 05:04:10 ashieh Exp $

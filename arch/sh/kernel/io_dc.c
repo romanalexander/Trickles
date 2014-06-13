@@ -1,5 +1,5 @@
 /*
- *	$Id: io_dc.c,v 1.2 2001/05/24 00:13:47 gniibe Exp $
+ *	$Id: io_dc.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *	I/O routines for SEGA Dreamcast
  */
 

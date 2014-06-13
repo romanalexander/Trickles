@@ -8,7 +8,7 @@
  *
  * This code is GPL
  *
- * $Id: cfi_cmdset_0002.c,v 1.62 2003/01/24 23:30:13 dwmw2 Exp $
+ * $Id: cfi_cmdset_0002.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  */
 

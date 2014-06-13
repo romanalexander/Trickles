@@ -4,7 +4,7 @@
  *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)
  *                     Toshiba America Electronics Components, Inc.
  *
- * $Id: nand_ecc.c,v 1.8 2002/09/16 09:19:53 dwmw2 Exp $
+ * $Id: nand_ecc.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

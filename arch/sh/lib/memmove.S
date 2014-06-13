@@ -1,4 +1,4 @@
-/* $Id: memmove.S,v 1.2 2001/07/27 11:51:09 gniibe Exp $
+/* $Id: memmove.S,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * "memmove" implementation of SuperH
  *

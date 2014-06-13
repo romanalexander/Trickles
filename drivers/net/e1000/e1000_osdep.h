@@ -47,8 +47,14 @@
 	                	BUG(); \
 			} else { \
 				set_current_state(TASK_UNINTERRUPTIBLE); \
-				schedule_timeout((x * HZ)/1000); \
+				schedule_timeout((x * HZ)/1000 + 2); \
 			} } while(0)
+/* Some workarounds require millisecond delays and are run during interrupt
+ * context.  Most notably, when establishing link, the phy may need tweaking
+ * but cannot process phy register reads/writes faster than millisecond
+ * intervals...and we establish link due to a "link status change" interrupt.
+ */
+#define msec_delay_irq(x) mdelay(x)
 #endif
 
 #define PCI_COMMAND_REGISTER   PCI_COMMAND
@@ -63,7 +69,7 @@ typedef enum {
 
 #define MSGOUT(S, A, B)	printk(KERN_DEBUG S "\n", A, B)
 
-#if DBG
+#ifdef DBG
 #define DEBUGOUT(S)		printk(KERN_DEBUG S "\n")
 #define DEBUGOUT1(S, A...)	printk(KERN_DEBUG S "\n", A)
 #else

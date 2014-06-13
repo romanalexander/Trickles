@@ -12,7 +12,11 @@
  * Author:
  * L. Haag
  *
- * $Log: r3964.h,v $
+ * $Log: n_r3964.h,v $
+ * Revision 1.1.1.1  2004/06/19 05:02:52  ashieh
+ * initial version
+ *
+ *
  * Revision 1.1.1.1  1998/10/13 16:43:14  dwmw2
  * This'll screw the version control
  *

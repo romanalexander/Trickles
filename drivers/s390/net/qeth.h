@@ -15,7 +15,7 @@
 
 #define QETH_NAME " qeth"
 
-#define VERSION_QETH_H "$Revision: 1.113 $"
+#define VERSION_QETH_H "$Revision: 1.1.1.1 $"
 
 /******************** CONFIG STUFF ***********************/
 //#define QETH_DBF_LIKE_HELL

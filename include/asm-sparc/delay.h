@@ -1,4 +1,4 @@
-/* $Id: delay.h,v 1.11 2001/01/01 01:46:15 davem Exp $
+/* $Id: delay.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  * delay.h: Linux delay routines on the Sparc.
  *
  * Copyright (C) 1994 David S. Miller (davem@caip.rutgers.edu).

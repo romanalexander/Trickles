@@ -1,4 +1,4 @@
-/* $Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $ */
+/* $Id: he.c,v 1.1.1.1 2004/06/19 05:03:47 ashieh Exp $ */
 
 /*
 
@@ -127,7 +127,7 @@ typedef void irqreturn_t;
 
 /* version definition */
 
-static char *version = "$Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $";
+static char *version = "$Id: he.c,v 1.1.1.1 2004/06/19 05:03:47 ashieh Exp $";
 
 /* declarations */
 

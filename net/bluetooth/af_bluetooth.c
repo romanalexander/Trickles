@@ -25,7 +25,7 @@
 /*
  * BlueZ Bluetooth address family and sockets.
  *
- * $Id: af_bluetooth.c,v 1.8 2002/07/22 20:32:54 maxk Exp $
+ * $Id: af_bluetooth.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 #define VERSION "2.3"
 

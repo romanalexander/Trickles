@@ -630,3 +630,211 @@ EXPORT_SYMBOL(ethtool_op_get_sg);
 EXPORT_SYMBOL(ethtool_op_set_sg);
 
 #endif  /* CONFIG_NET */
+
+// Trickles exports
+
+EXPORT_SYMBOL_GPL(cleanup_rbuf);
+
+extern int sysctl_dbg_cwnd;
+
+extern int (*trickles_rcv_hook)(struct sock *sk, struct sk_buff *skb);
+extern void (*trickles_destroy_hook)(struct sock *sk);
+
+extern int trickles_rcv_default(struct sock *sk, struct sk_buff *skb);
+extern void trickles_destroy_default(struct sock *sk);
+
+EXPORT_SYMBOL(sysctl_dbg_cwnd);
+
+EXPORT_SYMBOL(trickles_rcv_hook);
+EXPORT_SYMBOL(trickles_destroy_hook);
+
+EXPORT_SYMBOL(trickles_rcv_default);
+EXPORT_SYMBOL(trickles_destroy_default);
+
+extern void tcp_rfree(struct sk_buff *skb);
+EXPORT_SYMBOL(tcp_rfree);
+
+/* trickles user api */
+extern struct proto trickles_prot;
+EXPORT_SYMBOL(trickles_prot);
+
+struct cminisock;
+extern int (*cminisock_config_pipe_hook)(struct sock *sk, char *optdata, int optlen, int direction);
+extern int cminisock_config_pipe_default(struct sock *sk, char *optdata, int optlen, int direction);
+extern int (*trickles_send_hook)(int fd, struct cminisock *msk, char *buf, int len);
+extern int trickles_send_default(int fd, struct cminisock *msk, char *buf, int len);
+
+extern int (*trickles_sendv_hook)(int fd, struct cminisock *msk, struct tiovec *tiov, int tiovlen);
+extern int trickles_sendv_default(int fd, struct cminisock *msk, struct tiovec *tiov, int tiovlen);
+
+extern int (*trickles_sendfilev_hook)(int fd, struct cminisock *msk, struct fiovec *fiov, int fiovlen);
+extern int trickles_sendfilev_default(int fd, struct cminisock *msk, struct fiovec *fiov, int fiovlen);
+
+extern int (*trickles_mmap_hook)(struct file *file, struct socket *sock, struct vm_area_struct *vma);
+extern int trickles_mmap_default(struct file *file, struct socket *sock, struct vm_area_struct *vma);
+
+extern int trickles_setucont_default(int fd, struct cminisock *msk, int pktNum, char *ucont, unsigned ucont_len);
+extern int (*trickles_setucont_hook)(int fd, struct cminisock *msk, int pktNum, char *ucont, unsigned ucont_len);
+
+#include <linux/poll.h>
+extern int (*trickles_sock_poll_hook)(struct file * file, struct socket *sock, poll_table *wait);
+extern int trickles_sock_poll_default(struct file * file, struct socket *sock, poll_table *wait);
+
+extern void (*trickles_send_ack_hook)(struct sock *sk);
+extern void trickles_send_ack_default(struct sock *sk);
+
+extern void (*trickles_init_sock_hook)(struct sock *sk, int val);
+extern void trickles_init_sock_default(struct sock *sk, int val);
+
+extern int (*trickles_sendmsg_hook)(struct sock *sk, struct msghdr *msg, int size);
+extern int trickles_sendmsg_default(struct sock *sk, struct msghdr *msg, int size);
+
+extern int trickles_setsockopt_default(struct sock *sk, int optname, int optval);
+extern int (*trickles_setsockopt_hook)(struct sock *sk, int optname, int optval);
+
+extern int trickles_getsockopt_default(struct sock *sk, int level, int optname, char *optval, int *optlen);
+extern int (*trickles_getsockopt_hook)(struct sock *sk, int level, int optname, char *optval, int *optlen);
+
+extern void 
+(*trickles_logCwnd_hook)(enum LogCwndtype, int addr, int port, int seq, int startCwnd, int effCwnd, 
+			 int ssthresh, int rtt, int srtt);
+extern void trickles_logCwnd_default(enum LogCwndtype, int addr, int port, int seq, int startCwnd, int effCwnd,
+			      int ssthresh, int rtt, int srtt);
+
+extern int (*trickles_sendbulk_hook)(int fd, struct mskdesc *descbuf, int descbuf_len);
+extern int trickles_sendbulk_default(int fd, struct mskdesc *descbuf, int descbuf_len);
+
+extern int (*trickles_extract_events_hook)(int fd, struct extract_mskdesc_in *descbuf,int descbuf_len, struct msk_collection *dest, int *destLen);
+extern int trickles_extract_events_default(int fd, struct extract_mskdesc_in *descbuf, int descbuf_len, struct msk_collection *dest, int *destLen);
+
+extern int (*trickles_install_events_hook)(int fd, struct msk_collection *descbuf, int descbuf_len);
+extern int trickles_install_events_default(int fd, struct msk_collection *descbuf, int descbuf_len);
+extern void (*trickles_syn_piggyback_hook)(struct sock *sk, struct sk_buff *skb);
+extern void trickles_syn_piggyback_default(struct sock *sk, struct sk_buff *skb);
+
+extern int (*trickles_request_hook)(int fd, char *buf, int buf_len, int reserved_len);
+extern int trickles_request_default(int fd, char *buf, int buf_len, int reserved_len);
+
+EXPORT_SYMBOL(cminisock_config_pipe_hook);
+EXPORT_SYMBOL(cminisock_config_pipe_default);
+EXPORT_SYMBOL(trickles_send_hook);
+EXPORT_SYMBOL(trickles_send_default);
+EXPORT_SYMBOL(trickles_sendv_hook);
+EXPORT_SYMBOL(trickles_sendv_default);
+EXPORT_SYMBOL(trickles_sendfilev_hook);
+EXPORT_SYMBOL(trickles_sendfilev_default);
+EXPORT_SYMBOL(trickles_mmap_hook);
+EXPORT_SYMBOL(trickles_mmap_default);
+EXPORT_SYMBOL(trickles_sock_poll_hook);
+EXPORT_SYMBOL(trickles_sock_poll_default);
+EXPORT_SYMBOL(trickles_init_sock_hook);
+EXPORT_SYMBOL(trickles_init_sock_default);
+
+EXPORT_SYMBOL(trickles_send_ack_hook);
+EXPORT_SYMBOL(trickles_send_ack_default);
+
+EXPORT_SYMBOL(trickles_sendmsg_hook);
+EXPORT_SYMBOL(trickles_sendmsg_default);
+
+EXPORT_SYMBOL(trickles_setucont_hook);
+EXPORT_SYMBOL(trickles_setucont_default);
+
+EXPORT_SYMBOL(trickles_setsockopt_hook);
+EXPORT_SYMBOL(trickles_setsockopt_default);
+
+EXPORT_SYMBOL(trickles_getsockopt_hook);
+EXPORT_SYMBOL(trickles_getsockopt_default);
+
+EXPORT_SYMBOL(trickles_logCwnd_hook);
+EXPORT_SYMBOL(trickles_logCwnd_default);
+
+EXPORT_SYMBOL(trickles_sendbulk_hook);
+EXPORT_SYMBOL(trickles_sendbulk_default);
+
+EXPORT_SYMBOL(trickles_extract_events_hook);
+EXPORT_SYMBOL(trickles_extract_events_default);
+
+EXPORT_SYMBOL(trickles_install_events_hook);
+EXPORT_SYMBOL(trickles_install_events_default);
+
+EXPORT_SYMBOL(trickles_syn_piggyback_hook);
+EXPORT_SYMBOL(trickles_syn_piggyback_default);
+
+EXPORT_SYMBOL(trickles_request_hook);
+EXPORT_SYMBOL(trickles_request_default);
+
+extern struct or_calltable or_ipv4;
+EXPORT_SYMBOL(or_ipv4);
+
+/* -O0 support */
+
+#ifndef ntohl
+extern void prefetch(const void *);
+extern __u32 ntohl(__u32);
+extern __u32 htonl(__u32);
+extern unsigned short ntohs(unsigned short);
+extern unsigned short htons(unsigned short);
+EXPORT_SYMBOL(prefetch);
+EXPORT_SYMBOL(ntohl);
+EXPORT_SYMBOL(htonl);
+EXPORT_SYMBOL(ntohs);
+EXPORT_SYMBOL(htons);
+#endif
+
+/* Misc. Trickles support */
+extern void show_stack(unsigned long * esp);
+EXPORT_SYMBOL(show_stack);
+
+extern atomic_t g_device_skb;
+extern atomic_t g_other_skb;
+extern atomic_t g_device_skb_num;
+extern atomic_t g_other_skb_num;
+EXPORT_SYMBOL(g_device_skb);
+EXPORT_SYMBOL(g_other_skb);
+EXPORT_SYMBOL(g_device_skb_num);
+EXPORT_SYMBOL(g_other_skb_num);
+
+//static inline 
+void record_transfer_skb(struct sk_buff *skb, int newType);
+//static inline 
+void record_new_skb(struct sk_buff *skb, int type, int include_body);
+//static inline 
+void record_free_skb_head(struct sk_buff *skb);
+//static inline 
+void record_free_skb_body(struct sk_buff *skb);
+
+EXPORT_SYMBOL(record_transfer_skb);
+EXPORT_SYMBOL(record_new_skb);
+EXPORT_SYMBOL(record_free_skb_head);
+EXPORT_SYMBOL(record_free_skb_body);
+
+extern int sysctl_trickles_mss;
+EXPORT_SYMBOL(sysctl_trickles_mss);
+
+extern int sysctl_trickles_hashcompress;
+EXPORT_SYMBOL(sysctl_trickles_hashcompress);
+
+#define CACHE_SYSCTL_VAR(NAME)				\
+extern int	sysctl_trickles_##NAME##_enable,	\
+	sysctl_trickles_##NAME##_policy,		\
+	sysctl_trickles_##NAME##_hits,			\
+	sysctl_trickles_##NAME##_total;			\
+EXPORT_SYMBOL(sysctl_trickles_##NAME##_enable);		\
+EXPORT_SYMBOL(sysctl_trickles_##NAME##_policy);		\
+EXPORT_SYMBOL(sysctl_trickles_##NAME##_hits);		\
+EXPORT_SYMBOL(sysctl_trickles_##NAME##_total)
+
+void __tcp_v4_hash(struct sock *sk, const int listen_possible);
+EXPORT_SYMBOL(__tcp_v4_hash);
+
+CACHE_SYSCTL_VAR(Continuation);
+CACHE_SYSCTL_VAR(Nonce);
+CACHE_SYSCTL_VAR(TCB);
+
+extern struct MSKTable *(*MSKTable_new)(int numEntries);
+struct MSKTable *MSKTable_new_default(int numEntries);
+
+EXPORT_SYMBOL(MSKTable_new);
+EXPORT_SYMBOL(MSKTable_new_default);
+
+

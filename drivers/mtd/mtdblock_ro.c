@@ -1,5 +1,5 @@
 /*
- * $Id: mtdblock_ro.c,v 1.12 2001/11/20 11:42:33 dwmw2 Exp $
+ * $Id: mtdblock_ro.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  * Read-only version of the mtdblock device, without the 
  * read/erase/modify/writeback stuff

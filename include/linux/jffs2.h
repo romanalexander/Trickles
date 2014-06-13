@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: jffs2.h,v 1.19 2001/10/09 13:20:23 dwmw2 Exp $
+ * $Id: jffs2.h,v 1.1.1.1 2004/06/19 05:02:52 ashieh Exp $
  *
  */
 

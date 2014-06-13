@@ -1,4 +1,4 @@
-/* $Id: uaccess.h,v 1.1.1.1.2.4 2002/08/28 16:52:43 gniibe Exp $
+/* $Id: uaccess.h,v 1.1.1.1 2004/06/19 05:02:57 ashieh Exp $
  *
  * User space memory access functions
  *

@@ -1,4 +1,4 @@
-/* $Id: pci_impl.h,v 1.9 2001/06/13 06:34:30 davem Exp $
+/* $Id: pci_impl.h,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * pci_impl.h: Helper definitions for PCI controller support.
  *
  * Copyright (C) 1999 David S. Miller (davem@redhat.com)

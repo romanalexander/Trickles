@@ -1,5 +1,5 @@
 /* This version ported to the Linux-MTD system by dwmw2@infradead.org
- * $Id: ftl.c,v 1.45 2003/01/24 23:31:27 dwmw2 Exp $
+ * $Id: ftl.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
  *
  * Fixes: Arnaldo Carvalho de Melo <acme@conectiva.com.br>
  * - fixes some leaks on failure in build_maps and ftl_notify_add, cleanups
@@ -1414,7 +1414,7 @@ int init_ftl(void)
 
     memset(myparts, 0, sizeof(myparts));
     
-    DEBUG(0, "$Id: ftl.c,v 1.45 2003/01/24 23:31:27 dwmw2 Exp $\n");
+    DEBUG(0, "$Id: ftl.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $\n");
     
     if (register_blkdev(FTL_MAJOR, "ftl", &ftl_blk_fops)) {
 	printk(KERN_NOTICE "ftl_cs: unable to grab major "

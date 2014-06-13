@@ -1,4 +1,4 @@
-/* $Id: tpqic02.c,v 1.10 1997/01/26 07:13:20 davem Exp $
+/* $Id: tpqic02.c,v 1.1.1.1 2004/06/19 05:03:18 ashieh Exp $
  *
  * Driver for tape drive support for Linux-i386
  *
@@ -137,8 +137,8 @@ static volatile struct mtget ioctl_status;	/* current generic status */
 
 static volatile struct tpstatus tperror;	/* last drive status */
 
-static char rcs_revision[] = "$Revision: 1.10 $";
-static char rcs_date[] = "$Date: 1997/01/26 07:13:20 $";
+static char rcs_revision[] = "$Revision: 1.1.1.1 $";
+static char rcs_date[] = "$Date: 2004/06/19 05:03:18 $";
 
 /* Flag bits for status and outstanding requests.
  * (Could all be put in one bit-field-struct.)

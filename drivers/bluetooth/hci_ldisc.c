@@ -25,7 +25,7 @@
 /*
  * BlueZ HCI UART driver.
  *
- * $Id: hci_ldisc.c,v 1.5 2002/10/02 18:37:20 maxk Exp $    
+ * $Id: hci_ldisc.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $    
  */
 #define VERSION "2.1"
 

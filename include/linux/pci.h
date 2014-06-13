@@ -1,5 +1,5 @@
 /*
- *	$Id: pci.h,v 1.87 1998/10/11 15:13:12 mj Exp $
+ *	$Id: pci.h,v 1.1.1.1 2004/06/19 05:02:51 ashieh Exp $
  *
  *	PCI defines and function prototypes
  *	Copyright 1994, Drew Eckhardt
@@ -43,7 +43,7 @@
 #define  PCI_STATUS_FAST_BACK	0x80	/* Accept fast-back to back */
 #define  PCI_STATUS_PARITY	0x100	/* Detected parity error */
 #define  PCI_STATUS_DEVSEL_MASK	0x600	/* DEVSEL timing */
-#define  PCI_STATUS_DEVSEL_FAST	0x000	
+#define  PCI_STATUS_DEVSEL_FAST	0x000
 #define  PCI_STATUS_DEVSEL_MEDIUM 0x200
 #define  PCI_STATUS_DEVSEL_SLOW 0x400
 #define  PCI_STATUS_SIG_TARGET_ABORT 0x800 /* Set on target abort */
@@ -72,8 +72,8 @@
 
 /*
  * Base addresses specify locations in memory or I/O space.
- * Decoded size can be determined by writing a value of 
- * 0xffffffff to the register, and reading it back.  Only 
+ * Decoded size can be determined by writing a value of
+ * 0xffffffff to the register, and reading it back.  Only
  * 1 bits are decoded.
  */
 #define PCI_BASE_ADDRESS_0	0x10	/* 32 bits */
@@ -97,7 +97,7 @@
 /* Header type 0 (normal devices) */
 #define PCI_CARDBUS_CIS		0x28
 #define PCI_SUBSYSTEM_VENDOR_ID	0x2c
-#define PCI_SUBSYSTEM_ID	0x2e  
+#define PCI_SUBSYSTEM_ID	0x2e
 #define PCI_ROM_ADDRESS		0x30	/* Bits 31..11 are address, 10..1 reserved */
 #define  PCI_ROM_ADDRESS_ENABLE	0x01
 #define PCI_ROM_ADDRESS_MASK	(~0x7ffUL)
@@ -197,6 +197,8 @@
 #define  PCI_CAP_ID_MSI		0x05	/* Message Signalled Interrupts */
 #define  PCI_CAP_ID_CHSWP	0x06	/* CompactPCI HotSwap */
 #define  PCI_CAP_ID_PCIX	0x07	/* PCI-X */
+#define  PCI_CAP_ID_SHPC        0x0C    /* PCI Standard Hot-Plug Controller */
+#define  PCI_CAP_ID_EXP         0x10    /* PCI-EXPRESS */
 #define PCI_CAP_LIST_NEXT	1	/* Next capability in the list */
 #define PCI_CAP_FLAGS		2	/* Capability defined flags (16 bits) */
 #define PCI_CAP_SIZEOF		4
@@ -437,7 +439,7 @@ struct pci_dev {
 #define PCI_ROM_RESOURCE 6
 #define PCI_BRIDGE_RESOURCES 7
 #define PCI_NUM_RESOURCES 11
-  
+
 #define PCI_REGION_FLAG_MASK 0x0fU	/* These bits of resource flags tell us the PCI region flags */
 
 struct pci_bus {
@@ -540,7 +542,7 @@ struct pci_driver {
  * @dev_class_mask: the class mask for this device
  *
  * This macro is used to create a struct pci_device_id that matches a
- * specific PCI class.  The vendor, device, subvendor, and subdevice 
+ * specific PCI class.  The vendor, device, subvendor, and subdevice
  * fields will be set to PCI_ANY_ID.
  */
 #define PCI_DEVICE_CLASS(dev_class,dev_class_mask) \
@@ -686,7 +688,7 @@ void pci_pool_free (struct pci_pool *pool, void *vaddr, dma_addr_t addr);
 
 #ifndef CONFIG_PCI
 static inline int pcibios_present(void) { return 0; }
-static inline int pcibios_find_class (unsigned int class_code, unsigned short index, unsigned char *bus, unsigned char *dev_fn) 
+static inline int pcibios_find_class (unsigned int class_code, unsigned short index, unsigned char *bus, unsigned char *dev_fn)
 { 	return PCIBIOS_DEVICE_NOT_FOUND; }
 
 #define _PCI_NOP(o,s,t) \
@@ -760,13 +762,13 @@ static inline int pci_module_init(struct pci_driver *drv)
 		return 0;
 #else
 	if (rc == 0)
-		rc = -ENODEV;		
+		rc = -ENODEV;
 #endif
 
 	/* if we get here, we need to clean up pci driver instance
 	 * and return some sort of error */
 	pci_unregister_driver (drv);
-	
+
 	return rc;
 }
 

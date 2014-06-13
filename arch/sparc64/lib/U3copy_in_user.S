@@ -1,4 +1,4 @@
-/* $Id: U3copy_in_user.S,v 1.4 2001/03/21 05:58:47 davem Exp $
+/* $Id: U3copy_in_user.S,v 1.1.1.1 2004/06/19 05:04:03 ashieh Exp $
  * U3memcpy.S: UltraSparc-III optimized copy within userspace.
  *
  * Copyright (C) 1999, 2000 David S. Miller (davem@redhat.com)

@@ -7,6 +7,10 @@
  *  Authors:  Bjorn Wesen (bjornw@axis.com)
  *
  *  $Log: init.c,v $
+ *  Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ *  initial version
+ *
+ *
  *  Revision 1.38  2003/04/01 14:12:08  starvik
  *  Added loglevel for lots of printks
  *

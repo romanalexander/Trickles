@@ -1,4 +1,4 @@
-/* $Id: signal.h,v 1.9 1999/09/06 08:22:11 jj Exp $ */
+/* $Id: signal.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $ */
 #ifndef _ASMSPARC64_SIGNAL_H
 #define _ASMSPARC64_SIGNAL_H
 

@@ -1,5 +1,5 @@
 /*
- * $Id: evdev.c,v 1.27 2001/05/28 09:06:44 vojtech Exp $
+ * $Id: evdev.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  *  Copyright (c) 1999-2001 Vojtech Pavlik
  *

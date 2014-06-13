@@ -5,7 +5,7 @@
  *
  *		Implementation of the Transmission Control Protocol(TCP).
  *
- * Version:	$Id: tcp_minisocks.c,v 1.14.2.1 2002/03/05 04:30:08 davem Exp $
+ * Version:	$Id: tcp_minisocks.c,v 1.1.1.1 2004/06/19 05:03:02 ashieh Exp $
  *
  * Authors:	Ross Biro, <bir7@leland.Stanford.Edu>
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
@@ -25,6 +25,8 @@
 #include <linux/sysctl.h>
 #include <net/tcp.h>
 #include <net/inet_common.h>
+
+#include <net/trickles.h>
 
 #ifdef CONFIG_SYSCTL
 #define SYNC_INIT 0 /* let the user enable it */
@@ -679,6 +681,8 @@ struct sock *tcp_create_openreq_child(struct sock *sk, struct open_request *req,
 		newsk->callback_lock = RW_LOCK_UNLOCKED;
 		skb_queue_head_init(&newsk->error_queue);
 		newsk->write_space = tcp_write_space;
+
+		init_trickles_sock(newsk);
 #ifdef CONFIG_FILTER
 		if ((filter = newsk->filter) != NULL)
 			sk_filter_charge(newsk, filter);

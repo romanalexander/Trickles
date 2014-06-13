@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: shub.c,v 1.1.1.1 2004/06/19 05:04:06 ashieh Exp $
  *
  * This file is subject to the terms and conditions of the GNU General Public
  * License.  See the file "COPYING" in the main directory of this archive
@@ -7,7 +7,7 @@
  * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.
  */
 
-#ident  "$Revision: 1.167 $"
+#ident  "$Revision: 1.1.1.1 $"
 
 #include <linux/types.h>
 #include <linux/slab.h>

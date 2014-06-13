@@ -152,8 +152,8 @@ static int uptime_read_proc(char *page, char **start, off_t off,
 	return proc_calc_metrics(page, start, off, count, eof, len);
 }
 
-static int meminfo_read_proc(char *page, char **start, off_t off,
-				 int count, int *eof, void *data)
+int meminfo_read_proc(char *page, char **start, off_t off,
+		      int count, int *eof, void *data)
 {
 	struct sysinfo i;
 	int len;

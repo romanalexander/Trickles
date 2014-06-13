@@ -1,0 +1,353 @@
+? .af_inet.o.flags
+? .arp.o.flags
+? .depend
+? .devinet.o.flags
+? .fib_frontend.o.flags
+? .fib_hash.o.flags
+? .fib_rules.o.flags
+? .fib_semantics.o.flags
+? .icmp.o.flags
+? .igmp.o.flags
+? .inetpeer.o.flags
+? .ip_forward.o.flags
+? .ip_fragment.o.flags
+? .ip_input.o.flags
+? .ip_nat_dumb.o.flags
+? .ip_options.o.flags
+? .ip_output.o.flags
+? .ip_sockglue.o.flags
+? .ipv4.o.flags
+? .proc.o.flags
+? .protocol.o.flags
+? .raw.o.flags
+? .route.o.flags
+? .sysctl_net_ipv4.o.flags
+? .tcp.o.flags
+? .tcp_diag.o.flags
+? .tcp_input.o.flags
+? .tcp_ipv4.o.flags
+? .tcp_minisocks.o.flags
+? .tcp_output.o.flags
+? .tcp_timer.o.flags
+? .tmalloc.o.flags
+? .trickles-server.o.flags
+? .trickles-userapi.o.flags
+? .trickles.o.flags
+? .trickles_shared.o.flags
+? .udp.o.flags
+? .utils.o.flags
+? a.out
+? bk-prerevert
+? bk1
+? bk2
+? bk3
+? bk4
+? bk5
+? delta0725
+? hmac-test.c
+? memdump-test.c
+? memdump-util.h
+? pending-issues.txt
+? crypto/.aeskey.o.flags
+? crypto/.aestab.o.flags
+? crypto/.depend
+? crypto/.md5_dgst.o.flags
+? crypto/.md5_one.o.flags
+? ipvs/.depend
+? ipvs/.ip_vs_app.o.flags
+? ipvs/.ip_vs_conn.o.flags
+? ipvs/.ip_vs_core.o.flags
+? ipvs/.ip_vs_ctl.o.flags
+? ipvs/.ip_vs_est.o.flags
+? ipvs/.ip_vs_sched.o.flags
+? ipvs/.ip_vs_sync.o.flags
+? netfilter/.depend
+? netfilter/.gdbinit
+? netfilter/.ip_conntrack_core.o.flags
+? netfilter/.ip_conntrack_ftp.o.flags
+? netfilter/.ip_conntrack_proto_generic.o.flags
+? netfilter/.ip_conntrack_proto_icmp.o.flags
+? netfilter/.ip_conntrack_proto_tcp.o.flags
+? netfilter/.ip_conntrack_proto_udp.o.flags
+? netfilter/.ip_conntrack_standalone.o.flags
+? netfilter/.ip_nat_core.o.flags
+? netfilter/.ip_nat_ftp.o.flags
+? netfilter/.ip_nat_helper.o.flags
+? netfilter/.ip_nat_proto_icmp.o.flags
+? netfilter/.ip_nat_proto_tcp.o.flags
+? netfilter/.ip_nat_proto_udp.o.flags
+? netfilter/.ip_nat_proto_unknown.o.flags
+? netfilter/.ip_nat_rule.o.flags
+? netfilter/.ip_nat_snmp_basic.o.flags
+? netfilter/.ip_nat_standalone.o.flags
+? netfilter/.ip_tables.o.flags
+? netfilter/.ipt_MARK.o.flags
+? netfilter/.ipt_MASQUERADE.o.flags
+? netfilter/.ipt_REDIRECT.o.flags
+? netfilter/.ipt_SDNAT.o.flags
+? netfilter/.ipt_SSNAT.o.flags
+? netfilter/.ipt_SWNAT.o.flags
+? netfilter/.ipt_ah.o.flags
+? netfilter/.ipt_esp.o.flags
+? netfilter/.ipt_length.o.flags
+? netfilter/.ipt_limit.o.flags
+? netfilter/.ipt_mac.o.flags
+? netfilter/.ipt_mark.o.flags
+? netfilter/.ipt_multiport.o.flags
+? netfilter/.ipt_owner.o.flags
+? netfilter/.ipt_state.o.flags
+? netfilter/.ipt_tcpmss.o.flags
+? netfilter/.ipt_tos.o.flags
+? netfilter/.ipt_ttl.o.flags
+? netfilter/.ipt_unclean.o.flags
+? netfilter/.iptable_filter.o.flags
+? netfilter/.iptable_mangle.o.flags
+? netfilter/.netfilter.o.flags
+? netfilter/bk
+? netfilter/bk1
+? netfilter/bk2
+? netfilter/bk3
+? netfilter/bk4
+? netfilter/bk5
+? netfilter/bk6
+? netfilter/unused
+Index: smallMakefile
+===================================================================
+RCS file: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/net/ipv4/smallMakefile,v
+retrieving revision 1.2
+diff -r1.2 smallMakefile
+19c19
+< TRICKLES_MOD := trickles-mod1.o
+---
+> TRICKLES_MOD := trickles-mod.o
+Index: trickles-server.c
+===================================================================
+RCS file: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/net/ipv4/trickles-server.c,v
+retrieving revision 1.2
+diff -r1.2 trickles-server.c
+287c287,289
+<   if(!DISABLE_NONCE_CHECK && generateRangeNonce(cont->sk, sack->left, sack->right) != sack->nonceSummary) {
+---
+>   if(!DISABLE_NONCE_CHECK) {
+>     __u32 genNonce = generateRangeNonce(cont->sk, sack->left, sack->right);
+>     if(genNonce != sack->nonceSummary) {
+289,290c291,292
+<     static volatile int w;
+<     w++;
+---
+>       static volatile int w;
+>       w++;
+292,295c294,298
+<     if(trickles_ratelimit()) {
+< 	    printk("nonce check failed\n");
+<     }
+<     return 0;
+---
+>       if(trickles_ratelimit()) {
+> 	printk("nonce check failed for [%d-%d] = 0x%0X != 0x%0X\n", 
+> 	       sack->left, sack->right, genNonce, sack->nonceSummary);
+>       }
+>       return 0;
+296a300
+>     }
+678c682
+<   if(!AckProof_validate(&ackProof)) {
+---
+>   if(!SIMULATION_MODE((*cont)->sk) && !AckProof_validate(&ackProof)) {
+Index: trickles.c
+===================================================================
+RCS file: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/net/ipv4/trickles.c,v
+retrieving revision 1.2
+diff -r1.2 trickles.c
+343c343,344
+< __u32 generateRangeNonce(struct sock *sk, __u64 seqNumLeft, __u64 seqNumRight) {
+---
+> static inline 
+> __u32 generateCryptoRangeNonceHelper(aes_encrypt_ctx *ctx, __u64 seqNumLeft, __u64 seqNumRight) {
+345c346,347
+< 	__u64 nums[2] = {seqNumLeft, seqNumRight};
+---
+> 	__u64 nums[2] = {seqNumLeft, seqNumRight+1};
+> 	__u64 oldNum = -1;
+347,351c349
+< 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
+< 	aes_encrypt_ctx ctx;
+< 	int myGenerateNonces = generateNonces && !SIMULATION_MODE(sk);
+< 	if(myGenerateNonces) 
+< 		ctx = *tp->t.nonceCTX;
+---
+> 	char nonce_out[NONCE_BLOCKSIZE];
+354,364c352,356
+< 		if(myGenerateNonces) {
+< 			__u64 number = nums[i] / NUM_NONCES_PER_BLOCK;
+< 			int offset = nums[i] % NUM_NONCES_PER_BLOCK;
+< 			char nonce_in[NONCE_BLOCKSIZE];
+< 			char nonce_out[NONCE_BLOCKSIZE];
+< 			memset(nonce_in, 0, NONCE_BLOCKSIZE);
+< 			*((__u64*)nonce_in) = number;
+< 			aes_encrypt(nonce_in, nonce_out, &ctx);
+< 			nonce ^= ((__u32*)nonce_out)[offset];
+< 		} else {
+< 			nonce ^= nums[i] ^ (nums[i]+1);
+---
+> 		__u64 number = nums[i] / NUM_NONCES_PER_BLOCK;
+> 		int offset = nums[i] % NUM_NONCES_PER_BLOCK;
+> 		char nonce_in[NONCE_BLOCKSIZE];
+> 		if(i > 0 && oldNum == number) {
+> 			goto skip_generation;
+365a358,363
+> 		memset(nonce_in, 0, NONCE_BLOCKSIZE);
+> 		*((__u64*)nonce_in) = number;
+> 		aes_encrypt(nonce_in, nonce_out, ctx);
+> 	skip_generation:
+> 		nonce ^= ((__u32*)nonce_out)[offset];
+> 		oldNum = number;
+370c368,388
+< __u32 generateSingleNonce(struct sock *sk, __u64 seqNum, struct NonceCtx *prevCtx) {
+---
+> __u32 generateRangeNonce(struct sock *sk, __u64 seqNumLeft, __u64 seqNumRight) {
+> 	if(SIMULATION_MODE(sk)) {
+> 		BUG_TRAP(!SIMULATION_MODE(sk));
+> 	}
+> 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
+> 	int myGenerateNonces = generateNonces && !SIMULATION_MODE(sk);
+> 	if(myGenerateNonces) {
+> 		return generateCryptoRangeNonceHelper(tp->t.nonceCTX, seqNumLeft, seqNumRight);
+> 	} else {
+> 		int i;
+> 		__u64 nums[2] = {seqNumLeft, seqNumRight+1};
+> 		__u32 nonce = 0;
+> 		for(i=0; i < 2; i++) {
+> 			nonce ^= nums[i] ^ (nums[i]+1);
+> 		}
+> 		return nonce + 1;
+> 	}
+> }
+> 
+> static inline
+> __u32 generateCryptoSingleNonceHelper(aes_encrypt_ctx *ctx, __u64 seqNum, struct NonceCtx *prevCtx) {
+375,377c393,394
+< 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
+< 	aes_encrypt_ctx ctx;
+< 	int myGenerateNonces = generateNonces && !SIMULATION_MODE(sk);
+---
+> 	memset(nonce_in, 0, NONCE_BLOCKSIZE);
+> 	__u32 nonce;
+379,380c396,407
+< 	if(myGenerateNonces) 
+< 		ctx = *tp->t.nonceCTX;
+---
+> 	if(prevCtx) {
+> 		nonce_out = prevCtx->prevBlock;
+> 		if(prevCtx->new) {
+> 			prevCtx->prevNumber = number;
+> 			prevCtx->new = 0;
+> 		} else if(prevCtx->prevNumber == number) {
+> 			goto skipGeneration;
+> 		} else {
+> 			prevCtx->prevNumber = number;
+> 		}
+> 	}
+> 	*((__u64*)nonce_in) = number;
+382,383c409,416
+< 	if(myGenerateNonces) {
+< 		__u32 nonce;
+---
+> 	aes_encrypt(nonce_in, nonce_out, ctx);
+>  skipGeneration:
+> 	nonce = ((__u32*)nonce_out)[offset];
+> 	if(offset == NUM_NONCES_PER_BLOCK-1) {
+> 		number += 1;
+> 		*((__u64*)nonce_in) = number;
+> 		aes_encrypt(nonce_in, nonce_out, ctx);
+> 		nonce ^= ((__u32*)nonce_out)[0];
+385,393c418
+< 			nonce_out = prevCtx->prevBlock;
+< 			if(prevCtx->new) {
+< 				prevCtx->prevNumber = number;
+< 				prevCtx->new = 0;
+< 			} else if(prevCtx->prevNumber == number) {
+< 				goto skipGeneration;
+< 			} else {
+< 				prevCtx->prevNumber = number;
+< 			}
+---
+> 			prevCtx->prevNumber = number;
+395,396c420,424
+< 		memset(nonce_in, 0, NONCE_BLOCKSIZE);
+< 		*((__u64*)nonce_in) = number;
+---
+> 	} else {
+> 		nonce ^= ((__u32*)nonce_out)[offset + 1];
+> 	}
+> 	return nonce;
+> }
+398,412c426,432
+< 		aes_encrypt(nonce_in, nonce_out, &ctx);
+< 	skipGeneration:
+< 		nonce = ((__u32*)nonce_out)[offset];
+< 		if(offset == NUM_NONCES_PER_BLOCK-1) {
+< 			number += 1;
+< 			*((__u64*)nonce_in) = number;
+< 			aes_encrypt(nonce_in, nonce_out, &ctx);
+< 			nonce ^= ((__u32*)nonce_out)[0];
+< 			if(prevCtx) {
+< 				prevCtx->prevNumber = number;
+< 			}
+< 		} else {
+< 			nonce ^= ((__u32*)nonce_out)[offset + 1];
+< 		}
+< 		return nonce;
+---
+> __u32 generateSingleNonce(struct sock *sk, __u64 seqNum, struct NonceCtx *prevCtx) {
+> 	BUG_TRAP(!SIMULATION_MODE(sk));
+> 	struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
+> 	int myGenerateNonces = generateNonces && !SIMULATION_MODE(sk);
+> 
+> 	if(myGenerateNonces) {
+> 		return generateCryptoSingleNonceHelper(tp->t.nonceCTX, seqNum, prevCtx);
+3146a3167
+> 
+4426a4448,4489
+> 
+> #ifdef PRINT_NONCE_DIAG
+> 	{
+> 		int i;
+> 		struct aes_encrypt_ctx ctx;
+> 		char nonce_key[NONCE_KEYLEN];
+> 		char block[NONCE_BLOCKSIZE];
+> 		memset(nonce_key, 0, NONCE_KEYLEN);
+> 		memset(block, 0, NONCE_BLOCKSIZE);
+> 		strcpy(nonce_key, "hello w");
+> 		aes_encrypt_key(nonce_key, NONCE_KEYLEN, &ctx);
+> 		for(i=0; i < 10; i++) {	
+> 			char output[NONCE_BLOCKSIZE];
+> 			*(__u64*)block = i * i;
+> 			aes_encrypt(block, output, &ctx);
+> 			printk(" Input: ");
+> 			hexdump(block, NONCE_BLOCKSIZE);
+> 			printk("\n");
+> 			printk("Output: ");
+> 			hexdump(output, NONCE_BLOCKSIZE);
+> 			printk("\n");
+> 		}
+> #define TAR_MAX (10)
+> 		__u32 testArray[TAR_MAX];
+> 		for(i=1; i <= TAR_MAX; i++) {
+> 			printk("Range nonce 1-%d 0x%0X\n", i, 
+> 			       testArray[i] = 
+> 			       generateCryptoRangeNonceHelper(&ctx, 1, i));
+> 		}
+> 		printk("Nonces 1-%d: ", TAR_MAX);
+> 		struct NonceCtx nctx;
+> 		nctx.new = 1;
+> 		__u32 accum = 0;
+> 		for(i=1; i <= TAR_MAX; i++) {
+> 			__u32 curr = generateCryptoSingleNonceHelper(&ctx, i, &nctx);
+> 			accum ^= curr;
+> 			printk("0x%0X%c ", accum, (accum == testArray[i]) ? 'g' : '!');
+> 		}
+> #undef TAR_MAX
+> 	}
+> #endif
+> 	printk("WIRECONT_MAC_LEN: %d\n", WIRECONT_MAC_LEN);

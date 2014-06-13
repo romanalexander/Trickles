@@ -1,5 +1,5 @@
 /*
- * $Id: dbox2-flash.c,v 1.4 2001/10/02 15:05:14 dwmw2 Exp $
+ * $Id: dbox2-flash.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * Nokia / Sagem D-Box 2 flash driver
  */

@@ -1,7 +1,7 @@
 /* 
  * Handle the memory map.
  * The functions here do the job until bootmem takes over.
- * $Id: e820.c,v 1.13 2004/03/22 00:31:08 ak Exp $
+ * $Id: e820.c,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $
  */
 #include <linux/config.h>
 #include <linux/kernel.h>

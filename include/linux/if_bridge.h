@@ -4,7 +4,7 @@
  *	Authors:
  *	Lennert Buytenhek		<buytenh@gnu.org>
  *
- *	$Id: if_bridge.h,v 1.1 2000/02/18 16:47:01 davem Exp $
+ *	$Id: if_bridge.h,v 1.1.1.1 2004/06/19 05:02:52 ashieh Exp $
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -38,6 +38,9 @@
 #define BRCTL_SET_PORT_PRIORITY 16
 #define BRCTL_SET_PATH_COST 17
 #define BRCTL_GET_FDB_ENTRIES 18
+
+#define BRCTL_SET_PORT_EMUSWITCH 19
+#define BRCTL_GET_PORT_EMUSWITCH 20
 
 #define BR_STATE_DISABLED 0
 #define BR_STATE_LISTENING 1
@@ -83,6 +86,24 @@ struct __port_info
 	__u32 message_age_timer_value;
 	__u32 forward_delay_timer_value;
 	__u32 hold_timer_value;
+};
+
+struct __emuswitch_uni_info {
+	__u8 useThrottle;
+	__u32 maxQueueLen;
+        __u32 bytesPerSecond;
+#if 0
+	__u32 rateNumerator;
+	__u32 rateDenominator;
+	__u32 frameTxTime;
+#endif
+};
+
+struct __emuswitch_info {
+#define EMU_INPUT  (0x1)
+#define EMU_OUTPUT (0x2)
+	int directions : 2; // directions to set
+	struct __emuswitch_uni_info direction[2];
 };
 
 struct __fdb_entry

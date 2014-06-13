@@ -25,7 +25,7 @@
 /*
  * BlueZ HCI socket layer.
  *
- * $Id: hci_sock.c,v 1.5 2002/07/22 20:32:54 maxk Exp $
+ * $Id: hci_sock.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

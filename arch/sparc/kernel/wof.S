@@ -1,4 +1,4 @@
-/* $Id: wof.S,v 1.40 2000/01/08 16:38:18 anton Exp $
+/* $Id: wof.S,v 1.1.1.1 2004/06/19 05:03:57 ashieh Exp $
  * wof.S: Sparc window overflow handler.
  *
  * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)

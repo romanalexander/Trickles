@@ -1,4 +1,4 @@
-/* $Id: sysen.h,v 1.3 1995/11/25 02:32:58 davem Exp $
+/* $Id: sysen.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  * sysen.h:  Bit fields within the "System Enable" register accessed via
  *           the ASI_CONTROL address space at address AC_SYSENABLE.
  *

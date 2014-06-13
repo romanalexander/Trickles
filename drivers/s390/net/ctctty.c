@@ -1,5 +1,5 @@
 /*
- * $Id: ctctty.c,v 1.11 2003/05/14 15:27:54 felfert Exp $
+ * $Id: ctctty.c,v 1.1.1.1 2004/06/19 05:03:50 ashieh Exp $
  *
  * CTC / ESCON network driver, tty interface.
  *
@@ -115,7 +115,7 @@ static char *ctc_ttyname = "ctc/" CTC_TTY_NAME "%d";
 static char *ctc_ttyname = CTC_TTY_NAME;
 #endif
 
-char *ctc_tty_revision = "$Revision: 1.11 $";
+char *ctc_tty_revision = "$Revision: 1.1.1.1 $";
 
 static __u32 ctc_tty_magic = CTC_ASYNC_MAGIC;
 static int ctc_tty_shuttingdown = 0;

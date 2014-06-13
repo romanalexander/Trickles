@@ -1,0 +1,53 @@
+  .kstrtab : { *(.kstrtab) }
+
+  . = ALIGN(16);		/* Exception table */
+  __start___ex_table = .;
+  __ex_table : { *(__ex_table) }
+  __stop___ex_table = .;
+
+  __start___ksymtab = .;	/* Kernel symbol table */
+  __ksymtab : { *(__ksymtab) }
+  __stop___ksymtab = .;
+
+  .unprotected : { *(.unprotected) }
+  . = ALIGN(4096);
+  PROVIDE (_unprotected_end = .);
+
+  . = ALIGN(4096);
+  __uml_setup_start = .;
+  .uml.setup.init : { *(.uml.setup.init) }
+  __uml_setup_end = .;
+  __uml_help_start = .;
+  .uml.help.init : { *(.uml.help.init) }
+  __uml_help_end = .;
+  __uml_postsetup_start = .;
+  .uml.postsetup.init : { *(.uml.postsetup.init) }
+  __uml_postsetup_end = .;
+  __setup_start = .;
+  .setup.init : { *(.setup.init) }
+  __setup_end = .;
+  __initcall_start = .;
+  .initcall.init : { *(.initcall.init) }
+  __initcall_end = .;
+  __uml_initcall_start = .;
+  .uml.initcall.init : { *(.uml.initcall.init) }
+  __uml_initcall_end = .;
+  __init_end = .;
+  __exitcall_begin = .;
+  .exitcall : { *(.exitcall.exit) }
+  __exitcall_end = .;
+  __uml_exitcall_begin = .;
+  .uml.exitcall : { *(.uml.exitcall.exit) }
+  __uml_exitcall_end = .;
+
+  __preinit_array_start = .;
+  .preinit_array : { *(.preinit_array) }
+  __preinit_array_end = .;
+  __init_array_start = .;
+  .init_array : { *(.init_array) }
+  __init_array_end = .;
+  __fini_array_start = .;
+  .fini_array : { *(.fini_array) }
+  __fini_array_end = .;
+
+  .data.init : { *(.data.init) }

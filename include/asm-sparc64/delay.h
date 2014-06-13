@@ -1,4 +1,4 @@
-/* $Id: delay.h,v 1.12.2.1 2002/02/02 02:11:52 kanoj Exp $
+/* $Id: delay.h,v 1.1.1.1 2004/06/19 05:02:56 ashieh Exp $
  * delay.h: Linux delay routines on the V9.
  *
  * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu).

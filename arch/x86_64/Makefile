@@ -19,7 +19,7 @@
 # 20010105  Andi Kleen, add IA32 compiler.
 #           ....and later removed it again....
 #
-# $Id: Makefile,v 1.36 2004/02/27 18:30:19 ak Exp $
+# $Id: Makefile,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $
 
 #
 # early bootup linking needs 32bit. You can either use real 32bit tools

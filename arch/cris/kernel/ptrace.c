@@ -8,6 +8,10 @@
  * Authors:   Bjorn Wesen
  *
  * $Log: ptrace.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.9  2003/10/01 11:34:23  aurer
  * * Allow PTRACE_PEEKUSR and PTRACE_POKEUSR to access USP.
  * * Removed nonsensical comment about ptrace behavior.

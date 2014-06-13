@@ -1,11 +1,19 @@
 VERSION = 2
 PATCHLEVEL = 4
 SUBLEVEL = 26
-EXTRAVERSION =
+EXTRAVERSION = -gdb-trickles
 
 KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
 
-ARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ -e s/arm.*/arm/ -e s/sa110/arm/)
+# SUBARCH tells the usermode build what the underlying arch is.  That is set
+# first, and if a usermode build is happening, the "ARCH=um" on the command
+# line overrides the setting of ARCH below.  If a native build is happening,
+# then ARCH is assigned, getting whatever value it gets normally, and
+# SUBARCH is subsequently ignored.
+
+SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ -e s/arm.*/arm/ -e s/sa110/arm/)
+ARCH := $(SUBARCH)
+
 KERNELPATH=kernel-$(shell echo $(KERNELRELEASE) | sed -e "s/-//g")
 
 CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
@@ -16,8 +24,10 @@ TOPDIR	:= $(shell /bin/pwd)
 HPATH   	= $(TOPDIR)/include
 FINDHPATH	= $(HPATH)/asm $(HPATH)/linux $(HPATH)/scsi $(HPATH)/net $(HPATH)/math-emu
 
-HOSTCC  	= gcc
+HOSTCC  	= gcc32
+#HOSTCC  	= gcc33
 HOSTCFLAGS	= -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
+#HOSTCFLAGS	= -Wall -Wstrict-prototypes -O0 -fomit-frame-pointer
 
 CROSS_COMPILE 	=
 
@@ -27,7 +37,8 @@ CROSS_COMPILE 	=
 
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-CC		= $(CROSS_COMPILE)gcc
+CC		= $(CROSS_COMPILE)gcc32
+#CC		= $(CROSS_COMPILE)gcc33
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -36,7 +47,8 @@ OBJCOPY		= $(CROSS_COMPILE)objcopy
 OBJDUMP		= $(CROSS_COMPILE)objdump
 MAKEFILES	= $(TOPDIR)/.config
 GENKSYMS	= /sbin/genksyms
-DEPMOD		= /sbin/depmod
+#DEPMOD		= /sbin/depmod
+DEPMOD		= /sbin/depmod.old
 MODFLAGS	= -DMODULE
 CFLAGS_KERNEL	=
 PERL		= perl
@@ -74,7 +86,7 @@ endif
 # images.  Uncomment if you want to place them anywhere other than root.
 #
 
-#export	INSTALL_PATH=/boot
+export	INSTALL_PATH=/boot
 
 #
 # INSTALL_MOD_PATH specifies a prefix to MODLIB for module directory
@@ -93,8 +105,14 @@ CPPFLAGS := -D__KERNEL__ -I$(HPATH)
 
 CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes -Wno-trigraphs -O2 \
 	  -fno-strict-aliasing -fno-common
+#CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes -Wno-trigraphs -O0 \
+#	  -fno-strict-aliasing -fno-common
+ifeq ($(CONFIG_KGDB),y)
+CFLAGS += -g
+else
 ifndef CONFIG_FRAME_POINTER
 CFLAGS += -fomit-frame-pointer
+endif
 endif
 AFLAGS := -D__ASSEMBLY__ $(CPPFLAGS)
 
@@ -471,7 +489,7 @@ backup: mrproper
 	cd .. && tar cf - linux/ | gzip -9 > backup.gz
 	sync
 
-sgmldocs: 
+sgmldocs:
 	chmod 755 $(TOPDIR)/scripts/docgen
 	chmod 755 $(TOPDIR)/scripts/gen-all-syms
 	chmod 755 $(TOPDIR)/scripts/kernel-doc
@@ -500,8 +518,9 @@ dep-files: scripts/mkdep archdep include/linux/version.h
 ifdef CONFIG_MODVERSIONS
 	$(MAKE) update-modverfile
 endif
-	scripts/mkdep -- `find $(FINDHPATH) \( -name SCCS -o -name .svn \) -prune -o -follow -name \*.h ! -name modversions.h -print` > .hdepend
+	find $(FINDHPATH) \( -name SCCS -o -name .svn \) -prune -o -follow -name \*.h ! -name modversions.h -print | xargs scripts/mkdep | cat > .hdepend
 	scripts/mkdep -- init/*.c > .depend
+	#scripts/mkdep -- `find $(FINDHPATH) \( -name SCCS -o -name .svn \) -prune -o -follow -name \*.h ! -name modversions.h -print` > .hdepend
 
 ifdef CONFIG_MODVERSIONS
 MODVERFILE := $(TOPDIR)/include/linux/modversions.h

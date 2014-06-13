@@ -1,5 +1,5 @@
 /*
- * $Id: stinger.c,v 1.4 2001/05/23 09:25:02 vojtech Exp $
+ * $Id: stinger.c,v 1.1.1.1 2004/06/19 05:03:20 ashieh Exp $
  *
  *  Copyright (c) 2000-2001 Vojtech Pavlik
  *  Copyright (c) 2000 Mark Fletcher

@@ -264,7 +264,7 @@ ret_from_exception:
 
 	ALIGN
 reschedule:
-	call SYMBOL_NAME(schedule)    # test
+	call SYMBOL_NAME(user_schedule)    # test
 	jmp ret_from_sys_call
 
 ENTRY(divide_error)
@@ -401,6 +401,31 @@ ENTRY(spurious_interrupt_bug)
 	pushl $0
 	pushl $ SYMBOL_NAME(do_spurious_interrupt_bug)
 	jmp error_code
+
+#ifdef CONFIG_KGDB_THREAD
+ENTRY(kern_schedule)
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	%ss		
+	pushl	%ebp
+	pushfl
+	pushl	%cs
+	pushl	4(%ebp)
+	pushl	%eax		
+	pushl	%es
+	pushl	%ds
+	pushl	%eax
+	pushl	(%ebp)
+	pushl	%edi
+	pushl	%esi
+	pushl	%edx
+	pushl	%ecx
+	pushl	%ebx
+	call	kern_do_schedule
+	movl	%ebp, %esp
+	pop	%ebp
+	ret
+#endif
 
 .data
 ENTRY(sys_call_table)
@@ -663,6 +688,35 @@ ENTRY(sys_call_table)
 	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)	/* 260 */
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)	/* 265 */
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)	/* 270 */
+	.long SYMBOL_NAME(sys_ni_syscall)	
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)       /* 275 */
+	.long SYMBOL_NAME(sys_ni_syscall)	
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_ni_syscall)
+	.long SYMBOL_NAME(sys_trickles_send)    /* 280 */
+	.long SYMBOL_NAME(sys_trickles_sendv)
+	.long SYMBOL_NAME(sys_trickles_sendfilev)
+	.long SYMBOL_NAME(sys_trickles_setucont)
+	.long SYMBOL_NAME(sys_trickles_sendbulk)
+	.long SYMBOL_NAME(sys_trickles_extract_events) /* 285 */
+	.long SYMBOL_NAME(sys_trickles_install_events)
+	.long SYMBOL_NAME(sys_trickles_request)
 
 	.rept NR_syscalls-(.-sys_call_table)/4
 		.long SYMBOL_NAME(sys_ni_syscall)

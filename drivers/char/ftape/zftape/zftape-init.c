@@ -48,9 +48,9 @@
 #include "../zftape/zftape-buffers.h"
 #include "../zftape/zftape_syms.h"
 
-char zft_src[] __initdata = "$Source: /homes/cvs/ftape-stacked/ftape/zftape/zftape-init.c,v $";
-char zft_rev[] __initdata = "$Revision: 1.8 $";
-char zft_dat[] __initdata = "$Date: 1997/11/06 00:48:56 $";
+char zft_src[] __initdata = "$Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/zftape/zftape-init.c,v $";
+char zft_rev[] __initdata = "$Revision: 1.1.1.1 $";
+char zft_dat[] __initdata = "$Date: 2004/06/19 05:03:20 $";
 
 MODULE_AUTHOR("(c) 1996, 1997 Claus-Justus Heine "
 	      "(claus@momo.math.rwth-aachen.de)");

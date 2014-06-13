@@ -1,0 +1,1 @@
+#define CONFIG_APM_DO_ENABLE 1

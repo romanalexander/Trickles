@@ -1,9 +1,9 @@
 #ifndef _LZRW3_H
 #define _LZRW3_H
 /*
- * $Source: /homes/cvs/ftape-stacked/ftape/compressor/lzrw3.h,v $
- * $Revision: 1.1 $
- * $Date: 1997/10/05 19:12:30 $
+ * $Source: /usr/u/egs/cvsroot/stcp/linux-2.4.26-kgdb-trickles/drivers/char/ftape/compressor/lzrw3.h,v $
+ * $Revision: 1.1.1.1 $
+ * $Date: 2004/06/19 05:03:19 $
  *
  *  include files for lzrw3. Only slighty modified from the original
  *  version. Assembles the three include files compress.h, port.h and

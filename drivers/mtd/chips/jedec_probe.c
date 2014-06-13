@@ -1,7 +1,7 @@
 /* 
    Common Flash Interface probe code.
    (C) 2000 Red Hat. GPL'd.
-   $Id: jedec_probe.c,v 1.19 2002/11/12 13:12:10 dwmw2 Exp $
+   $Id: jedec_probe.c,v 1.1.1.1 2004/06/19 05:03:52 ashieh Exp $
    See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)
    for the standard this probe goes back to.
 */

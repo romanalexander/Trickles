@@ -406,6 +406,8 @@ static __inline__ int tcp_sk_listen_hashfn(struct sock *sk)
 #define TCPOPT_SACK_PERM        4       /* SACK Permitted */
 #define TCPOPT_SACK             5       /* SACK Block */
 #define TCPOPT_TIMESTAMP	8	/* Better RTT estimations/PAWS */
+#define TCPOPT_CWND		10	/* CWND debug trace */
+#define TCPOPT_TRICKLES		11
 
 /*
  *     TCP option lengths
@@ -415,6 +417,9 @@ static __inline__ int tcp_sk_listen_hashfn(struct sock *sk)
 #define TCPOLEN_WINDOW         3
 #define TCPOLEN_SACK_PERM      2
 #define TCPOLEN_TIMESTAMP      10
+
+#define TCPOLEN_CWND	       16
+#define TCPOLEN_TRICKLES	4
 
 /* But this is what stacks really send out. */
 #define TCPOLEN_TSTAMP_ALIGNED		12
@@ -816,6 +821,9 @@ extern void tcp_push_one(struct sock *, unsigned mss_now);
 extern void tcp_send_ack(struct sock *sk);
 extern void tcp_send_delayed_ack(struct sock *sk);
 
+// exported for Trickles
+extern void cleanup_rbuf(struct sock *sk, int copied);
+
 /* tcp_timer.c */
 extern void tcp_init_xmit_timers(struct sock *);
 extern void tcp_clear_xmit_timers(struct sock *);
@@ -1032,6 +1040,54 @@ struct tcp_skb_cb {
 
 	__u16		urg_ptr;	/* Valid w/URG flags is set.	*/
 	__u32		ack_seq;	/* Sequence number ACK'd	*/
+
+	// Trickles fields
+	__u32 		trickle_seq;
+	unsigned 	clientState;
+	struct cminisock *cont; /* continuation allocated for this packet. Used for user continuation processing */
+	__u32		byteNum;
+
+#define MAX_NUM_DATACHUNKS_FAST (5)
+#define MAX_NUM_DATACHUNKS (50)
+//#define MAX_NUM_DATACHUNKS (MAX_NUM_DATACHUNKS_FAST)
+#define CHUNK_CHECK(SKB) BUG_TRAP(					\
+	(TCP_SKB_CB(SKB)->numDataChunks >= 0)	\
+	&& (TCP_SKB_CB(SKB)->numDataChunks < MAX_NUM_DATA_CHUNKS ||	\
+	    TCP_SKB_CB(SKB)->chunksOverflow != NULL))
+	int numDataChunks;
+	struct sk_buff *chunks0[MAX_NUM_DATACHUNKS_FAST];
+	struct sk_buff **chunksOverflow;
+
+#define GET_CHUNK(SKB, M)						\
+({									\
+	struct sk_buff **__rval;					\
+	struct tcp_skb_cb *tcb = TCP_SKB_CB(SKB);			\
+	if(!((M) >= 0 && (M) < MAX_NUM_DATACHUNKS)) {		\
+		BUG();							\
+	}								\
+	if((M) < MAX_NUM_DATACHUNKS_FAST) {					\
+		__rval = &tcb->chunks0[(M)];				\
+	} else {							\
+		if(tcb->chunksOverflow == NULL) {			\
+			int len = MAX_NUM_DATACHUNKS -	MAX_NUM_DATACHUNKS_FAST; \
+			tcb->chunksOverflow =				\
+				kmalloc(sizeof(struct sk_buff *) *	\
+					len, GFP_ATOMIC); \
+			int i;						\
+			for(i=0; i < len; i++) {			\
+				tcb->chunksOverflow[i] = NULL;		\
+			}						\
+		}							\
+		__rval = &tcb->chunksOverflow[(M) - MAX_NUM_DATACHUNKS_FAST]; \
+	}								\
+	__rval;								\
+})
+	__u32		parent;
+	__u8		numSiblings;
+	__u8		position;
+	__u8 		toSkip : 1;
+	__u32		dbg; // used for debugging, e.g. to save a useful line number
+	__u32		skipPosition; // position after advancing rcvNxt
 };
 
 #define TCP_SKB_CB(__skb)	((struct tcp_skb_cb *)&((__skb)->cb[0]))

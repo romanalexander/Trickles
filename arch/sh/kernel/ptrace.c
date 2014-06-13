@@ -1,4 +1,4 @@
-/* $Id: ptrace.c,v 1.1.1.1.2.3 2003/10/23 22:11:08 yoshii Exp $
+/* $Id: ptrace.c,v 1.1.1.1 2004/06/19 05:04:05 ashieh Exp $
  *
  * linux/arch/sh/kernel/ptrace.c
  *

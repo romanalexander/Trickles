@@ -15,7 +15,7 @@
  *     (enable driver on big-endian machines (hppa), ioctl fixes)
  *
  *
- * $Id: sstfb.c,v 1.26.4.1 2001/08/29 01:30:37 ghoz Exp $
+ * $Id: sstfb.c,v 1.1.1.1 2004/06/19 05:03:39 ashieh Exp $
  */
 
 /*

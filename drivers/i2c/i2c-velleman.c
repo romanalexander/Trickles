@@ -18,7 +18,7 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.		     */
 /* ------------------------------------------------------------------------- */
 
-/* $Id: i2c-velleman.c,v 1.19 2000/01/24 02:06:33 mds Exp $ */
+/* $Id: i2c-velleman.c,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $ */
 
 #include <linux/kernel.h>
 #include <linux/ioport.h>

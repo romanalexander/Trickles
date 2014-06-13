@@ -117,6 +117,8 @@ obj-$(CONFIG_ADAPTEC_STARFIRE) += starfire.o mii.o
 
 obj-$(CONFIG_GALILEO_64240_ETH) += gt64240eth.o
 obj-$(CONFIG_MV64340_ETH)	+= mv64340_eth.o
+obj-$(CONFIG_BIG_SUR_FE)	+= big_sur_ge.o
+obj-$(CONFIG_TITAN_GE)		+= titan_mdio.o titan_ge.o
 obj-$(CONFIG_AIRONET4500) 	+= aironet4500_core.o
 obj-$(CONFIG_AIRONET4500_CS) 	+= aironet4500_core.o
 obj-$(CONFIG_AIRONET4500_NONCS)  += aironet4500_card.o
@@ -244,6 +246,8 @@ obj-$(CONFIG_AMD8111_ETH) += amd8111e.o mii.o
 # non-drivers/net drivers who want mii lib
 obj-$(CONFIG_PCMCIA_SMC91C92) += mii.o
 obj-$(CONFIG_USB_USBNET) += mii.o
+
+obj-$(CONFIG_IBMVETH) += ibmveth.o
 
 ifeq ($(CONFIG_ARCH_ACORN),y)
 mod-subdirs	+= ../acorn/net

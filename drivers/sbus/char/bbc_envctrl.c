@@ -1,4 +1,4 @@
-/* $Id: bbc_envctrl.c,v 1.4 2001/04/06 16:48:08 davem Exp $
+/* $Id: bbc_envctrl.c,v 1.1.1.1 2004/06/19 05:03:38 ashieh Exp $
  * bbc_envctrl.c: UltraSPARC-III environment control driver.
  *
  * Copyright (C) 2001 David S. Miller (davem@redhat.com)

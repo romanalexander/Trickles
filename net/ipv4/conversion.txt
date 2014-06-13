@@ -1,0 +1,131 @@
+	case MREQ_CONVERSION: {
+		struct ConversionRequest *convReq =
+			(struct ConversionRequest *) mreq;
+		struct sk_buff *input_skb;
+		unsigned outContLen, copyLen, copyOffset;
+		__u16 wlen;
+
+		xxx need parallel handling;
+		// tp->trickles_opt & TCP_TRICKLES_PAR_REQUEST
+		if(tp->t.snd_una <= convReq->start) {
+			input_skb = convReq->data;
+			copyOffset = convReq->offset;
+			if(convReq->start != TCP_SKB_CB(input_skb)->seq + copyOffset) {
+				BUG();
+			}
+		} else {
+			if(tp->t.snd_una == tp->t.write_seq) {
+				//printk("Conversion now obsolete\n");
+				ROLLBACK();
+				unlink((struct alloc_head*)convReq);
+				return OUT_FREE;
+			}
+			// find input skb corresponding to current snd_una, and adjust convReq->input_skb accordingly
+			input_skb = tp->t.requestBytes.next;
+			while((struct sk_buff_head *)input_skb != &tp->t.requestBytes) {
+				if(TCP_SKB_CB(input_skb)->seq <= tp->t.snd_una &&
+				   tp->t.snd_una < TCP_SKB_CB(input_skb)->end_seq) {
+					// printk("matched during update\n");
+					break;
+				}
+				PACKET_TRACE_LOG("inputskb ");
+				input_skb = input_skb->next;
+			}
+			if((struct sk_buff_head *)input_skb == &tp->t.requestBytes) {
+				printk("screwed up during update\n");
+				BUG();
+			}
+			convReq->data = input_skb;
+			convReq->start = tp->t.snd_una;
+			convReq->offset = copyOffset = convReq->start - TCP_SKB_CB(input_skb)->seq;
+			// printk("2: start = %d, offset = %d\n", convReq->start, copyOffset);
+			convReq->end = tp->t.write_seq;
+
+			BUG_TRAP(convReq->offset >= 0);
+			BUG_TRAP(convReq->end > convReq->start);
+		}
+		if(input_skb == NULL) {
+			BUG();
+		}
+
+		if(convReq->incomplete) {
+			printk("generating incomplete request\n");
+			struct WireUC_CVT_IncompleteRequest *wInConvReq;
+			unsigned contLen;
+
+			/* get current position */
+			wInConvReq = (struct WireUC_CVT_IncompleteRequest *)
+				skb_put(skb, sizeof(*wInConvReq));
+			contLen = convReq->predLength;
+			skb_put(skb, contLen - sizeof(wInConvReq->predCont));
+			memcpy(&wInConvReq->predCont, convReq->incompletePred, contLen);
+			wInConvReq->type = UC_INCOMPLETE;
+			outContLen = (char*)skb_put(skb, 0) - (char*)wInConvReq;
+			wlen = htons((short)outContLen);
+			wInConvReq->len = wlen;
+			wInConvReq->seq =
+				htonl(TCP_SKB_CB(input_skb)->seq + copyOffset);
+		} else {
+			struct WireUC_CVT_CompleteRequest *wConvReq;
+			unsigned contLen;
+
+			wConvReq = (struct WireUC_CVT_CompleteRequest*)
+				skb_put(skb, sizeof(*wConvReq));
+			contLen = marshallUC_Continuation(&wConvReq->predCont,
+							  convReq->completePred);
+			static char last[256];
+			static void *lastPtr;
+			static int delta = 0;
+			static int dumpNext = 0;
+			if(gDumpConvCont || dumpNext) {
+				printk("(%d) generating complete request from (%p) ", dumpNext, convReq->completePred); UC_Continuation_dump(convReq->completePred);
+				if(tp->t.prevConvCont) { printk("prev is (%p) ", tp->t.prevConvCont); UC_Continuation_dump(tp->t.prevConvCont); };
+				printk("last was %p %s, delta %d\n", lastPtr, last, delta);
+				delta = 0;
+				dumpNext = !dumpNext;
+			} else {
+				delta++;
+				dumpNext = 0;
+			}
+			lastPtr = convReq->completePred;
+
+			skb_put(skb, contLen - sizeof(wConvReq->predCont));
+			wConvReq->type = UC_COMPLETE;
+			outContLen = (char*)skb_put(skb, 0) - (char*)wConvReq;
+			wlen = htons((short)outContLen);
+			wConvReq->len = wlen;
+			wConvReq->seq =
+				htonl(TCP_SKB_CB(input_skb)->seq + copyOffset);
+		}
+		if(outContLen > TRICKLES_MSS) {
+			printk("outContLen > TRICKLES_MSS\n");
+			recordSample(&ctx,1);
+			ROLLBACK();
+			return OUT_FREE;
+		}
+		wreq->ucont_len = wlen;
+
+		copyLen = MIN(TRICKLES_MSS - outContLen, tp->t.write_seq - convReq->start);
+		if(copyLen == 0) {
+			BUG();
+		}
+		convReq->end = convReq->start + copyLen;
+
+		/* Update snd_end to allow for progress check */
+		tp->t.snd_end = convReq->end;
+
+		/* Copy bytestream to request */
+		BUG_TRAP(copyLen + outContLen <= TRICKLES_MSS);
+		if(copyLen == 0) {
+			printk("ReqType = %d CopyLen == 0\n", mreq->type);
+		}
+		while(copyLen > 0) {
+			unsigned pieceLen = MIN(input_skb->len - copyOffset, copyLen);
+			memcpy(skb_put(skb, pieceLen), input_skb->data + copyOffset, pieceLen);
+			copyOffset = 0;
+			copyLen -= pieceLen;
+			input_skb = input_skb->next;
+		}
+		gConversionCount++;
+		break;
+	}

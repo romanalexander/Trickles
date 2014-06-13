@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: pushpull.h,v 1.5 2001/09/23 10:04:15 rmk Exp $
+ * $Id: pushpull.h,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

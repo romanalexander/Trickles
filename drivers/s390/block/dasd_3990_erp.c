@@ -5,7 +5,7 @@
  * Bugreports.to..: <Linux390@de.ibm.com>
  * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001
  *
- * $Revision: 1.52 $
+ * $Revision: 1.1.1.1 $
  *
  * History of changes:
  * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)

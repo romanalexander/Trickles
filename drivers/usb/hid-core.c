@@ -1,5 +1,5 @@
 /*
- * $Id: hid-core.c,v 1.8 2001/05/23 12:02:18 vojtech Exp $
+ * $Id: hid-core.c,v 1.1.1.1 2004/06/19 05:03:42 ashieh Exp $
  *
  *  Copyright (c) 1999 Andreas Gal
  *  Copyright (c) 2000-2001 Vojtech Pavlik

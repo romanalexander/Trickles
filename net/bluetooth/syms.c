@@ -25,7 +25,7 @@
 /*
  * BlueZ symbols.
  *
- * $Id: syms.c,v 1.1 2002/03/08 21:06:59 maxk Exp $
+ * $Id: syms.c,v 1.1.1.1 2004/06/19 05:03:04 ashieh Exp $
  */
 
 #include <linux/config.h>

@@ -20,6 +20,10 @@
 *!                                  in the spin-lock.
 *!
 *!  $Log: eeprom.c,v $
+*!  Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+*!  initial version
+*!
+*!
 *!  Revision 1.12  2003/04/09 08:31:14  pkj
 *!  Typo correction (taken from Linux 2.5).
 *!

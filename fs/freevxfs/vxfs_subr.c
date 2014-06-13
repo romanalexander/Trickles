@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  */
 
-#ident "$Id: vxfs_subr.c,v 1.8 2001/12/28 20:50:47 hch Exp hch $"
+#ident "$Id: vxfs_subr.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $"
 
 /*
  * Veritas filesystem driver - shared subroutines.

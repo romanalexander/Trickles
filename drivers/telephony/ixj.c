@@ -40,11 +40,15 @@
  *
  ***************************************************************************/
 
-static char ixj_c_rcsid[] = "$Id: ixj.c,v 4.7 2001/08/13 06:19:33 craigs Exp $";
-static char ixj_c_revision[] = "$Revision: 4.7 $";
+static char ixj_c_rcsid[] = "$Id: ixj.c,v 1.1.1.1 2004/06/19 05:03:49 ashieh Exp $";
+static char ixj_c_revision[] = "$Revision: 1.1.1.1 $";
 
 /*
  * $Log: ixj.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:03:49  ashieh
+ * initial version
+ *
+ *
  * Revision 4.7  2001/08/13 06:19:33  craigs
  * Added additional changes from Alan Cox and John Anderson for
  * 2.2 to 2.4 cleanup and bounds checking

@@ -4,6 +4,7 @@
 #include <linux/config.h>
 #include <linux/threads.h>
 #include <linux/irq.h>
+#include <asm/processor.h>		/* for cpu_relax */
 
 /* assembly code in softirq.h is sensitive to the offsets of these fields */
 typedef struct {

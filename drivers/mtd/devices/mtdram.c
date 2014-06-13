@@ -1,6 +1,6 @@
 /*
  * mtdram - a test mtd device
- * $Id: mtdram.c,v 1.29 2002/10/21 13:40:06 jocke Exp $
+ * $Id: mtdram.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  * Author: Alexander Larsson <alex@cendio.se>
  *
  * Copyright (c) 1999 Alexander Larsson <alex@cendio.se>

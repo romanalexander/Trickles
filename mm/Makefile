@@ -17,5 +17,6 @@ obj-y	 := memory.o mmap.o filemap.o mprotect.o mlock.o mremap.o \
 	    shmem.o
 
 obj-$(CONFIG_HIGHMEM) += highmem.o
+obj-$(CONFIG_PROC_MM) += proc_mm.o
 
 include $(TOPDIR)/Rules.make

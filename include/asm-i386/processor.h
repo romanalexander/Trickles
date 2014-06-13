@@ -376,6 +376,9 @@ struct thread_struct {
 /* IO permissions */
 	int		ioperm;
 	unsigned long	io_bitmap[IO_BITMAP_SIZE+1];
+#ifdef CONFIG_KGDB
+	struct pt_regs *kgdbregs;
+#endif
 };
 
 #define INIT_THREAD  {						\
@@ -502,7 +505,7 @@ static inline void rep_nop(void)
 #if defined(CONFIG_MPENTIUMIII) || defined (CONFIG_MPENTIUM4)
 
 #define ARCH_HAS_PREFETCH
-extern inline void prefetch(const void *x)
+static inline void prefetch(const void *x)
 {
 	__asm__ __volatile__ ("prefetchnta (%0)" : : "r"(x));
 }
@@ -513,7 +516,7 @@ extern inline void prefetch(const void *x)
 #define ARCH_HAS_PREFETCHW
 #define ARCH_HAS_SPINLOCK_PREFETCH
 
-extern inline void prefetch(const void *x)
+static inline void prefetch(const void *x)
 {
 	 __asm__ __volatile__ ("prefetch (%0)" : : "r"(x));
 }

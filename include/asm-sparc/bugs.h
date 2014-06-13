@@ -1,4 +1,4 @@
-/*  $Id: bugs.h,v 1.5 1995/11/25 02:31:18 davem Exp $
+/*  $Id: bugs.h,v 1.1.1.1 2004/06/19 05:02:55 ashieh Exp $
  *  include/asm-sparc/bugs.h:  Sparc probes for various bugs.
  *
  *  Copyright (C) 1994 David S. Miller (davem@caip.rutgers.edu)

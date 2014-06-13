@@ -1,4 +1,4 @@
-/* $Id: tpam_memory.c,v 1.1.2.1 2001/11/20 14:19:37 kai Exp $
+/* $Id: tpam_memory.c,v 1.1.1.1 2004/06/19 05:03:37 ashieh Exp $
  *
  * Turbo PAM ISDN driver for Linux. (Kernel Driver - Board Memory Access)
  *

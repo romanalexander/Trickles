@@ -1,7 +1,7 @@
 /* Written 2000 by Andi Kleen */
 /* This program is never executed, just its assembly is examined for offsets 
    (this trick is needed to get cross compiling right) */  
-/* $Id: offset.c,v 1.16 2002/07/18 13:41:46 ak Exp $ */
+/* $Id: offset.c,v 1.1.1.1 2004/06/19 05:03:54 ashieh Exp $ */
 #define ASM_OFFSET_H 1
 #ifndef __KERNEL__
 #define __KERNEL__ 

@@ -26,7 +26,7 @@
  *  Copyright (c) 2000-2002 LSI Logic Corporation
  *  Originally By: Noah Romer
  *
- *  $Id: mptlan.c,v 1.55 2003/05/07 14:08:32 pdelaney Exp $
+ *  $Id: mptlan.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  */
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 /*

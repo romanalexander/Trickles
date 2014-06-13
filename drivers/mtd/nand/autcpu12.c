@@ -6,7 +6,7 @@
  *  Derived from drivers/mtd/spia.c
  * 	 Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)
  * 
- * $Id: autcpu12.c,v 1.6 2002/11/11 15:47:56 gleixner Exp $
+ * $Id: autcpu12.c,v 1.1.1.1 2004/06/19 05:03:53 ashieh Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

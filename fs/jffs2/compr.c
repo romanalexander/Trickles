@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: compr.c,v 1.17 2001/09/23 09:56:46 dwmw2 Exp $
+ * $Id: compr.c,v 1.1.1.1 2004/06/19 05:02:42 ashieh Exp $
  *
  */
 

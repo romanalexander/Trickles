@@ -3,7 +3,7 @@
  * 		
  * Copyright 2000,2001 Andi Kleen, SuSE Labs.
  * 
- * $Id: ia32entry.S,v 1.42 2003/11/27 00:55:43 ak Exp $ 		
+ * $Id: ia32entry.S,v 1.1.1.1 2004/06/19 05:03:55 ashieh Exp $ 		
  */		 
 
 #include <asm/calling.h>

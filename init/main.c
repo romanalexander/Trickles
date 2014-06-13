@@ -61,6 +61,10 @@
 #include <linux/nubus.h>
 #endif
 
+#ifdef CONFIG_KGDB
+#include <linux/kgdb.h>
+#endif
+
 #ifdef CONFIG_ISAPNP
 #include <linux/isapnp.h>
 #endif
@@ -434,6 +438,11 @@ asmlinkage void __init start_kernel(void)
 	 *	make syscalls (and thus be locked).
 	 */
 	smp_init();
+#ifdef CONFIG_KGDB
+	if (gdb_enter) {
+		gdb_hook();		/* right at boot time */
+	}
+#endif
 #if defined(CONFIG_SYSVIPC)
 	ipc_init();
 #endif

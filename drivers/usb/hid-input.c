@@ -1,5 +1,5 @@
 /*
- * $Id: hid-input.c,v 1.5 2001/05/23 09:25:02 vojtech Exp $
+ * $Id: hid-input.c,v 1.1.1.1 2004/06/19 05:03:42 ashieh Exp $
  *
  *  Copyright (c) 2000-2001 Vojtech Pavlik
  *

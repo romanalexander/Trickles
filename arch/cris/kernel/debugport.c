@@ -12,6 +12,10 @@
  *    init_etrax_debug()
  *
  * $Log: debugport.c,v $
+ * Revision 1.1.1.1  2004/06/19 05:04:08  ashieh
+ * initial version
+ *
+ *
  * Revision 1.9  2003/02/17 07:10:34  starvik
  * Last merge was incomplete
  *
